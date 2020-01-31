@@ -6,24 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Markdown基本语法 | Baymaxly（卢意个人博客）</title>
+  <title>栈(Stack) | Baymaxly（卢意个人博客）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="初来乍到，随便整点东西试试，以下内容极不专业，大家谨慎使用">
+  <meta name="description" content="一、内存杂谈1.1 程序执行需要内存支持对程序来说，内存就是程序的立足之地（程序是被放在内存中运行的）；程序运行时需要内存来存储一些临时变脸">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Markdown基本语法">
-<meta property="og:url" content="http://yoursite.com/2020/01/14/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:title" content="栈(Stack)">
+<meta property="og:url" content="http://yoursite.com/2020/01/31/%E6%A0%88(stack)/index.html">
 <meta property="og:site_name" content="Baymaxly（卢意个人博客）">
-<meta property="og:description" content="初来乍到，随便整点东西试试，以下内容极不专业，大家谨慎使用">
+<meta property="og:description" content="一、内存杂谈1.1 程序执行需要内存支持对程序来说，内存就是程序的立足之地（程序是被放在内存中运行的）；程序运行时需要内存来存储一些临时变脸">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pV3If.jpg">
-<meta property="og:image" content="https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=c2a9ed60b17eca8012053ee1a918f0e0/ac4bd11373f082022a17da7c4afbfbedaa641bef.jpg">
-<meta property="article:published_time" content="2020-01-14T08:28:37.000Z">
-<meta property="article:modified_time" content="2020-01-19T08:30:39.470Z">
+<meta property="og:image" content="https://s2.ax1x.com/2020/01/31/18nrh4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/01/31/18CDb9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/01/31/18eKgI.png">
+<meta property="article:published_time" content="2020-01-31T14:08:49.000Z">
+<meta property="article:modified_time" content="2020-01-31T14:18:35.865Z">
 <meta property="article:author" content="Baymaxly">
-<meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="指针">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.ax1x.com/2020/01/18/1pV3If.jpg">
+<meta name="twitter:image" content="https://s2.ax1x.com/2020/01/31/18nrh4.png">
   
   
     <link rel="icon" href="/image/avator.png">
@@ -202,14 +203,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Markdown基本语法" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-栈(stack)" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Markdown基本语法
+      栈(Stack)
     </h1>
   
 
@@ -243,8 +244,8 @@
 
 
         
-        <a href="/2020/01/14/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2020-01-14T08:28:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-14</time>
+        <a href="/2020/01/31/%E6%A0%88(stack)/" class="archive-article-date">
+  	<time datetime="2020-01-31T14:08:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-31</time>
 </a>
         
         </header>
@@ -253,68 +254,46 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <p>初来乍到，随便整点东西试试，以下内容极不专业，大家谨慎使用</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pV3If.jpg" alt="学习"><br> <a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>直接输入进去就可以了，哈哈哈哈哈这个简单</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>代码块通过两行 ``` 符号框出，如果你写的代码是某种语言，那么可以在第一行末尾加上这个语言的名字，代码块内的代码就会执行对应的高亮语法</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello World!"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="行内代码"><a href="#行内代码" class="headerlink" title="行内代码"></a>行内代码</h4><p>正文中的代码，则通过输入`` 框出</p>
-<p>比如说<code>Hello world!</code></p>
-<h2 id="字体格式"><a href="#字体格式" class="headerlink" title="字体格式"></a>字体格式</h2><p><strong>字体加粗</strong><br><em>字体倾斜</em></p>
-<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h3 id="有序"><a href="#有序" class="headerlink" title="有序"></a>有序</h3><p>有序列表，这个也很简单，有序列表只需要在文字前加上序号</p>
-<ol>
-<li>有序列表一</li>
-<li>有序列表二</li>
-<li>有序列表三</li>
-<li>有序列表四</li>
-</ol>
-<h3 id="无序"><a href="#无序" class="headerlink" title="无序"></a>无序</h3><p>无序列表，一般无序列表都是在文字前面加一个-符号，其实*和+这两个符号也有是一样的效果。不过要记得，在使用的时候都需要用一个空格将他们三个符号和文字隔开才会生成有效的无序列表哟~</p>
+        <h2 id="一、内存杂谈"><a href="#一、内存杂谈" class="headerlink" title="一、内存杂谈"></a>一、内存杂谈</h2><h3 id="1-1-程序执行需要内存支持"><a href="#1-1-程序执行需要内存支持" class="headerlink" title="1.1 程序执行需要内存支持"></a>1.1 程序执行需要内存支持</h3><p>对程序来说，内存就是程序的立足之地（程序是被放在内存中运行的）；程序运行时需要内存来存储一些临时变脸</p>
+<a id="more"></a>
+<h3 id="1-2-内存管理"><a href="#1-2-内存管理" class="headerlink" title="1.2 内存管理"></a>1.2 内存管理</h3><p>内存管理最终是由操作系统来完成的：</p>
 <ul>
-<li>第一个</li>
-<li>第二</li>
-<li>3</li>
-<li>4</li>
+<li>内存本身在物理上是一个硬件器件，由硬件系统提供</li>
+<li>内存是由操作系统统一管理。为了内存管理既方便又合理，操作系统提供了多种机制让程序使用内存。这些机制彼此不同，各自有各自特点，程序根据实际情况选择某种方式获取内存（向操作系统申请使用权限）、使用内存、释放内存（向操作系统归还该内存的使用权限）</li>
 </ul>
-<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><p>分割线，通常使用三个或者三个以上的-或*符号来表示</p>
-<hr>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>只需要在文字的前面加上一个&gt;（或者你也可以加多个大于号），显示效果会不一样。</p>
-<blockquote>
-<p>这是引用</p>
-<blockquote>
-<p>没错这也是<br>嗯我知道了</p>
-<blockquote>
-<p>还能分级<br>牛逼啊，我不知道了<br>怎么退出去呢<br>我他妈不知道啊</p>
-<blockquote>
-<p>…………</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>我终于退出去了</p>
-<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p><code>！[图片alt](图片地址 &#39;&#39;图片title&#39;&#39;)</code></p>
-<p><code>图片alt</code>就是显示在图片下面的文字，相当于对图片内容的解释<br><code>图片title</code>是图片的标题，当鼠标移到图片上时显示的内容，可以省略</p>
-<p><img src="https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=c2a9ed60b17eca8012053ee1a918f0e0/ac4bd11373f082022a17da7c4afbfbedaa641bef.jpg" alt="武汉理工大学" title="武汉理工大学"></p>
-<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p><strong>表格也是比较常用的格式，它的语法略显复杂一些 ：</strong><br>表格通过 <code>|</code> 符号来分隔不同的单元格，使用 <code>-</code> 来分隔表头和其他行。<br>可通过<code>:</code>和<code>-</code>的位置关系确定每一列的对齐方式<br><code>-:</code>设置内容和标题栏居右对齐，<br><code>:-</code> 设置内容和标题栏居左对齐，<br><code>:-:</code> 设置内容和标题栏居中对齐。</p>
-<table>
-<thead>
-<tr>
-<th align="left">姓名</th>
-<th align="center">班级</th>
-<th align="right">学号</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">黄鹏111111</td>
-<td align="center">1802</td>
-<td align="right">111111802</td>
-</tr>
-<tr>
-<td align="left">哈哈哈</td>
-<td align="center">呵呵</td>
-<td align="right">嘿嘿</td>
-</tr>
-</tbody></table>
+<h3 id="1-3-三种内存来源"><a href="#1-3-三种内存来源" class="headerlink" title="1.3 三种内存来源"></a>1.3 三种内存来源</h3><ol>
+<li>栈(stack)</li>
+<li>堆(heap)</li>
+<li>数据区(.data)</li>
+</ol>
+<h2 id="二、栈-stack"><a href="#二、栈-stack" class="headerlink" title="二、栈(stack)"></a>二、栈(stack)</h2><p>栈是一种数据结构，C语言中使用栈来保存局部变量，是被发明出来管理内存的。</p>
+<h3 id="2-1-特点："><a href="#2-1-特点：" class="headerlink" title="2.1 特点："></a>2.1 特点：</h3><h4 id="1-自动分配、回收："><a href="#1-自动分配、回收：" class="headerlink" title="1.自动分配、回收："></a>1.自动分配、回收：</h4><p>栈是操作系统自动管理的，程序员不需要手动干预，方便简单</p>
+<h4 id="2-反复使用："><a href="#2-反复使用：" class="headerlink" title="2.反复使用："></a>2.反复使用：</h4><p>栈内存在程序中是一块固定的空间，程序反复使用这一块空间</p>
+<h4 id="3-先进后出FILO："><a href="#3-先进后出FILO：" class="headerlink" title="3.先进后出FILO："></a>3.先进后出FILO：</h4><p> first in last out，入口和出口在一起，如图所示（图来自百度百科）<br> <img src="https://s2.ax1x.com/2020/01/31/18nrh4.png" alt="18nrh4.png"></p>
+<h4 id="4-栈会溢出："><a href="#4-栈会溢出：" class="headerlink" title="4.栈会溢出："></a>4.栈会溢出：</h4><p>操作系统事先给定了栈的大小，在函数中无穷尽地分配局部变量，肯定会爆栈</p>
+<h5 id="爆栈测试代码"><a href="#爆栈测试代码" class="headerlink" title="爆栈测试代码"></a>爆栈测试代码</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">stack_overflow</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    stack_overflow();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">stack_overflow</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">    stack_overflow();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h5><p><img src="https://s2.ax1x.com/2020/01/31/18CDb9.png" alt="18CDb9.png"></p>
+<p>爆栈之后访问了不该访问的地址引发段错误。</p>
+<h4 id="5-脏内存、临时性："><a href="#5-脏内存、临时性：" class="headerlink" title="5.脏内存、临时性："></a>5.脏内存、临时性：</h4><p>栈由于反复使用，每次使用后程序不会去清理，因此分配到时保留原来的值（C语言中定义未初始化的局部变量时，值是随机的）。由此，为了避免不必要的麻烦，函数不能返回栈变量的指针（就相当于酒店的临时住宿地址不是家庭地址）</p>
+<h5 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">func1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> &amp;a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">func2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> &amp;a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> *p1 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">int</span> *p2 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" func1 = %p\n"</span>,func1());</span><br><span class="line">    p1 = func1();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" p1 = %p\n"</span>, p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*p1 = %d\n"</span>, *p1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" func2 = %p\n"</span>,func2());</span><br><span class="line">    p2 = func2();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" p2 = %p\n"</span>, p2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*p2 = %d\n"</span>, *p2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="测试结果-1"><a href="#测试结果-1" class="headerlink" title="测试结果"></a>测试结果</h5><p><img src="https://s2.ax1x.com/2020/01/31/18eKgI.png" alt="18eKgI.png"></p>
+<p>如上图所示，在<code>func2</code>中有个<code>warning</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">warning: function returns address of local variable [-Wreturn-local-addr]</span><br><span class="line">     return &amp;a;</span><br><span class="line">            ^</span><br></pre></td></tr></table></figure>
+
+<p>即警告：函数返回局部变量的地址。在早期的编译过程中，初学者对局部变量地址进行返回经常导致<code>野指针满天飞</code>。现在的编译器对其做了优化，如上图所示：</p>
+<ul>
+<li><code>func1</code>中<code>a</code>是<code>static int</code>类型的，<code>a</code>保存在全局区，程序执行完毕，这片内存区域才释放，所以不会触发警告，<code>p1</code>的指向也不会改变，是安全的。</li>
+<li>而<code>func2</code>中<code>a</code>是<code>int</code>类型的，<code>a</code>保存在栈区，弹栈之后就没了，为了避免出现野指针，编译器自动将返回值指向<code>NULL</code>。</li>
+</ul>
+<h3 id="2-2-应用举例：局部变量"><a href="#2-2-应用举例：局部变量" class="headerlink" title="2.2 应用举例：局部变量"></a>2.2 应用举例：局部变量</h3><p>C语言中的局部变量是用栈来实现的。</p>
+<ul>
+<li><p>我们在C语言中定义一个局部变量(如<code>int a</code>)时，编译器会在栈中<strong>自动分配</strong>一段空间<code>（32位机为4字节，64位为8字节）</code>给这个局部变量（分配时栈顶指针会移动给出空间，将<code>4（或8）</code>字节的栈内存地址和定义的局部变量名<code>a</code>给关联起来），对应的操作是<strong>入栈</strong>。</p>
+</li>
+<li><p>等函数退出的时候，局部变量要消亡，对应栈的操作是<strong>弹栈（出栈）</strong>。出栈时也是栈顶指针移动将栈空间中与<code>a</code>关联的那四个字节空间释放。这个动作是也自动的，无需程序员写代码干预。</p>
+</li>
+</ul>
 
       
 
@@ -328,28 +307,17 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Markdown</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">指针</a>
         		</li>
       		
 		</ul>
 	</div>
 
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -399,7 +367,7 @@
         <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
         <p>扫一扫，分享到微信</p>
         <div class="wx-qrcode">
-            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/01/14/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" alt="微信分享二维码">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/01/31/%E6%A0%88(stack)/" alt="微信分享二维码">
         </div>
     </div>
 
@@ -414,15 +382,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/01/17/%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E8%BF%81%E7%A7%BB/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          虚拟机的迁移（Ubuntu)
-        
-      </div>
-    </a>
   
+    <a href="/2020/01/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">二维数组</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
