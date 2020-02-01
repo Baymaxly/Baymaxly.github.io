@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>堆(heap) | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、堆内存特点  操作系统堆管理器管理：堆管理器是操作系统的一个模块，堆管理内存分配灵活，按需分配 大块内存：堆内存管理着总量很大的操作系统内存块，各进程可以按需申请使用，使用完释放 手动申请、释放：需要写代码去malloc及free 脏内存：堆内存也是反复使用的，而且使用者用完释放前不会清除，因此也是脏的 临时性：堆内存只在malloc和free之间属于某个进程，可以访问。在malloc之间个f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆(heap)">
+<meta property="og:url" content="http://yoursite.com/2020/02/01/%E5%A0%86(heap)/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、堆内存特点  操作系统堆管理器管理：堆管理器是操作系统的一个模块，堆管理内存分配灵活，按需分配 大块内存：堆内存管理着总量很大的操作系统内存块，各进程可以按需申请使用，使用完释放 手动申请、释放：需要写代码去malloc及free 脏内存：堆内存也是反复使用的，而且使用者用完释放前不会清除，因此也是脏的 临时性：堆内存只在malloc和free之间属于某个进程，可以访问。在malloc之间个f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1GJiXF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1GQ301.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1Gla5V.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1G3etP.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1G8NVA.png">
+<meta property="article:published_time" content="2020-02-01T03:38:49.000Z">
+<meta property="article:modified_time" content="2020-02-01T09:36:30.954Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="内存管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2020/02/01/1GJiXF.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 11
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-堆(heap)" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      堆(heap)
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/01/%E5%A0%86(heap)/" class="archive-article-date">
+  	<time datetime="2020-02-01T03:38:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-01</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、堆内存特点"><a href="#一、堆内存特点" class="headerlink" title="一、堆内存特点"></a>一、堆内存特点</h2><blockquote>
+<ol>
+<li><strong>操作系统堆管理器管理</strong>：堆管理器是操作系统的一个模块，堆管理内存分配灵活，按需分配</li>
+<li><strong>大块内存</strong>：堆内存管理着总量很大的操作系统内存块，各进程可以按需申请使用，使用完释放</li>
+<li><strong>手动申请、释放</strong>：需要写代码去malloc及free</li>
+<li><strong>脏内存</strong>：堆内存也是反复使用的，而且使用者用完释放前不会清除，因此也是脏的</li>
+<li><strong>临时性</strong>：堆内存只在malloc和free之间属于某个进程，可以访问。在malloc之间个free之后都不能访问，会引发不可预知的错误。</li>
+</ol>
+</blockquote>
+<a id="more"></a>
+<h2 id="二、堆内存使用范例"><a href="#二、堆内存使用范例" class="headerlink" title="二、堆内存使用范例"></a>二、堆内存使用范例</h2><h3 id="2-1-使用步骤"><a href="#2-1-使用步骤" class="headerlink" title="2.1 使用步骤"></a>2.1 使用步骤</h3><blockquote>
+<ol>
+<li>申请并绑定内存</li>
+<li>检验是否成功分配</li>
+<li>初始化内存</li>
+<li>使用内存</li>
+<li>释放内存</li>
+</ol>
+</blockquote>
+<h3 id="2-2-代码示例"><a href="#2-2-代码示例" class="headerlink" title="2.2 代码示例"></a>2.2 代码示例</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//申请一个容纳100个int类型元素的内存并和p绑定</span></span><br><span class="line">    <span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">100</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="comment">//检验是否成功分配</span></span><br><span class="line">    <span class="keyword">if</span>(!p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//初始化</span></span><br><span class="line">    <span class="built_in">memset</span>(p, <span class="number">0</span>, <span class="number">100</span>);</span><br><span class="line">    <span class="comment">//使用内存</span></span><br><span class="line">    *(p + <span class="number">9</span>) = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>((i + <span class="number">1</span>) % <span class="number">10</span> ? <span class="string">"%d "</span> : <span class="string">"%d\n"</span>, *(p + i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//释放内存</span></span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-结果示例"><a href="#2-3-结果示例" class="headerlink" title="2.3 结果示例"></a>2.3 结果示例</h3><p><img src="https://s2.ax1x.com/2020/02/01/1GJiXF.png" alt="1GJiXF.png"></p>
+<h3 id="2-4-相关说明"><a href="#2-4-相关说明" class="headerlink" title="2.4 相关说明"></a>2.4 相关说明</h3><blockquote>
+<ol>
+<li><code>void</code>类型不是空型，也不是没有类型，表示<strong>万能类型</strong>。表示这个数据的类型当前是不确定的，在需要的时候可以再去指定它的具体类型。</li>
+<li><code>void *</code>类型是一个指针类型，这个指针本身只占四个字节，但是指针指向的类型是不确定的，在需要的时候可以再去指定它的具体类型。</li>
+<li><code>malloc</code>返回的是一个<code>void *</code>类型的指针：内存申请成功后返回的是堆管理器分配给本次申请的那段内存空间的首地址（<code>malloc</code>返回的值其实就是一个数字，这个数字表示一个内存地址），申请失败时返回<code>NULL</code></li>
+<li><code>malloc</code>使用<code>void *</code>作为返回类型是因为<code>malloc</code>分配内存时只是分配一个内存空间给进程使用，而并不关心这段内存空间时用来储存什么类型的元素，具体的类型是由程序员来强制转化的。</li>
+</ol>
+</blockquote>
+<h2 id="三、内存泄露"><a href="#三、内存泄露" class="headerlink" title="三、内存泄露"></a>三、内存泄露</h2><p>当前进程申请内存后：</p>
+<blockquote>
+<ol>
+<li>在没有<code>free</code>前就丢失了这块内存的地址</li>
+<li>退出进程没有<code>free</code>这块内存</li>
+</ol>
+</blockquote>
+<p>本进程无法使用或不再使用这块内存，但是操作系统的堆管理器认为该段内存是当前进程拿着的，其他进程也无法使用，就造成了内存泄露，直到当前进程结束时操作系统才会回收这段内存</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//申请一个容纳100个int类型元素的内存并和p绑定</span></span><br><span class="line">    <span class="keyword">int</span> *p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">100</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="comment">//检验是否成功分配</span></span><br><span class="line">    <span class="keyword">if</span>(!p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//初始化</span></span><br><span class="line">    <span class="built_in">memset</span>(p, <span class="number">0</span>, <span class="number">100</span>);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        使用内存</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    p = <span class="literal">NULL</span>;<span class="comment">//释放前丢失指向导致内存泄露</span></span><br><span class="line">    <span class="comment">//未释放内存导致内存泄露</span></span><br><span class="line">    <span class="comment">//free(p);</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、注意事项"><a href="#四、注意事项" class="headerlink" title="四、注意事项"></a>四、注意事项</h2><ol>
+<li><code>free</code>之后当前进程就失去了访问那块内存空间的权限，再次访问会引发段错误。</li>
+<li>为了避免内存泄露，在调用<code>free</code>归还这段内存之前，指向这段内存的指针一定不能丢（不能赋值使其指向另外的地方）。<code>p</code>一但丢失这段<code>malloc</code>来的内存，就会造成内存泄露</li>
+<li><code>malloc</code>之后一定要检验内存是否分配成功</li>
+<li><code>free</code>之后一定要让<code>p</code>指向<code>NULL</code>，以避免野指针的出现</li>
+<li>不用越界访问</li>
+</ol>
+<h2 id="五、一些没多大实际意义但是有趣的东西"><a href="#五、一些没多大实际意义但是有趣的东西" class="headerlink" title="五、一些没多大实际意义但是有趣的东西"></a>五、一些没多大实际意义但是有趣的东西</h2><h3 id="5-1-malloc-0"><a href="#5-1-malloc-0" class="headerlink" title="5.1 malloc(0)"></a>5.1 malloc(0)</h3><p>在硬件电路中0欧姆的电阻确实有很多妙用，但是在软件中<code>malloc</code>一个<code>0字节</code>的内存就真的是一件很无厘头的事情。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p1 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> *p2 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(!p1 &amp;&amp; !p2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p1 = %p\n"</span>, p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p2 = %p\n"</span>, p2);</span><br><span class="line">    <span class="comment">/*记得释放内存并让p指向NULL*/</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2020/02/01/1GQ301.png" alt="malloc0.png"></p>
+<p>根据测试结果我们可以看到<code>malloc</code>返回了一个有效指针。其实<code>C</code>语言并没有明确规定<code>malloc(0)</code>时的具体表现，是由各<code>malloc</code>函数库的实现着来定义的，在工程领域不必深究这个东西。</p>
+<h3 id="5-2-malloc-4"><a href="#5-2-malloc-4" class="headerlink" title="5.2 malloc(4)"></a>5.2 malloc(4)</h3><p>大家猜一猜这是分配几个<code>Byte</code>的内存空间呢？<code>4Byte</code>？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p1 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">int</span> *p2 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">int</span> *p3 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">if</span>(!p1 &amp;&amp; !p2 &amp;&amp; !p3)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p1 = %p\n"</span>, p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p2 = %p\n"</span>, p2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p3 = %p\n"</span>, p3);</span><br><span class="line">    <span class="comment">/*记得释放内存并让p指向NULL*/</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2020/02/01/1Gla5V.png" alt="malloc4.png"></p>
+<p>我们可以看到地址之间的差值其实是<code>32B</code>或<code>16B</code>，其实<code>malloc</code>实现时并没有实现任意大小内存的分配，而是成块分配的，最小为<code>16</code>字节。也就是说<code>malloc</code>小于<code>16B</code>的大小时都会向<code>16B</code>补齐。</p>
+<h3 id="5-3-访问并使用超出申请的内存"><a href="#5-3-访问并使用超出申请的内存" class="headerlink" title="5.3 访问并使用超出申请的内存"></a>5.3 访问并使用超出申请的内存</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p1 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">if</span>(!p1)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *(p1 + <span class="number">1</span>) = <span class="number">1</span>;</span><br><span class="line">    *(p1 + <span class="number">100</span>) = <span class="number">100</span>;</span><br><span class="line">    *(p1 + <span class="number">10000</span>) = <span class="number">10000</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">100000</span>; i *= <span class="number">100</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"*(p1 + %d) = %d\n"</span>, i, *(p1 + i));</span><br><span class="line">    &#125;</span><br><span class="line">    *(p1 + <span class="number">1000000</span>) = <span class="number">10000</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, *(p1 + <span class="number">1000000</span>));</span><br><span class="line">    <span class="built_in">free</span>(p1);</span><br><span class="line">    p1 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2020/02/01/1G3etP.png" alt="heapover1.png"></p>
+<p>其实，在一定范围内，堆管理器是允许进程对申请的内存进行越界访问的。但是，这种过于开放的管理方式其实有很大的弊端，可能一不小心就会修改掉本进程的其他有效数据（如下所示）或其他进程的数据，所以在正常的场合下是不会越界访问的。好在这有一定的限度，无限向外访问会触发段错误</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p1 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> *p2 = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">if</span>(!p1 &amp;&amp; !p2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"malloc error!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *(p2 + <span class="number">0</span>) = <span class="number">5</span>;</span><br><span class="line">    *(p1 + <span class="number">8</span>) = <span class="number">10</span>; <span class="comment">//越界访问</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*(p2 + 1) = %d\n"</span>, *(p2 + <span class="number">0</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*(p1 + 8) = %d\n"</span>, *(p1 + <span class="number">8</span>));</span><br><span class="line">    <span class="built_in">free</span>(p1);</span><br><span class="line">    p1 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="built_in">free</span>(p2);</span><br><span class="line">    p2 = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2020/02/01/1G8NVA.png" alt="1G8NVA.png"></p>
+<p>通过测试结果我们可以看出<code>p1</code>越界之后把<code>*(p2 + 0)</code>的值给修改了！这是极其危险的行为！越塔强杀会有报应的！</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内存管理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/01/%E5%A0%86(heap)/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/01/31/%E6%A0%88(stack)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">栈(Stack)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
