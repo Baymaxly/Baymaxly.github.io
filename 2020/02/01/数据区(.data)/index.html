@@ -6,36 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo + yilia添加Subnav图标 | Baymaxly（卢意个人博客）</title>
+  <title>数据区(.data) | Baymaxly（卢意个人博客）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="yilia上面的Subnav社交地址还是很赞的，奈何偏偏没有CSDN的图标，搞得我也是头大呀 下面就来折腾一下如何添加CSDN的图标吧！">
+  <meta name="description" content="一、三个常用段编译器在编译程序的时候，将程序中的所有元素分成一些部分，各部分构成一个段，段是可执行程序的组成部分。   代码段：程序中的可执行部分，是由函数堆叠而成的 数据段(数据区、静态数据区、静态区)：程序中的数据，C语言中的全局变量（全局变量才算程序的数据，局部变量是函数的数据） bss段(ZI段（zero initial）)：被初始化为0，bss段本质上也是属于数据段。也就是说bss段就是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo + yilia添加Subnav图标">
-<meta property="og:url" content="http://yoursite.com/2020/01/18/Hexo+yilia%E6%B7%BB%E5%8A%A0Subnav%E5%9B%BE%E6%A0%87/index.html">
+<meta property="og:title" content="数据区(.data)">
+<meta property="og:url" content="http://yoursite.com/2020/02/01/%E6%95%B0%E6%8D%AE%E5%8C%BA(.data)/index.html">
 <meta property="og:site_name" content="Baymaxly（卢意个人博客）">
-<meta property="og:description" content="yilia上面的Subnav社交地址还是很赞的，奈何偏偏没有CSDN的图标，搞得我也是头大呀 下面就来折腾一下如何添加CSDN的图标吧！">
+<meta property="og:description" content="一、三个常用段编译器在编译程序的时候，将程序中的所有元素分成一些部分，各部分构成一个段，段是可执行程序的组成部分。   代码段：程序中的可执行部分，是由函数堆叠而成的 数据段(数据区、静态数据区、静态区)：程序中的数据，C语言中的全局变量（全局变量才算程序的数据，局部变量是函数的数据） bss段(ZI段（zero initial）)：被初始化为0，bss段本质上也是属于数据段。也就是说bss段就是">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pOzQO.jpg">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1ps8Rf.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1ps7QO.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pyq3V.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pcQo9.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pcaee.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pcTS0.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pgg91.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1p2NUH.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1phioF.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1phpLV.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1phSs0.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pOtZd.png">
-<meta property="og:image" content="https://s2.ax1x.com/2020/01/18/1pOQG6.png">
-<meta property="article:published_time" content="2020-01-18T08:28:37.000Z">
-<meta property="article:modified_time" content="2020-01-18T12:19:38.680Z">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/01/1G6qXj.png">
+<meta property="article:published_time" content="2020-01-31T17:43:49.000Z">
+<meta property="article:modified_time" content="2020-02-04T16:04:17.561Z">
 <meta property="article:author" content="Baymaxly">
-<meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="yilia">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="内存管理">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.ax1x.com/2020/01/18/1pOzQO.jpg">
+<meta name="twitter:image" content="https://s2.ax1x.com/2020/02/01/1G6qXj.png">
   
   
     <link rel="icon" href="/image/avator.png">
@@ -214,14 +202,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Hexo+yilia添加Subnav图标" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-数据区(.data)" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hexo + yilia添加Subnav图标
+      数据区(.data)
     </h1>
   
 
@@ -255,8 +243,8 @@
 
 
         
-        <a href="/2020/01/18/Hexo+yilia%E6%B7%BB%E5%8A%A0Subnav%E5%9B%BE%E6%A0%87/" class="archive-article-date">
-  	<time datetime="2020-01-18T08:28:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-18</time>
+        <a href="/2020/02/01/%E6%95%B0%E6%8D%AE%E5%8C%BA(.data)/" class="archive-article-date">
+  	<time datetime="2020-01-31T17:43:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-01</time>
 </a>
         
         </header>
@@ -265,60 +253,54 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <p><img src="https://s2.ax1x.com/2020/01/18/1pOzQO.jpg" alt=""></p>
-<p><code>yilia</code>上面的<code>Subnav</code>社交地址还是很赞的，奈何偏偏没有<code>CSDN</code>的图标，搞得我也是头大呀</p>
-<p>下面就来折腾一下如何添加<code>CSDN</code>的图标吧！</p>
- <a id="more"></a>
+        <h2 id="一、三个常用段"><a href="#一、三个常用段" class="headerlink" title="一、三个常用段"></a>一、三个常用段</h2><p>编译器在编译程序的时候，将程序中的所有元素分成一些部分，各部分构成一个段，段是可执行程序的组成部分。</p>
+<blockquote>
+<ol>
+<li>代码段：程序中的可执行部分，是由函数堆叠而成的</li>
+<li>数据段(数据区、静态数据区、静态区)：程序中的数据，<code>C语言</code>中的<strong>全局变量</strong>（全局变量才算程序的数据，局部变量是函数的数据）</li>
+<li><code>bss段</code>(<code>ZI段</code>（<code>zero initial</code>）)：被初始化为<code>0</code>，<code>bss段</code>本质上也是属于数据段。也就是说<code>bss段</code>就是被初始化为<code>0</code>的数据段。</li>
+</ol>
+</blockquote>
+<a id="more"></a>
+<p>本质上来说<code>.data</code>和<code>bss</code>都是用来存放<code>C程序</code>中的全局变量的。区别在于把显式初始化为非零的全局变量存放在<code>.data段</code>中，把显示初始化为<code>0</code>或没有显式初始化的全局变量存放在<code>bss段</code>中。（这也就是为什么<code>C语言</code>中未显式初始化的全局变量的值为默认为<code>0</code>）</p>
+<h2 id="二、代码段-text"><a href="#二、代码段-text" class="headerlink" title="二、代码段(.text)"></a>二、代码段(.text)</h2><p>除程序的可执行部分外，一些特殊类型的数据也会被存放在代码段</p>
+<blockquote>
+<ol>
+<li><code>C语言</code>中定义的字符串常量</li>
+<li><code>const型</code>常量：<code>C语言</code>中<code>const</code>关键字用来定义常量<blockquote>
+<ul>
+<li>在单片机的编译器中，将<code>cosnt</code>修饰的变量放在代码段实现无法被修改，这是绝对安全的</li>
+<li>在<code>gcc</code>中，<code>const</code>型常量和普通变量一样被放在数据区，由编译器来检查以确保<code>const</code>型的常量不会被修改（其实是可以通过指针修改的）</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *p = <span class="string">"WHUT2020"</span>;</span><br><span class="line"></span><br><span class="line">    *(p + <span class="number">6</span>) = <span class="string">'1'</span>;</span><br><span class="line">    *(p + <span class="number">7</span>) = <span class="string">'8'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p = %s\n"</span>, p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="1、下载需要的图标"><a href="#1、下载需要的图标" class="headerlink" title="1、下载需要的图标"></a>1、下载需要的图标</h2><p>这里提供一个网站：<code>https://www.easyicon.net/</code></p>
-<p>大家可以从这里面直接搜索需要的图标，直接右键保存为<code>jpg</code>或者<code>.png</code>格式的就行</p>
-<h2 id="2、拷贝原有的iconfont-svg文件"><a href="#2、拷贝原有的iconfont-svg文件" class="headerlink" title="2、拷贝原有的iconfont.svg文件"></a>2、拷贝原有的<code>iconfont.svg</code>文件</h2><p>进入到<code>themes/yilia/source-src/css/fonts</code>目录下</p>
-<p><code>$ cd themes/yilia/source-src/css/fonts</code></p>
-<p>将里面的<code>iconfont.svg</code>文件拷贝一份，这里我直接复制到博客根目录下</p>
-<p><code>$ cp iconfont.svg /c/myblog</code></p>
-<h2 id="3、制作图片文字"><a href="#3、制作图片文字" class="headerlink" title="3、制作图片文字"></a>3、制作图片文字</h2><p>这里推荐百度字体平台的字体编辑器：</p>
-<p><code>http://fontstore.baidu.com/static/editor/index.html</code></p>
-<p>先点左上角的<strong>新建</strong>，创建一个新项目；之后点上方的<strong>导入</strong> –&gt; <strong>导入svg</strong>，将刚刚拷贝的<code>iconfont.svg</code>文件导入进去</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1ps8Rf.png" alt=""></p>
-<p>完成之后如图：</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1ps7QO.png" alt=""></p>
-<p>之后继续选择<strong>导入</strong> –&gt; <strong>导入图片</strong>，然后点击<strong>选择图片</strong>，找到 <strong><code>第一步保存的图片</code></strong> ，添加进去之后<strong>视情况勾选反转</strong>（CSDN的需要勾选），然后<strong>确定</strong>就行。</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pyq3V.png" alt=""></p>
-<p>之后点击导入图片的右上角的小画笔，进入编辑区</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pcQo9.png" alt=""></p>
-<p>对图文进行<strong>全选</strong>，调整大小和位置，在右侧可以实时预览；调整完之后点击<strong>保存(S)</strong>；<strong>退出</strong></p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pcaee.png" alt=""></p>
-<p>选中图文，点击上方的<strong>字形信息</strong>，记住<code>unicode</code>编码，按照自己喜好进行命名</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pcTS0.png" alt=""></p>
-<p>对空图文进行删除，然后点击上方的<strong>保存项目</strong>，之后点击<code>ZIP</code>进行下载</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pgg91.png" alt=""></p>
-<p>解压下载的文件夹，只保留名为<code>fonteditor</code>后缀为<code>.eot</code>,<code>.svg</code>,<code>.ttf</code>,<code>.woff</code>的四个文件，其他可以删除；</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1p2NUH.png" alt=""></p>
-<p>将剩下的文件名全部改为<code>iconfont</code>，后缀不变</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1phioF.png" alt="1phioF.png"></p>
-<h2 id="4、修改相关配置文件"><a href="#4、修改相关配置文件" class="headerlink" title="4、修改相关配置文件"></a>4、修改相关配置文件</h2><p>编辑<code>themes/yilia/source-src/css/fonts</code>路径下的<code>fonts.scss</code>文件：</p>
-<p>在最后面添加<code>.icon-上一步的重命名:before { content: &quot;上一步的Unicode编码&quot;; }</code></p>
-<p>比如说我的是<code>.icon-csdn:before { content: &quot;\e878&quot;; }</code></p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1phpLV.png" alt=""></p>
-<p>编辑同一路径下的<code>social.scss</code>文件，进行颜色的添加就行,比如说我的是</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span><span class="selector-class">.csdn</span> &#123;</span><br><span class="line">            <span class="attribute">background</span>: <span class="number">#fd4c5d</span>;</span><br><span class="line">            <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#fd4c5d</span>;</span><br><span class="line">            &amp;<span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">                <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#fd4c5d</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><img src="https://s2.ax1x.com/2020/02/01/1G6qXj.png" alt="data1.png"></p>
+<p>在上述代码中，本意是想将<code>*p</code>替换为<code>WHUT2018</code>，却引发了段错误，这是因为<strong>C语言中定义的字符串是一个常量，并不是变量</strong>，是被放在代码段的，是不允许被修改的，实质上等同于<code>const char *p = &quot;WHUT2020&quot;</code></p>
+<h2 id="三、数据段-data"><a href="#三、数据段-data" class="headerlink" title="三、数据段(.data)"></a>三、数据段(.data)</h2><p>数据段和堆内存几乎拥有完全相同的属性，只是生命周期不一样。数据段伴随程序一声，堆内存从<code>malloc</code>到<code>free</code></p>
+<blockquote>
+<ol>
+<li>显示初始化为非零的全局变量</li>
+<li>静态局部变量（也就是<code>static</code>修饰的局部变量）<blockquote>
+<ul>
+<li>普通局部变量分配在栈上，静态局部变量分配在<code>.data</code>段</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;<span class="comment">//.data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> b = <span class="number">10</span>;<span class="comment">//.data</span></span><br><span class="line">    <span class="keyword">int</span> c = <span class="number">10</span>;<span class="comment">//栈</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="5、图文文件替换"><a href="#5、图文文件替换" class="headerlink" title="5、图文文件替换"></a>5、图文文件替换</h2><p>将第三步得到的四个文件替换<code>themes/yilia/source-src/css/fonts</code>目录下的四个文件</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1phSs0.png" alt=""></p>
-<h2 id="6、打包"><a href="#6、打包" class="headerlink" title="6、打包"></a>6、打包</h2><p>回到<code>themes/yilia</code>目录下<code>$ cd ../../../</code></p>
-<p>运行<code>$ cnpm run dev</code>用<code>webpack</code>打包，把文件编译到<code>source</code>文件里</p>
-<p>如果报关于<code>node sass</code>的<code>ERROR</code></p>
-<p>先卸载再安装,之后再次打包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm uninstall node-sass</span><br><span class="line">$ cnpm install node-sass</span><br><span class="line">$ cnpm run dev</span><br></pre></td></tr></table></figure>
-
-<p>打包成功后不会自动终止，此时按<code>Ctrl + C</code>进行强制终止：</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pOtZd.png" alt=""></p>
-<p>然后执行进行发布：<code>$ npm run dist</code>，终止方法如上</p>
-<p>然后就OKKKKKK啦，回到根目录：</p>
-<p><code>$ hexo clean &amp; hexo g &amp; hexo s</code></p>
-<p>可以看到效果如下：</p>
-<p><img src="https://s2.ax1x.com/2020/01/18/1pOQG6.png" alt=""></p>
-
+<h2 id="四、bss段"><a href="#四、bss段" class="headerlink" title="四、bss段"></a>四、bss段</h2><blockquote>
+<ol>
+<li>显式初始化为零的全局变量</li>
+<li>未显式初始化的全局变量</li>
+</ol>
+</blockquote>
+<h2 id="五、样例"><a href="#五、样例" class="headerlink" title="五、样例"></a>五、样例</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*显示初始化的全局变量，储存在.data段*/</span></span><br><span class="line"><span class="keyword">char</span> str[] = <span class="string">"WHUT2018"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*局部变量，储存在栈上*/</span></span><br><span class="line">    <span class="keyword">char</span> str2[] = <span class="string">"WHUT2018"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*字符串常量，存储在代码段*/</span></span><br><span class="line">    <span class="keyword">char</span> *p1 = <span class="string">"WHUT2020"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*存储在malloc申请的堆内存中*/</span></span><br><span class="line">    <span class="keyword">char</span> *p2 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(str2));  </span><br><span class="line">    <span class="keyword">if</span>(！p2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"MALLOC ERROR.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memset</span>(p2, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(p2, <span class="string">"WHUT2018"</span>);</span><br><span class="line">    <span class="built_in">free</span>(p2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
 
       
@@ -331,28 +313,21 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">yilia</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内存管理</a>
         		</li>
       		
 		</ul>
 	</div>
 
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/博客美化//" class="article-tag-list-link color5">博客美化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -402,7 +377,7 @@
         <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
         <p>扫一扫，分享到微信</p>
         <div class="wx-qrcode">
-            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/01/18/Hexo+yilia%E6%B7%BB%E5%8A%A0Subnav%E5%9B%BE%E6%A0%87/" alt="微信分享二维码">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/01/%E6%95%B0%E6%8D%AE%E5%8C%BA(.data)/" alt="微信分享二维码">
         </div>
     </div>
 
@@ -417,18 +392,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/01/19/%E9%A1%BA%E5%BA%8F%E8%A1%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/02/01/%E5%A0%86(heap)/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          线性表的顺序表示
+          堆(heap)
         
       </div>
     </a>
   
   
-    <a href="/2020/01/17/%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E8%BF%81%E7%A7%BB/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">虚拟机的迁移（Ubuntu)</div>
+    <a href="/2020/01/31/%E6%A0%88(stack)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">栈(Stack)</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -477,33 +452,7 @@
 
 <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
 
-  <div class="declare">
-    <strong class="author">本文作者：</strong>
-    
-      Baymaxly
-    
-    <br>
-    <strong class="create-time">发布时间：</strong>
-    2020-01-18
-    <br>
-    <strong class="update-time">最后更新：</strong>
-    2020-01-18
-    <br>
-    <strong class="article-titles">本文标题：</strong>
-    <a href="http://yoursite.com/2020/01/18/Hexo+yilia添加Subnav图标/" title="Hexo + yilia添加Subnav图标" target="_blank">Hexo + yilia添加Subnav图标</a>
-    <br>
-    <strong class="article-url">本文链接：</strong>
-    <a href="http://yoursite.com/2020/01/18/Hexo+yilia添加Subnav图标/" title="Hexo + yilia添加Subnav图标" target="_blank">http://yoursite.com/2020/01/18/Hexo+yilia添加Subnav图标/</a>
-    <br>
-    <strong class="copyright">版权声明：</strong>
-    本作品采用
-    <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
-    许可协议进行许可。转载请注明出处！
-    
-      <br>
-      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
-    
-  </div>
+  <div class="declare" hidden="hidden"></div>
 
 <!-- 添加版权声明》 -->
 
