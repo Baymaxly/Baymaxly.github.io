@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【8086汇编】2.访问寄存器和内存 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="【8086汇编】2.访问寄存器和内存">
+<meta property="og:url" content="http://yoursite.com/2020/02/06/%E3%80%908086%E6%B1%87%E7%BC%96%E3%80%912.%E8%AE%BF%E9%97%AE%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E5%86%85%E5%AD%98/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/8086.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1yTIIg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1yTOs0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1yTxdU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1y7FQ1.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1yvpxe.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16DLIf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/160b6A.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16LJy9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16LNe1.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16TEY4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16LrSe.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16LRTP.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/16L4fS.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1cp3rD.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1cZltS.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1cneX9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1curUx.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/06/1cuHG8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1cxctI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1gYGb8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1gUigs.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1gY0vq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1gBGNV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2020/02/07/1gBQns.png">
+<meta property="article:published_time" content="2020-02-06T03:16:49.000Z">
+<meta property="article:modified_time" content="2020-02-07T14:14:16.356Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="8086汇编">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/8086.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 16
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-【8086汇编】2.访问寄存器和内存" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【8086汇编】2.访问寄存器和内存
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/06/%E3%80%908086%E6%B1%87%E7%BC%96%E3%80%912.%E8%AE%BF%E9%97%AE%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E5%86%85%E5%AD%98/" class="archive-article-date">
+  	<time datetime="2020-02-06T03:16:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-06</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/8086.png" alt="8086"></p>
+<a id="more"></a>
+
+<h2 id="一、寄存器及数据存储"><a href="#一、寄存器及数据存储" class="headerlink" title="一、寄存器及数据存储"></a>一、寄存器及数据存储</h2><p>寄存器是<code>CPU</code>内部的信息存储单元，在<code>8086CPU</code>中有<code>14</code>个寄存器：</p>
+<blockquote>
+<ul>
+<li>通用寄存器：<code>AX、BX、CX、DX</code></li>
+<li>变址寄存器：<code>SI、DI</code></li>
+<li>指针寄存器：<code>SP、BP</code></li>
+<li>指令指针寄存器：<code>IP</code></li>
+<li>段寄存器：<code>CS、SS、DS、ES</code></li>
+<li>标志寄存器：<code>PSW</code></li>
+</ul>
+</blockquote>
+<p>共性：<code>8086CPU</code>中所有的寄存器都是<code>16位</code>的，可以存放两个字节</p>
+<h3 id="1-1-通用寄存器-以AX为例"><a href="#1-1-通用寄存器-以AX为例" class="headerlink" title="1.1 通用寄存器(以AX为例)"></a>1.1 通用寄存器(以AX为例)</h3><h4 id="1-1-1-对数据的存储"><a href="#1-1-1-对数据的存储" class="headerlink" title="1.1.1 对数据的存储"></a>1.1.1 对数据的存储</h4><p>一个<code>16</code>位寄存器存储一个<code>16</code>位的数据，能存储的数据的最大值就是寄存器所有位都取<code>1</code>的时候，此时值为<code>2 ^ 16 - 1</code>，即<code>65535D</code>；转成十六进制也就是<code>FFFFH</code>。如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1yTIIg.png" alt="AX"></p>
+<p>例：在<code>AX</code>中存储<code>18D</code>，十六进制为<code>12H</code>，二进制为<code>10010B</code>，如下图所示</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1yTOs0.png" alt="18D"></p>
+<p>在<code>AX</code>中存储<code>20000D</code>，十六进制为<code>4E20H</code>，二进制为<code>0100111000100000B</code>，如下图所示</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1yTxdU.png" alt="20000D"></p>
+<h4 id="1-1-2-保证兼容性"><a href="#1-1-2-保证兼容性" class="headerlink" title="1.1.2 保证兼容性"></a>1.1.2 保证兼容性</h4><p><code>8086CPU</code>的上一代<code>CPU8088</code>的寄存器都是<code>8</code>位的，为保证<code>8086</code>的程序在原有<code>8088</code>的平台上能兼容，在设计<code>16</code>位通用寄存器时，会保证通用寄存器均可以分为两个独立的<code>8</code>位寄存器使用。</p>
+<p><code>AX</code>可以分为<code>AH</code>和<code>AL</code>，如下图所示</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1y7FQ1.png" alt="AHAL"></p>
+<p>同样的：</p>
+<ul>
+<li><code>BX</code>可以分为<code>BH</code>和<code>BL</code></li>
+<li><code>CX</code>可以分为<code>CH</code>和<code>CL</code></li>
+<li><code>DX</code>可以分为<code>DH</code>和<code>DL</code></li>
+</ul>
+<p>在描述存储的数据时，用十六进制可以直观地看出高八位和低八位的组成，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">寄存器</th>
+<th align="center">寄存器中的数据</th>
+<th align="center">所表示的值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AX</td>
+<td align="center">0100111000100000</td>
+<td align="center">20000（4E20H）</td>
+</tr>
+<tr>
+<td align="center">AH</td>
+<td align="center">01001110</td>
+<td align="center">78（4EH）</td>
+</tr>
+<tr>
+<td align="center">AL</td>
+<td align="center">00100000</td>
+<td align="center">32（20H）</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-“字”在寄存器中的存储"><a href="#1-2-“字”在寄存器中的存储" class="headerlink" title="1.2 “字”在寄存器中的存储"></a>1.2 “字”在寄存器中的存储</h3><p><code>8086</code>是<code>16</code>位的<code>CPU</code>，其字长<code>(Word size)</code>为<code>16bit</code>，一个字是由<code>16</code>位构成的，占<code>2</code>字节（<code>1</code>字节永远是<code>8bit</code>，<code>N</code>位<code>CPU</code>的字长为<code>N bit</code>，字由<code>N</code>位构成）</p>
+<p>一个字<code>(Word)</code>可以存在一个<code>16</code>位的寄存器中，这个字的高位字节存在这个寄存器的高8位寄存器，这个字的低位字节存在这个寄存器的低8位寄存器</p>
+<h2 id="二、mov和add指令"><a href="#二、mov和add指令" class="headerlink" title="二、mov和add指令"></a>二、mov和add指令</h2><h3 id="2-1-指令简述"><a href="#2-1-指令简述" class="headerlink" title="2.1 指令简述"></a>2.1 指令简述</h3><blockquote>
+<ul>
+<li>mov 赋值操作</li>
+<li>add 相加运算</li>
+</ul>
+</blockquote>
+<p>这两个指令很简单，如下表所示（汇编指令不区分大小写）：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1yvpxe.png" alt="movadd1"></p>
+<h3 id="2-2-溢出问题"><a href="#2-2-溢出问题" class="headerlink" title="2.2 溢出问题"></a>2.2 溢出问题</h3><p>在<code>8066</code>里面，溢出的位是会被寄存器丢失的（只是寄存器读不到，CPU并没有真正丢弃进位值，这个在后面再简述，下面的丢失同理），如执行下列程序段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 0</span><br><span class="line">MOV BX, 0</span><br><span class="line">MOV AX, 8226H</span><br><span class="line">ADD BX, AX</span><br><span class="line">ADD AX, BX</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>ADD AX, BX</code>时<code>AX</code>寄存器的值是<code>8226H + 8226H = 1044CH</code>，但是由于<code>AX</code>只有<code>16</code>位，所以最高位的<code>1</code>是会被丢失的，所以<code>AX</code>寄存器的最终结果是<code>044CH</code></p>
+<p>如前面所说，通用寄存器的高位和低位是可以独立操作的，在对高八位和第八位<strong>独立操作</strong>时，如果遇到溢出也是会丢失进位值，<strong>低位寄存器不会向高位寄存器进位</strong>，如下列程序段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 0</span><br><span class="line">MOV AL, 82H</span><br><span class="line">MOV BH, 82H</span><br><span class="line">ADD AL, BH</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>82H + 82H = 104H</code>，但是<code>AL</code>只有<code>8</code>位，并不会向<code>AH</code>进位，所以最终<code>AL</code>中的数据时<code>04H</code>，<code>AX</code>中的数据也是<code>04H</code>而不是<code>104H</code></p>
+<h3 id="2-3-实战"><a href="#2-3-实战" class="headerlink" title="2.3 实战"></a>2.3 实战</h3><p>要求：<strong>只用mov和add指令，用不超过四行的代码求2的4次方的值</strong></p>
+<p>我们可以先列个表<br>DEC|HEX|BIN<br>:-:|:-:|-:<br>2|2H|0010B<br>4|4H|0100B<br>8|8H|1000B<br>16|10H|00010000B</p>
+<p>我们可以发现每乘个2，就相当于二进制数向高位位移一次(进位)，我们计算2的4次方只需要不断相加就行了，如下参考代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 02H    ;AX &#x3D; 00000010B</span><br><span class="line">ADD AX, AX     ;AX &#x3D; 00000100B</span><br><span class="line">ADD AX, AX     ;AX &#x3D; 00001000B</span><br><span class="line">ADD AX, AX     ;AX &#x3D; 00010000B</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、物理地址与分段管理"><a href="#三、物理地址与分段管理" class="headerlink" title="三、物理地址与分段管理"></a>三、物理地址与分段管理</h2><p>CPU在访问内存单元的时候需要给出内存单元的地址，所有的内存单元构成的存储空间是一个一维的线性空间，每一个内存单元在这个空间中都有唯一的地址，这个唯一的地址叫做<strong>物理地址</strong>，如下图所示</p>
+<h3 id="3-1-两个事实引出的矛盾"><a href="#3-1-两个事实引出的矛盾" class="headerlink" title="3.1 两个事实引出的矛盾"></a>3.1 两个事实引出的矛盾</h3><blockquote>
+<ol>
+<li>8086有20位地址总线，可传送20位地址，<strong>寻址能力为1M</strong></li>
+<li>8086是16位的CPU，运算器一次最多可以处理16位的数据，寄存器的最大宽度为16位。在8086内部处理、传输、暂存的地址也是16位，<strong>寻址能力也只有64KB</strong></li>
+</ol>
+</blockquote>
+<p>矛盾：8086如何处理在寻址空间上的这个矛盾？</p>
+<h3 id="3-2-8086给出物理地址的方法"><a href="#3-2-8086给出物理地址的方法" class="headerlink" title="3.2 8086给出物理地址的方法"></a>3.2 8086给出物理地址的方法</h3><p>8086CPU的<strong>地址加法器</strong>中将两个16位的地址（段地址、偏移地址）合成一个20位的物理地址，相关部件的逻辑结构如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16DLIf.png" alt="逻辑结构"></p>
+<p>在地址加法器中做的运算为：</p>
+<p><code>物理地址 = 段地址 * 16 + 偏移地址</code></p>
+<p>如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/160b6A.png" alt="物理地址"></p>
+<p>例：段地址为<code>1230H</code>，偏移地址为<code>00C8H</code><br>那么其物理地址为<code>12300H + 00C8H = 123C8H</code></p>
+<blockquote>
+<ul>
+<li>M进制数向高位移N位(低位自动补零)代表这个数乘M的N次幂</li>
+</ul>
+</blockquote>
+<h3 id="3-3-段地址与偏移地址不唯一"><a href="#3-3-段地址与偏移地址不唯一" class="headerlink" title="3.3 段地址与偏移地址不唯一"></a>3.3 段地址与偏移地址不唯一</h3><p>当8086CPU访问一个内存单元中的地址时，其段地址与偏移地址并不是唯一的。也就是说CPU可以用不同的段地址和偏移地址形成同一个物理地址。如下所示，对于同一个物理地址<code>21F60H</code>：</p>
+<table>
+<thead>
+<tr>
+<th align="center">物理地址</th>
+<th align="center">段地址</th>
+<th align="center">偏移地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">21F60H</td>
+<td align="center">2000H</td>
+<td align="center">1F60H</td>
+</tr>
+<tr>
+<td align="center">21F60H</td>
+<td align="center">2100H</td>
+<td align="center">0F60H</td>
+</tr>
+<tr>
+<td align="center">21F60H</td>
+<td align="center">21F0H</td>
+<td align="center">0060H</td>
+</tr>
+<tr>
+<td align="center">21F60H</td>
+<td align="center">21F6H</td>
+<td align="center">0000H</td>
+</tr>
+<tr>
+<td align="center">21F60H</td>
+<td align="center">1F00H</td>
+<td align="center">2F60H</td>
+</tr>
+</tbody></table>
+<h3 id="3-4-用分段的方式管理内存"><a href="#3-4-用分段的方式管理内存" class="headerlink" title="3.4 用分段的方式管理内存"></a>3.4 用分段的方式管理内存</h3><p>内存并没有分段，段的划分来自CPU，我们在编程时可以根据需要，将若干地址连续的内存单元看做一个段，用段地址*16定位段的起始地址（基础地址），用偏移地址定位段中的内存单元。注意以下两点：</p>
+<blockquote>
+<ol>
+<li>段地址*16必然是16的倍数，所以一个段的起始地址也一定是16的倍数</li>
+<li>偏移地址为16位，变化范围为0~FFFFH，16位地址的寻址能力为64KB，所以一个段的最大长度为64KB</li>
+</ol>
+<ul>
+<li>例：给定段地址2000H，则用偏移地址寻址的访问时20000H~2FFFFH，共64KB</li>
+</ul>
+</blockquote>
+<h3 id="3-5-对内存单元的描述"><a href="#3-5-对内存单元的描述" class="headerlink" title="3.5 对内存单元的描述"></a>3.5 对内存单元的描述</h3><p>在8086PC机中，一般不会直接取说明内存单元的物理地址，比如说数据A在21F60H内存单元中通常用以下两种方式描述：</p>
+<blockquote>
+<ol>
+<li>数据A存在内存2000:1F60单元中</li>
+<li>数据存在内存的2000段中的1F60单元中</li>
+</ol>
+</blockquote>
+<h3 id="3-6-段寄存器"><a href="#3-6-段寄存器" class="headerlink" title="3.6 段寄存器"></a>3.6 段寄存器</h3><p>8086CPU在访问内存时需要由相关部件提供内存单元的段地址和偏移地址，从而送入地址加法器中合成物理地址。其中8086CPU中有4个专门的段寄存器存放段地址，分别是：</p>
+<blockquote>
+<ol>
+<li>CS:代码段寄存器</li>
+<li>DS:数据段寄存器</li>
+<li>SS:栈段寄存器</li>
+<li>ES:附加段寄存器</li>
+</ol>
+</blockquote>
+<h2 id="四、Debug的使用"><a href="#四、Debug的使用" class="headerlink" title="四、Debug的使用"></a>四、Debug的使用</h2><ol>
+<li>用R命令查看、改变CPU寄存器的内容</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>R</code> (查看寄存器内容)</li>
+<li><code>R &lt;寄存器名&gt;</code> (改变指定寄存器的内容)</li>
+</ul>
+</blockquote>
+<p>如，查看寄存器内容并将AX寄存器中的值改为1234：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16LJy9.png" alt="ax1234"></p>
+<ol start="2">
+<li>用D命令查看内存中的内容</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>D</code> (列出预设地址内存处的128字节的内容)</li>
+<li><code>D &lt;段地址:偏移地址&gt;</code> (列出内存中指定地址处的内容)</li>
+<li><code>D &lt;段地址:偏移地址 结尾偏移地址&gt;</code> (列出内存中指定地址范围中的内容)</li>
+</ul>
+</blockquote>
+<p>如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16LNe1.png" alt="20000000"></p>
+<ol start="3">
+<li>用E命令改变内存中的内容</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>E &lt;段地址:偏移地址 data1 data2 ...&gt;</code> (依次写入数据1、数据2…（十六进制）)</li>
+<li><code>E &lt;段地址:偏移地址&gt;</code> (逐个询问式修改)<blockquote>
+<ul>
+<li><code>&lt;空格&gt;</code>：接受并继续修改下一个</li>
+<li><code>&lt;回车&gt;</code>：结束修改</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p>如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16TEY4.png" alt="E"></p>
+<ol start="4">
+<li>用U命令将内存中的机器指令翻译成汇编指令</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>U &lt;段地址:偏移地址&gt;</code> (查看汇编代码)</li>
+</ul>
+</blockquote>
+<p>如先将下述机器码写入到从地址2000:0000开始的一段内存中，最后用<code>U</code>指令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">B8 23 01</span><br><span class="line">BB 03 00</span><br><span class="line">89 D8</span><br><span class="line">01 D8</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2020/02/06/16LrSe.png" alt="U"></p>
+<p>我们可以看出其对应的汇编指令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 0123H</span><br><span class="line">M0V BX, 0003H</span><br><span class="line">MOV AX, BX</span><br><span class="line">ADD AX, BX</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>用A命令以汇编指令的格式在内存中写入机器指令</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>A &lt;段地址:偏移地址&gt;</code> (写入汇编指令)</li>
+</ul>
+</blockquote>
+<p>还是写入上面的那段指令，我们可以看到，机器码和汇编指令是一一对应的，如图所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16LRTP.png" alt="A"></p>
+<ol start="6">
+<li>用T命令执行机器指令</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>T</code> (单步执行CS:IP处的指令)</li>
+</ul>
+</blockquote>
+<p>如图所示</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/16L4fS.png" alt="T"></p>
+<p>每执行依据之后在最后面都会注明下一段内存中的程序，执行结果在寄存器中一目了然。</p>
+<ol start="7">
+<li>用Q命令退出Debug</li>
+</ol>
+<h2 id="五、CS与代码段及JMP指令"><a href="#五、CS与代码段及JMP指令" class="headerlink" title="五、CS与代码段及JMP指令"></a>五、CS与代码段及JMP指令</h2><h3 id="5-1-CS、IP简述"><a href="#5-1-CS、IP简述" class="headerlink" title="5.1 CS、IP简述"></a>5.1 CS、IP简述</h3><blockquote>
+<ul>
+<li><code>CS</code>:代码段寄存器</li>
+<li><code>IP</code>:指令指针寄存器</li>
+</ul>
+</blockquote>
+<p><code>CS:IP</code>:<br>CPU将内存中CS:IP指向的内容当做指令执行</p>
+<h3 id="5-2-8086PC工作过程"><a href="#5-2-8086PC工作过程" class="headerlink" title="5.2 8086PC工作过程"></a>5.2 8086PC工作过程</h3><blockquote>
+<ol>
+<li>从CS:IP指向的内存单元中读取指令，读取的指令进入指令缓冲器</li>
+<li>IP = IP + 所读取的指令的长度，从而指向下一条指令</li>
+<li>执行指令，转到步骤1，重复执行</li>
+</ol>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2020/02/06/1cp3rD.png" alt="csip"></p>
+<h3 id="5-3-jmp指令"><a href="#5-3-jmp指令" class="headerlink" title="5.3 jmp指令"></a>5.3 jmp指令</h3><p>8086CPU执行何处的指令，取决于CS:IP的值，我们可以通过改变CS:IP的内容来控制CPU要执行的目标。下面是一些看似可行的改变CS:IP的方法</p>
+<blockquote>
+<ol>
+<li>Debug中的R命令可以改变寄存器的值<code>R SC</code>,<code>R IP</code>.但是Debug是调试手段，并不是程序方式</li>
+<li>用MOV指令？先看测试：</li>
+</ol>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2020/02/06/1cZltS.png" alt="jmp1"></p>
+<p>我们可以发现以下语句都是ERROR</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV CS,2000</span><br><span class="line">MOV IP,0</span><br></pre></td></tr></table></figure>
+
+<p>这是因为8086不提供修改CS和IP的指令，下面这句没有报ERROR：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 2000</span><br><span class="line">MOV CS, AX</span><br></pre></td></tr></table></figure>
+
+<p>这在语法上确实是可行的，但是一般不会这样使用，我们更希望有更高级的机制去完成这一特定的功能。到<code>MOV IP,AX</code>又卡壳了，因为IP是自动增长的。那到底如何控制CPU执行的目标呢？其实有一个<code>jmp</code>转移指令</p>
+<blockquote>
+<ul>
+<li><code>JMP &lt;段地址:偏移地址&gt;</code> (用指令中给出的段地址修改CS，用偏移地址修改IP)</li>
+<li><code>JMP &lt;某一合法寄存器&gt;</code> (仅修改IP的内容)</li>
+</ul>
+</blockquote>
+<h3 id="5-4-问题分析-CPU运行的流程"><a href="#5-4-问题分析-CPU运行的流程" class="headerlink" title="5.4 问题分析:CPU运行的流程"></a>5.4 问题分析:CPU运行的流程</h3><p><img src="https://s2.ax1x.com/2020/02/06/1cneX9.png" alt="jmp2"></p>
+<p>如上图，从20000H开始，执行的序列依次是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    MOV AX, 6622H</span><br><span class="line">    JMP 1000:3</span><br><span class="line">    MOV AX, 0000</span><br><span class="line">    MOV BX, AX</span><br><span class="line">    JMP BX</span><br><span class="line">    MOV AX, 0123H</span><br><span class="line">    MOV AX, 0000</span><br><span class="line">;接下来就一直在10000H到10009H中死循环</span><br></pre></td></tr></table></figure>
+
+<p>以下我们到Debug里面去跟踪测试一下，先将机器码输入，如图：</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1curUx.png" alt="PARE"></p>
+<p>从20000H处开始运行：如图所示，可以很清楚得看到CS和IP的跳变</p>
+<p><img src="https://s2.ax1x.com/2020/02/06/1cuHG8.png" alt="RESULT"></p>
+<h2 id="六、内存中字的存储"><a href="#六、内存中字的存储" class="headerlink" title="六、内存中字的存储"></a>六、内存中字的存储</h2><p>对8086CPU，16位作为一个字。前面我们知道，字在16位寄存器中的存储是高8位放在高字节，低8位放在低字节。但是内存是连续分布的，16位的字在内存中需要两个<strong>连续</strong>的字节来储存。</p>
+<h3 id="6-1-小端储存"><a href="#6-1-小端储存" class="headerlink" title="6.1 小端储存"></a>6.1 小端储存</h3><p>Intel公司采用的是小端模式来储存，即低位字节存在低地址单元，高位字节存放在高地址单元。假设要将4E20H存放在0、1两个单元，则4EH是存放在单元1中，20H存放在单元0中；将0012H存放在2、3两个单元，则将00H存放在单元3中，12H存放在单元2中，如下图所示:</p>
+<p><img src="https://s2.ax1x.com/2020/02/07/1cxctI.png" alt="0123"></p>
+<h3 id="6-2-8086中的字单元"><a href="#6-2-8086中的字单元" class="headerlink" title="6.2 8086中的字单元"></a>6.2 8086中的字单元</h3><p>由两个地址连续的内存单元组成，存放一个字型数据（16位）。在一个字单元中，低地址单元存放低位字节，高地址单元存放高位字节。</p>
+<p>如6.1中的图：</p>
+<blockquote>
+<ul>
+<li>在起始地址为0的单元中，存放的是4E20H</li>
+<li>在起始地址为2的单元中，存放的是0012H</li>
+</ul>
+</blockquote>
+<p>注意区分字节型数据和字型数据</p>
+<blockquote>
+<ul>
+<li>0地址单元中存放的字节型数据是20H</li>
+<li>0地址单元中存放的字型数据是4E20H</li>
+</ul>
+</blockquote>
+<h2 id="七、DS与数据段"><a href="#七、DS与数据段" class="headerlink" title="七、DS与数据段"></a>七、DS与数据段</h2><h3 id="7-1-用DS和-address-实现字的传送"><a href="#7-1-用DS和-address-实现字的传送" class="headerlink" title="7.1 用DS和[address]实现字的传送"></a>7.1 用DS和[address]实现字的传送</h3><p>CPU要读取内存单元的时候，必须先给出这个内存单元的地址，在8086PC中，内存地址由段地址和偏移地址组成，在写汇编指令的时候，用DS寄存器存放要访问的数据的段地址，偏移地址用[address]的形式直接给出,如下所示：</p>
+<h4 id="7-1-1-读取操作"><a href="#7-1-1-读取操作" class="headerlink" title="7.1.1 读取操作"></a>7.1.1 读取操作</h4><p>将10000H(1000:0)中的数据读到AL中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV BX, 1000H</span><br><span class="line">MOV DS, BX</span><br><span class="line">MOV AL, [0]</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-1-2-写入操作"><a href="#7-1-2-写入操作" class="headerlink" title="7.1.2 写入操作"></a>7.1.2 写入操作</h4><p>将AL中的数据写到10000H中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV BX, 1000H</span><br><span class="line">MOV DS, BX</span><br><span class="line">MOV [0], AL</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-1-3-注意"><a href="#7-1-3-注意" class="headerlink" title="7.1.3 注意"></a>7.1.3 注意</h4><blockquote>
+<ul>
+<li>8086CPU不支持直接将数据直接送入段寄存器(硬件设计的问题)，所以都是先将数据写入通用寄存器，再通过通用寄存器写入到段寄存器中</li>
+<li>MOV指令访问内存单元时可以只给出单元的偏移地址，此时段地址默认在DS寄存器中</li>
+</ul>
+</blockquote>
+<h4 id="7-1-4-字的传送"><a href="#7-1-4-字的传送" class="headerlink" title="7.1.4 字的传送"></a>7.1.4 字的传送</h4><p>8086CPU可以一次传动一个字(16位的数据)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV BX, 1000H</span><br><span class="line">MOV DS, BX</span><br><span class="line">MOV AX, [0] ;1000:0处的字型数据送入AX</span><br><span class="line">MOV [0], CX ;CX中的16位数据送到10000H处</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-DS与数据段"><a href="#7-2-DS与数据段" class="headerlink" title="7.2 DS与数据段"></a>7.2 DS与数据段</h3><p>在8086PC机中，可以根据需要将一组内存单元定义为一个段，将哪段内存当做数据段、段地址如何定，都是由程序员在编程时自己安排的：</p>
+<p><strong>将一组长度为N(N≤64K)、地址连续、起始地址为16的倍数的内存单元当做专门储存数据的内存空间，从而就定义了一个数据段</strong></p>
+<p>如下所示，将123B0H~123BAH的内存单元定义为数据段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 123BH</span><br><span class="line">MOV DS, AX</span><br></pre></td></tr></table></figure>
+
+<p>累加该数据段中的前三个单元的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AL, 0</span><br><span class="line">MOV AL, [0]</span><br><span class="line">MOV AL, [1]</span><br><span class="line">MOV AL, [2]</span><br></pre></td></tr></table></figure>
+
+<p>累加该数据段中的前三个<strong>字型数据</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 0</span><br><span class="line">MOV AX, [0]</span><br><span class="line">MOV AX, [2]</span><br><span class="line">MOV AX, [4]</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-小结"><a href="#7-3-小结" class="headerlink" title="7.3 小结"></a>7.3 小结</h3><blockquote>
+<ul>
+<li>MOV、ADD/SUB 是具有两个操作对象的指令，访问内存中的数据段</li>
+<li>JMP是具有一个操作对象的指令，对应内存中的代码段</li>
+</ul>
+</blockquote>
+<h2 id="八、栈操作的实现"><a href="#八、栈操作的实现" class="headerlink" title="八、栈操作的实现"></a>八、栈操作的实现</h2><h3 id="8-1-CPU提供的栈机制"><a href="#8-1-CPU提供的栈机制" class="headerlink" title="8.1 CPU提供的栈机制"></a>8.1 CPU提供的栈机制</h3><p><img src="https://s2.ax1x.com/2020/02/07/1gYGb8.png" alt="stack1"></p>
+<p>现今的CPU都有栈的设计，8086CPU提供相关的指令，支持用栈的方式访问内存空间，基于8086的CPU编程，可以将一段内存当做栈来实现：</p>
+<blockquote>
+<ul>
+<li>PUSH ：入栈/压栈</li>
+<li>POP  : 出栈/弹栈</li>
+</ul>
+</blockquote>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PUSH AX ;将AX中的数据送入栈中</span><br><span class="line">POP AX  ;从栈顶取出数据送入AX中</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，这里都是<strong>以字为单位</strong>对栈进行操作</p>
+<h3 id="8-2-与栈相关的寄存器"><a href="#8-2-与栈相关的寄存器" class="headerlink" title="8.2 与栈相关的寄存器"></a>8.2 与栈相关的寄存器</h3><blockquote>
+<ul>
+<li>栈段寄存器SS: 存放栈顶的段地址</li>
+<li>栈顶指针寄存器SP： 存放栈顶的偏移地址</li>
+</ul>
+</blockquote>
+<p>任意时刻，SS:SP都是指向栈顶元素，SP决定了栈的大小，如以下定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 1000H</span><br><span class="line">MOV SS, AX</span><br><span class="line">MOV SP, 000FH</span><br></pre></td></tr></table></figure>
+
+<p>则栈为物理地址为10000H~1000FH的一段内存空间，如下所示：</p>
+<p><img src="https://s2.ax1x.com/2020/02/07/1gUigs.png" alt="stack3"></p>
+<h3 id="8-3-栈的操作示例"><a href="#8-3-栈的操作示例" class="headerlink" title="8.3 栈的操作示例"></a>8.3 栈的操作示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MOV AX, 1000H</span><br><span class="line">MOV SS, AX</span><br><span class="line">MOV SP, 0010H</span><br><span class="line">MOV AX, 001AH</span><br><span class="line">MOV BX, 001BH</span><br><span class="line">PUSH AX</span><br><span class="line">PUSH BX</span><br><span class="line">POP AX</span><br><span class="line">POP BX</span><br></pre></td></tr></table></figure>
+
+<p>代码执行时寄存器及栈的状态如下图所示</p>
+<p><img src="https://s2.ax1x.com/2020/02/07/1gY0vq.png" alt="stack2"></p>
+<p>我们可以发现，通过栈的机制，AX和BX的数值发生的交换</p>
+<h3 id="8-4-PUSH和POP的执行过程"><a href="#8-4-PUSH和POP的执行过程" class="headerlink" title="8.4 PUSH和POP的执行过程"></a>8.4 PUSH和POP的执行过程</h3><h4 id="PUSH-AX"><a href="#PUSH-AX" class="headerlink" title="PUSH AX"></a>PUSH AX</h4><blockquote>
+<ol>
+<li>SP = SP - 2</li>
+<li>将AX中的内容送入SS:SP指向的内存单元处<br>SS:SP此时指向新栈顶</li>
+</ol>
+</blockquote>
+<h4 id="POP-AX"><a href="#POP-AX" class="headerlink" title="POP AX"></a>POP AX</h4><blockquote>
+<ol>
+<li>将SS:SP指向的内存单元处的数据送入AX中</li>
+<li>SP = SP + 2,SS:SP指向当前栈顶下面的单元，以当前栈顶下面的单元为新的栈顶</li>
+</ol>
+</blockquote>
+<p>PUSH和POP实质上就是一种内存传送指令，可以在寄存器和内存之间传递数据，与MOV指令不同的是，PUSH和POP指令访问的内存单元的地址不是在指令中给出的，而是由SS:SP指出的</p>
+<h3 id="8-5-爆栈"><a href="#8-5-爆栈" class="headerlink" title="8.5 爆栈"></a>8.5 爆栈</h3><p>出现以下两种情况会发生栈顶超界的问题：</p>
+<blockquote>
+<ol>
+<li>栈满的时候再使用PUSH指令入栈</li>
+<li>栈空的时候再使用POP指令出栈</li>
+</ol>
+</blockquote>
+<p>对于8086这种低端的CPU，只知道栈顶的位置，并不知道程序安排的栈空间的大小，所以不会对程序中是否爆栈做出检查。程序员在编程的时候要根据可能用到的最大栈空间来安排栈的大小。</p>
+<h2 id="九、段的总结"><a href="#九、段的总结" class="headerlink" title="九、段的总结"></a>九、段的总结</h2><h3 id="9-1-三种段"><a href="#9-1-三种段" class="headerlink" title="9.1 三种段"></a>9.1 三种段</h3><h4 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h4><blockquote>
+<ul>
+<li>将段地址放在DS中</li>
+<li>用MOV/ADD/SUB等访问内存单元的指令是，CPU将我们定义的数据段中的内容当做数据来访问</li>
+<li>无法明确得定义出数据段的大小</li>
+</ul>
+</blockquote>
+<h4 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h4><blockquote>
+<ul>
+<li>将段地址放在CS中，将段中的第一条指令的偏移地址放在IP中</li>
+<li>CPU将代码段的内容当在指令来执行</li>
+</ul>
+</blockquote>
+<h4 id="栈段"><a href="#栈段" class="headerlink" title="栈段"></a>栈段</h4><blockquote>
+<ul>
+<li>将段地址放在SS中，将栈顶单元的偏移地址放在SP中</li>
+<li>CPU在序号执行栈操作(PUSH/POP)时，将定义的栈段当做栈空间来使用</li>
+<li>栈一旦定义，其大小就确定了</li>
+</ul>
+</blockquote>
+<h3 id="9-2-数据段和栈段可以在一起"><a href="#9-2-数据段和栈段可以在一起" class="headerlink" title="9.2 数据段和栈段可以在一起"></a>9.2 数据段和栈段可以在一起</h3><h4 id="不在一起"><a href="#不在一起" class="headerlink" title="不在一起"></a>不在一起</h4><p><img src="https://s2.ax1x.com/2020/02/07/1gBGNV.png" alt="diff"></p>
+<h4 id="在一起"><a href="#在一起" class="headerlink" title="在一起"></a>在一起</h4><p><img src="https://s2.ax1x.com/2020/02/07/1gBQns.png" alt="same"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">嵌入式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">8086汇编</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/06/%E3%80%908086%E6%B1%87%E7%BC%96%E3%80%912.%E8%AE%BF%E9%97%AE%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E5%86%85%E5%AD%98/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/06/%E3%80%908086%E6%B1%87%E7%BC%96%E3%80%911.8086%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【8086汇编】1.8086汇编基础</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
