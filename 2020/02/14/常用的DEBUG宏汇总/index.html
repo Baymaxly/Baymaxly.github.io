@@ -8,17 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>【C语言】常用的DEBUG宏汇总 | Baymaxly（卢意个人博客）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、printf函数与fprintf函数1.1 printfprintf的函数原型为： 1int printf(const char *format, ...);  用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，format称为固定参数部分，...称为参数占位符，二者共同构成可变参数。也就是说">
+  <meta name="description" content="一、printf函数与fprintf函数1.1 printfprintf的函数原型为： 1int printf(const char *format, ...);  用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，format称为固定参数部分，...称为参数占位符，二者共同构成可变参数。也就是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【C语言】常用的DEBUG宏汇总">
 <meta property="og:url" content="http://yoursite.com/2020/02/14/%E5%B8%B8%E7%94%A8%E7%9A%84DEBUG%E5%AE%8F%E6%B1%87%E6%80%BB/index.html">
 <meta property="og:site_name" content="Baymaxly（卢意个人博客）">
-<meta property="og:description" content="一、printf函数与fprintf函数1.1 printfprintf的函数原型为： 1int printf(const char *format, ...);  用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，format称为固定参数部分，...称为参数占位符，二者共同构成可变参数。也就是说">
+<meta property="og:description" content="一、printf函数与fprintf函数1.1 printfprintf的函数原型为： 1int printf(const char *format, ...);  用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，format称为固定参数部分，...称为参数占位符，二者共同构成可变参数。也就是">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103712.png">
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103839.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214110012.png">
 <meta property="article:published_time" content="2020-02-14T12:15:49.000Z">
-<meta property="article:modified_time" content="2020-02-14T14:57:42.394Z">
+<meta property="article:modified_time" content="2020-02-14T15:23:43.588Z">
 <meta property="article:author" content="Baymaxly">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="宏定义">
@@ -254,14 +255,15 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <h2 id="一、printf函数与fprintf函数"><a href="#一、printf函数与fprintf函数" class="headerlink" title="一、printf函数与fprintf函数"></a>一、printf函数与fprintf函数</h2><h3 id="1-1-printf"><a href="#1-1-printf" class="headerlink" title="1.1 printf"></a>1.1 printf</h3><p>printf的函数原型为：</p>
+        <a id="more"></a>
+<h2 id="一、printf函数与fprintf函数"><a href="#一、printf函数与fprintf函数" class="headerlink" title="一、printf函数与fprintf函数"></a>一、<code>printf</code>函数与<code>fprintf</code>函数</h2><h3 id="1-1-printf"><a href="#1-1-printf" class="headerlink" title="1.1 printf"></a>1.1 <code>printf</code></h3><p><code>printf</code>的函数原型为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<p>用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，<code>format</code>称为固定参数部分，<code>...</code>称为参数占位符，二者共同构成可变参数。也就是说，它除了有一个参数format固定以外，后面的参数其个数和类型都是可变的。</p>
-<h3 id="1-2-fprintf"><a href="#1-2-fprintf" class="headerlink" title="1.2 fprintf"></a>1.2 fprintf</h3><p>fprintf的函数原型为：</p>
+<p>用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。<code>printf</code>称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，<code>format</code>称为固定参数部分，<code>...</code>称为参数占位符，二者共同构成可变参数。也就是说，它除了有一个参数<code>format</code>固定以外，后面的参数其个数和类型都是可变的。</p>
+<h3 id="1-2-fprintf"><a href="#1-2-fprintf" class="headerlink" title="1.2 fprintf"></a>1.2 <code>fprintf</code></h3><p><code>fprintf</code>的函数原型为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fprintf</span><span class="params">(FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<p>用于把格式化字符串输出到指定文件中，所以参数列表比printf多了个文件指针FILE * ,那是目标文件的文件描述符(文件流指针)，stdout即标准输出文件，对应屏幕的终端。也就是说fprintf的第一个参数为stdout时，等效于printf</p>
+<p>用于把格式化字符串输出到指定文件中，所以参数列表比<code>printf</code>多了个文件指针<code>FILE *</code>,那是目标文件的文件描述符(文件流指针)，<code>stdout</code>即标准输出文件，对应屏幕的终端。也就是说<code>fprintf</code>的第一个参数为<code>stdout</code>时，等效于<code>printf</code></p>
 <h2 id="二、几个预定义宏"><a href="#二、几个预定义宏" class="headerlink" title="二、几个预定义宏"></a>二、几个预定义宏</h2><table>
 <thead>
 <tr>
@@ -294,17 +296,20 @@
 
 <p>说明：</p>
 <ol>
-<li>printf中的format和宏体中的format对应，会进行直接的替换</li>
-<li><strong>VA_ARGS</strong>是一个可变参数宏，在预编译阶段会替代宏体中…的内容</li>
-<li><strong>VA_ARGS</strong>宏前面加上##的作用在于，当可变参数的个数为0时，把前面多余的”,”去，否则会编译出错，如下图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103712.png" alt="clipboard_20200214103712.png"><br>加上##则不会出错：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103839.png" alt="clipboard_20200214103839.png"></li>
+<li><code>printf</code>中的<code>format</code>和宏体中的<code>format</code>对应，会进行直接的替换</li>
+<li><code>__VA_ARGS__</code>是一个可变参数宏，在预编译阶段会替代宏体中<code>...</code>的内容</li>
+<li><code>__VA_ARGS__</code>宏前面加上<code>##</code>的作用在于，当可变参数的个数为<code>0</code>时，把前面多余的<code>&quot;,&quot;</code>除去，否则会编译出错，如下图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103712.png" alt="clipboard_20200214103712.png"><br>加上##则不会出错：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103839.png" alt="clipboard_20200214103839.png"></li>
 </ol>
 <h3 id="3-2-进阶版"><a href="#3-2-进阶版" class="headerlink" title="3.2 进阶版"></a>3.2 进阶版</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DBG(format, ...) fprintf(stdout, \</span></span><br><span class="line"><span class="string">"[\tDBG](File:%s, Func:%s(), Line:%d): "</span> \</span><br><span class="line">, __FILE__, __FUNCTION__, __LINE__);     \</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, format<span class="string">"\r\n"</span>, ##__VA_ARGS__)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DBG(format, ...)  do &#123;&#125; while (0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<p>此版本可以自行打印调试的文件信息，加上do {} while (0)是为了消除;，不消除也不会引起语法错误</p>
-<p>在gcc中还支持在宏体中用args…代替…，表示后续的args可能会有多个，在函数中则用##args代替##<strong>VA_ARGS</strong>，如下所示</p>
+<p>此版本可以自行打印调试的文件信息，加上<code>do {} while (0)</code>是为了消除<code>;</code>，不消除也不会引起语法错误</p>
+<p>在<code>gcc</code>中还支持在宏体中用<code>args...</code>代替<code>...</code>，表示后续的<code>args</code>可能会有多个，在函数中则用<code>##args</code>代替<code>##__VA_ARGS__</code>，如下所示</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LG(format, args...) fprintf(stdout,\</span></span><br><span class="line"><span class="string">"[\tLOG](File:%s, Func:%s(), Line:%d): "</span>   \</span><br><span class="line">, __FILE__, __FUNCTION__, __LINE__);       \</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, format<span class="string">"\r\n"</span>, ##args)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LG(format, args...)  do &#123;&#125; while (0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3 测试"></a>3.3 测试</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3 测试"></a>3.3 测试</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"debug.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    user_timer_debug(<span class="string">"the value of a is %d\n"</span>, a);</span><br><span class="line">    DBG(<span class="string">"the value of a is %d\n"</span>, a);</span><br><span class="line">    func();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">100</span>;</span><br><span class="line">    LG(<span class="string">"the value of b is %d\n"</span>, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214110012.png" alt="clipboard_20200214110012.png"></p>
+
       
 
       
@@ -557,6 +562,18 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">C</a>
               </li>
              
@@ -566,18 +583,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">预处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -597,15 +602,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -625,6 +630,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">共用体</a>
               </li>
              
@@ -637,7 +646,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -657,15 +674,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -674,10 +683,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">线性表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
             
             <div class="clearfix"></div>

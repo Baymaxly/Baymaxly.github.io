@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>【C语言】静态链接库与动态链接库的制作与使用 | Baymaxly（卢意个人博客）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc 1.1 函数库的提供形式：动态链接库与静态链接库早期的函数共享都是以源代码的形式进行的，慢慢地，源码共">
+  <meta name="description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【C语言】静态链接库与动态链接库的制作与使用">
 <meta property="og:url" content="http://yoursite.com/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/index.html">
 <meta property="og:site_name" content="Baymaxly（卢意个人博客）">
-<meta property="og:description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc 1.1 函数库的提供形式：动态链接库与静态链接库早期的函数共享都是以源代码的形式进行的，慢慢地，源码共">
+<meta property="og:description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212120431.png">
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212010335.png">
@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033923.png">
 <meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212034333.png">
 <meta property="article:published_time" content="2020-02-11T08:51:49.000Z">
-<meta property="article:modified_time" content="2020-02-12T11:30:06.753Z">
+<meta property="article:modified_time" content="2020-02-14T15:24:03.998Z">
 <meta property="article:author" content="Baymaxly">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="函数库">
@@ -263,6 +263,7 @@
 
       
         <h2 id="一、函数库简述"><a href="#一、函数库简述" class="headerlink" title="一、函数库简述"></a>一、函数库简述</h2><p>简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如<code>glibc</code></p>
+<a id="more"></a>
 <h3 id="1-1-函数库的提供形式：动态链接库与静态链接库"><a href="#1-1-函数库的提供形式：动态链接库与静态链接库" class="headerlink" title="1.1 函数库的提供形式：动态链接库与静态链接库"></a>1.1 函数库的提供形式：动态链接库与静态链接库</h3><p>早期的函数共享都是以源代码的形式进行的，慢慢地，源码共享的方向就形成了我们现在的开源社区，无法以商业化形式来发布函数库。商业公司需要将自己的函数库让他人付费使用，但是又不能给客户源代码，这时候就出现了静态链接库和动态链接库。</p>
 <h4 id="1-1-1-静态链接库"><a href="#1-1-1-静态链接库" class="headerlink" title="1.1.1 静态链接库"></a>1.1.1 静态链接库</h4><p>商业公司将函数库源代码经过只编译不连接形成<code>.o</code>的目标文件，然后用<code>ar</code>工具将<code>.o</code>文件归档成<code>.a</code>的归档文件，这个<code>.a</code>的归档文件就叫做静态链接库文件。通过发布<code>.a</code>库文件和<code>.h</code>头文件来提供静态库给客户使用；</p>
 <p>客户拿到<code>.a</code>和<code>.h</code>文件后，通过<code>.h</code>头文件得知库中的库函数的原型，然后在自己的<code>.c</code>文件中直接调用这些库文件，在链接的时候链接器会去<code>.a</code>文件中拿出被调用的那个函数的编译后的<code>.o</code>二进制代码段链接进去形成最终的可执行程序。</p>
@@ -603,6 +604,18 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">C</a>
               </li>
              
@@ -612,18 +625,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">预处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -643,15 +644,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -671,6 +672,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">共用体</a>
               </li>
              
@@ -683,7 +688,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -703,15 +716,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -720,10 +725,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">线性表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
             
             <div class="clearfix"></div>

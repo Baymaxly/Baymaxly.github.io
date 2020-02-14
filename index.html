@@ -230,14 +230,15 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <h2 id="一、printf函数与fprintf函数"><a href="#一、printf函数与fprintf函数" class="headerlink" title="一、printf函数与fprintf函数"></a>一、printf函数与fprintf函数</h2><h3 id="1-1-printf"><a href="#1-1-printf" class="headerlink" title="1.1 printf"></a>1.1 printf</h3><p>printf的函数原型为：</p>
+        <a id="more"></a>
+<h2 id="一、printf函数与fprintf函数"><a href="#一、printf函数与fprintf函数" class="headerlink" title="一、printf函数与fprintf函数"></a>一、<code>printf</code>函数与<code>fprintf</code>函数</h2><h3 id="1-1-printf"><a href="#1-1-printf" class="headerlink" title="1.1 printf"></a>1.1 <code>printf</code></h3><p><code>printf</code>的函数原型为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<p>用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。printf称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，<code>format</code>称为固定参数部分，<code>...</code>称为参数占位符，二者共同构成可变参数。也就是说，它除了有一个参数format固定以外，后面的参数其个数和类型都是可变的。</p>
-<h3 id="1-2-fprintf"><a href="#1-2-fprintf" class="headerlink" title="1.2 fprintf"></a>1.2 fprintf</h3><p>fprintf的函数原型为：</p>
+<p>用于将格式化后的字符串输出到标准输出。标准输出，即标准输出文件，对应终端的屏幕。<code>printf</code>称为可变参数函数，其定义声明和普通函数相同。在其参数列表中，<code>format</code>称为固定参数部分，<code>...</code>称为参数占位符，二者共同构成可变参数。也就是说，它除了有一个参数<code>format</code>固定以外，后面的参数其个数和类型都是可变的。</p>
+<h3 id="1-2-fprintf"><a href="#1-2-fprintf" class="headerlink" title="1.2 fprintf"></a>1.2 <code>fprintf</code></h3><p><code>fprintf</code>的函数原型为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fprintf</span><span class="params">(FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<p>用于把格式化字符串输出到指定文件中，所以参数列表比printf多了个文件指针FILE * ,那是目标文件的文件描述符(文件流指针)，stdout即标准输出文件，对应屏幕的终端。也就是说fprintf的第一个参数为stdout时，等效于printf</p>
+<p>用于把格式化字符串输出到指定文件中，所以参数列表比<code>printf</code>多了个文件指针<code>FILE *</code>,那是目标文件的文件描述符(文件流指针)，<code>stdout</code>即标准输出文件，对应屏幕的终端。也就是说<code>fprintf</code>的第一个参数为<code>stdout</code>时，等效于<code>printf</code></p>
 <h2 id="二、几个预定义宏"><a href="#二、几个预定义宏" class="headerlink" title="二、几个预定义宏"></a>二、几个预定义宏</h2><table>
 <thead>
 <tr>
@@ -270,17 +271,20 @@
 
 <p>说明：</p>
 <ol>
-<li>printf中的format和宏体中的format对应，会进行直接的替换</li>
-<li><strong>VA_ARGS</strong>是一个可变参数宏，在预编译阶段会替代宏体中…的内容</li>
-<li><strong>VA_ARGS</strong>宏前面加上##的作用在于，当可变参数的个数为0时，把前面多余的”,”去，否则会编译出错，如下图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103712.png" alt="clipboard_20200214103712.png"><br>加上##则不会出错：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103839.png" alt="clipboard_20200214103839.png"></li>
+<li><code>printf</code>中的<code>format</code>和宏体中的<code>format</code>对应，会进行直接的替换</li>
+<li><code>__VA_ARGS__</code>是一个可变参数宏，在预编译阶段会替代宏体中<code>...</code>的内容</li>
+<li><code>__VA_ARGS__</code>宏前面加上<code>##</code>的作用在于，当可变参数的个数为<code>0</code>时，把前面多余的<code>&quot;,&quot;</code>除去，否则会编译出错，如下图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103712.png" alt="clipboard_20200214103712.png"><br>加上##则不会出错：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214103839.png" alt="clipboard_20200214103839.png"></li>
 </ol>
 <h3 id="3-2-进阶版"><a href="#3-2-进阶版" class="headerlink" title="3.2 进阶版"></a>3.2 进阶版</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DBG(format, ...) fprintf(stdout, \</span></span><br><span class="line"><span class="string">"[\tDBG](File:%s, Func:%s(), Line:%d): "</span> \</span><br><span class="line">, __FILE__, __FUNCTION__, __LINE__);     \</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, format<span class="string">"\r\n"</span>, ##__VA_ARGS__)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DBG(format, ...)  do &#123;&#125; while (0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<p>此版本可以自行打印调试的文件信息，加上do {} while (0)是为了消除;，不消除也不会引起语法错误</p>
-<p>在gcc中还支持在宏体中用args…代替…，表示后续的args可能会有多个，在函数中则用##args代替##<strong>VA_ARGS</strong>，如下所示</p>
+<p>此版本可以自行打印调试的文件信息，加上<code>do {} while (0)</code>是为了消除<code>;</code>，不消除也不会引起语法错误</p>
+<p>在<code>gcc</code>中还支持在宏体中用<code>args...</code>代替<code>...</code>，表示后续的<code>args</code>可能会有多个，在函数中则用<code>##args</code>代替<code>##__VA_ARGS__</code>，如下所示</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LG(format, args...) fprintf(stdout,\</span></span><br><span class="line"><span class="string">"[\tLOG](File:%s, Func:%s(), Line:%d): "</span>   \</span><br><span class="line">, __FILE__, __FUNCTION__, __LINE__);       \</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, format<span class="string">"\r\n"</span>, ##args)</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LG(format, args...)  do &#123;&#125; while (0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3 测试"></a>3.3 测试</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3 测试"></a>3.3 测试</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"debug.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    user_timer_debug(<span class="string">"the value of a is %d\n"</span>, a);</span><br><span class="line">    DBG(<span class="string">"the value of a is %d\n"</span>, a);</span><br><span class="line">    func();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">100</span>;</span><br><span class="line">    LG(<span class="string">"the value of b is %d\n"</span>, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/debug/clipboard_20200214110012.png" alt="clipboard_20200214110012.png"></p>
+
       
 
       
@@ -579,247 +583,8 @@
 <li>存储类：内存有多种管理方法：<code>stack、heap、.data、bss段、.text</code>等，一个变量的存储类属性就是描述这个变量存储在何种内存段中。</li>
 <li>作用域：用来描述一个符号(变量、函数等)起作用的范围。</li>
 <li>生命周期：用来描述变量的诞生(给变量分配内存)与消亡(回收分配的内存空间，此时变量无权访问此内存空间)</li>
-<li>链接属性：一个程序从源代码到最终的可执行程序需要经过编译链接，编译生成的.o目标文件中有很多符号(变量、函数等)及内存分段(<code>.data、.bss、.text</code>等)，其链接生成可执行程序的时候，就是把符号和对应的段给链接起来，此时就涉及到C语言符号中的三种链接属性：外链接属性、内链接属性、无链接属性</li>
-</ol>
-<h3 id="1-2-linux下C程序的内存映像"><a href="#1-2-linux下C程序的内存映像" class="headerlink" title="1.2 linux下C程序的内存映像"></a>1.2 linux下C程序的内存映像</h3><table>
-<thead>
-<tr>
-<th align="left">内存段</th>
-<th align="left">存储的内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">代码段(文本段.text)</td>
-<td align="left">程序中的代码(函数)、字符串常量、单片机中const修饰的常量</td>
-</tr>
-<tr>
-<td align="left">只读数据段</td>
-<td align="left">gcc中const修饰的常量</td>
-</tr>
-<tr>
-<td align="left">数据段(.data)</td>
-<td align="left">显式初始化为非零的全局变量、显式初始化为非零的static局部变量</td>
-</tr>
-<tr>
-<td align="left">bss段</td>
-<td align="left">显式初始化为0和未显式初始化的全局变量、显式初始化为0或未显式初始化的static局部变量</td>
-</tr>
-<tr>
-<td align="left">堆(heap)</td>
-<td align="left">程序员自行malloc和free</td>
-</tr>
-<tr>
-<td align="left">栈(stack)</td>
-<td align="left">局部变量、函数传参</td>
-</tr>
-<tr>
-<td align="left">文件映射区</td>
-<td align="left">进程打开文件时将整个文件内容从硬盘读到进程的文件映射区，在内存中操作文件，操作完成后保存时将内存中的文件写入硬盘</td>
-</tr>
-<tr>
-<td align="left">内核映射区</td>
-<td align="left">操作系统内核程序映射的区域，对于4G内存的机器0xC0000000以上都是是OS内核的活动空间</td>
-</tr>
-</tbody></table>
-<h3 id="1-3-OS下和裸机下C程序加载执行的差异"><a href="#1-3-OS下和裸机下C程序加载执行的差异" class="headerlink" title="1.3 OS下和裸机下C程序加载执行的差异"></a>1.3 OS下和裸机下C程序加载执行的差异</h3><p>C语言的程序运行时对环境有一定的要求，单个人写的C程序是没法在内存中直接运行的，需要外部协助代码。这段外部协助代码用来构建C运行时的环境，又叫加载运行代码。</p>
-<h4 id="有OS"><a href="#有OS" class="headerlink" title="有OS"></a>有OS</h4><p>加载运行代码由开发着写好存放在<code>OS</code>下，会自动添加到我们写的程序中，这段代码的主要作用是：给全局变量赋值、清<code>bss</code>段。即在<code>OS</code>运行程序时会自动完成重定位和清<code>bss</code>，所以：</p>
-<blockquote>
-<ol>
-<li>数据段的全局变量或静态局部变量都是有非0的初值的，这些初值在main函数运行之前(重定位期间)就已经被初始化了</li>
-<li>C语言中未初始化的全局变量和<code>static</code>局部变量默认为0</li>
-</ol>
-</blockquote>
-<h4 id="裸机"><a href="#裸机" class="headerlink" title="裸机"></a>裸机</h4><p>在<code>ARM</code>裸机下定义的全局变量初始化为0但是经常会不为0，这是因为程序员没在裸机的<code>start.S</code>中清<code>bss</code>段代码。这就说明在裸机中要程序员自己做加载运行代码(<code>start.S</code>中的重定位和清<code>bss</code>段)</p>
-<h2 id="二、存储类相关的关键字"><a href="#二、存储类相关的关键字" class="headerlink" title="二、存储类相关的关键字"></a>二、存储类相关的关键字</h2><h3 id="2-1-auto"><a href="#2-1-auto" class="headerlink" title="2.1 auto"></a>2.1 auto</h3><p><code>auto</code>关键字在C语言中用来修饰静态局部变量，表示该局部变量为静态局部变量，该变量配在栈上。平时我们在函数内定义的普通局部变量都是<code>auto</code>的，只是省略了<code>auto</code>关键字（所以<code>auto</code>的存在感极低……）不过，在C11中auto有了很大的改动，详见以下文章：</p>
-<p><a href="https://www.cnblogs.com/LyndonYoung/articles/5438436.html" target="_blank" rel="noopener">C11中的类型推导auto的使用</a><br><a href="https://www.cnblogs.com/sollyu/p/4184515.html" target="_blank" rel="noopener">【C++11】新特性——auto的使用</a></p>
-<h3 id="2-2-static"><a href="#2-2-static" class="headerlink" title="2.2 static"></a>2.2 static</h3><p><code>static</code>关键字在C语言中有2种用法，这两种用法无任何关联</p>
-<blockquote>
-<ol>
-<li>用来修饰局部变量，形成静态局部变量，分配在.data或bbs段</li>
-<li>用来修饰全局变量，形成静态全局变量。链接属性为无链接属性</li>
-</ol>
-</blockquote>
-<p><code>static</code>局部变量与全局变量的比较如下：</p>
-<table>
-<thead>
-<tr>
-<th align="left">比较类别</th>
-<th align="center">static局部变量</th>
-<th align="center">全局变量</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">存储类</td>
-<td align="center">一样</td>
-<td align="center">一样</td>
-</tr>
-<tr>
-<td align="left">生命周期</td>
-<td align="center">一样</td>
-<td align="center">一样</td>
-</tr>
-<tr>
-<td align="left">作用域</td>
-<td align="center">代码块作用域，和普通局部变量一样</td>
-<td align="center">文件作用域，和函数一样</td>
-</tr>
-<tr>
-<td align="left">链接属性</td>
-<td align="center">无链接</td>
-<td align="center">外链接</td>
-</tr>
-</tbody></table>
-<p><a href="https://blog.csdn.net/guotianqing/article/details/79828100" target="_blank" rel="noopener">关于<code>stctic</code>这里有一篇高质量博文:c语言中static关键字用法详解</a></p>
-<h3 id="2-3-register"><a href="#2-3-register" class="headerlink" title="2.3 register"></a>2.3 register</h3><p><code>register</code>修饰的变量编译器会尽量将其分配在寄存器中，大幅提升读写效率。所以<code>register</code>用来修饰那种反复高频率的使用变量，是一种极致的提升程序运行效率的手段。因为<strong>寄存器数量有限</strong>，所以一般不是非必要，不会定义<code>register</code>变量。同时，编译器只能承诺尽量将<code>register</code>修饰的变量放在寄存器中，不保证一定放在寄存器中。以下这篇博文比较了int变量和register int变量的速度：</p>
-<p><a href="https://blog.csdn.net/mouse_ts/article/details/45097603" target="_blank" rel="noopener">C语言寄存器变量register</a></p>
-<h3 id="2-4-extern"><a href="#2-4-extern" class="headerlink" title="2.4 extern"></a>2.4 extern</h3><p><code>extern</code>主要用来声明全局变量，声明的目的主要是跨文件使用变量。因为C语言中编译是以单文件为单位的，当在一个.c文件中使用了同工程下另一.c文件中的变量时，就要用<code>extern</code>声明</p>
-<p><a href="https://blog.csdn.net/qq_38880380/article/details/81474580" target="_blank" rel="noopener">这有一篇精炼的总结：extern使用方法总结！</a></p>
-<h3 id="2-5-volatile"><a href="#2-5-volatile" class="headerlink" title="2.5 volatile"></a>2.5 volatile</h3><p><code>volatile</code>用来修饰一个变量，表示这个变量可以被编译器之外的东西改变。也就是说这个改变不是当前代码造成的，编译器在编译当前代码时无法预知。通常是以下三种情况的变量：</p>
-<blockquote>
-<ol>
-<li>中断isr中引用的变量</li>
-<li>多线程中共用的变量</li>
-<li>硬件会更改的变量（通常是寄存器的值）</li>
-</ol>
-</blockquote>
-<p>遇到以上三种变量都应用使用<code>volatile</code>修饰，告诉编译器这个变量值的改变它无法预知。编译器在遇到<code>volatile</code>修饰的变量时就不会对改变量的访问进行优化，就不会出现错误。</p>
-<blockquote>
-<ul>
-<li>编译器的优化在一般情况下非常好，可以帮助提升程序效率。但是在变量会被编译器想象之外的力量改变的情况下，此时如果编译器没有意识到而去优化则就会造成优化错误，带来执行时错误，而且这种错误很难被发现</li>
-</ul>
-</blockquote>
-<p><a href="https://blog.csdn.net/tigerjibo/article/details/7427366" target="_blank" rel="noopener">推荐文章：C语言中volatile关键字的作用</a></p>
-<h3 id="2-6-restrict"><a href="#2-6-restrict" class="headerlink" title="2.6 restrict"></a>2.6 restrict</h3><p><code>restrict</code>关键字是<code>c99</code>中才支持的和编译器行为特征有关的一个存储类关键字，只用来修饰指针，不能修饰普通变量。该关键字用于告知编译器，所有修改<code>该指针所指向内容的操作</code>全部都是基于该指针的，即不存在其它进行修改操作的途径，这样可以帮助编译器进行更好的代码优化，生成更有效率的汇编代码。</p>
-<p><a href="http://blog.chinaunix.net/uid-22197900-id-359209.html" target="_blank" rel="noopener">详见参考文章：restrict关键字用法</a></p>
-<h2 id="三、作用域"><a href="#三、作用域" class="headerlink" title="三、作用域"></a>三、作用域</h2><p>作用域就是一个符号(变量、函数等)起作用的范围。</p>
-<h3 id="3-1-局部变量的代码块作用域"><a href="#3-1-局部变量的代码块作用域" class="headerlink" title="3.1 局部变量的代码块作用域"></a>3.1 局部变量的代码块作用域</h3><ul>
-<li>代码块可以理解为一对大括号{}括起来的部分，不等于函数，因为<code>if/for</code>等语法都有{}，可以说函数是由一个或多个代码块构成的</li>
-<li>局部变量的代码块作用域，是说一个局部变量可以被访问和使用的范围仅限于声明这个局部变量的代码块中声明之后的部分，如</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello World!\n"</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">        count ++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在上述函数中，<code>count</code>的作用域就是<code>line3~line10</code>，<code>i</code>的作用域仅限于<code>line5</code>，<code>a</code>的作用域为<code>line7~line9</code>；超过作用域去访问变量都是非法的，编译器会报未声明的错误！</p>
-<h3 id="3-2-函数名和全局变量的文件作用域"><a href="#3-2-函数名和全局变量的文件作用域" class="headerlink" title="3.2 函数名和全局变量的文件作用域"></a>3.2 函数名和全局变量的文件作用域</h3><ul>
-<li>文件作用域的意思就是全局的访问权限，也就是说整个.c文件中都可以访问这些东西。</li>
-<li>函数和全局变量的作用域是所在的整个.c文件之内声明之后的部分。</li>
-</ul>
-<h3 id="3-3-几个注意点"><a href="#3-3-几个注意点" class="headerlink" title="3.3 几个注意点"></a>3.3 几个注意点</h3><blockquote>
-<ol>
-<li>在<code>c89</code>标准中，所有的局部变量必须先定义在最前面，在变量定义之前不能有一句执行代码。在<code>c99</code>及以后的标准中，允许在当前代码段中使用前的任意位置声明并定义。</li>
-<li>不管是局部变量、全局变量还是函数，使用前都要先声明/定义</li>
-<li>局部变量的定义和声明是在一起的，全局变量和函数的定义和声明可以分开进行，也可以同时进行，如下代码</li>
-</ol>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> g_a; <span class="comment">//声明</span></span><br><span class="line"><span class="keyword">int</span> g_b = <span class="number">10</span>;   <span class="comment">//定义并声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">void</span>)</span></span>;<span class="comment">//声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">void</span>)</span><span class="comment">//定义并声明</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        业务代码</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a;<span class="comment">//定义并声明</span></span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">10</span>;<span class="comment">//定义并声明</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"g_a = %d\n"</span>, g_a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"g_b = %d\n"</span>, g_b);</span><br><span class="line">    func1();</span><br><span class="line">    func2();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">void</span>)</span><span class="comment">//定义</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        业务代码</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> g_a = <span class="number">10</span>;<span class="comment">//定义</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-4-同名变量的掩蔽规则"><a href="#3-4-同名变量的掩蔽规则" class="headerlink" title="3.4 同名变量的掩蔽规则"></a>3.4 同名变量的掩蔽规则</h3><p>编程时，不可避免会出现同名变量。变量同名后不一定会出错。</p>
-<blockquote>
-<ul>
-<li>如果两个同名变量作用域不同且没有交叠，这种情况下同名没有任何影响。</li>
-<li>如果两个同名变量作用域有交叠，C语言规定在作用域交叠范围内，作用域小的变量会掩蔽掉作用域大的</li>
-</ul>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">for</span>( ; ;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"while in for, a = %d\n"</span>, a);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"only in main, a = %d\n"</span>,a);</span><br><span class="line">    func();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"when in func, a = %d\n"</span>, a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E4%BD%9C%E7%94%A8%E5%9F%9F/clipboard_20200214120413.png" alt="clipboard_20200214120413.png"><br>我们可以看到，在不同的代码块中可以定义相同的变量，在变量作用域有交叠的时候，小的掩蔽大的</p>
-<h2 id="四、变量的生命周期"><a href="#四、变量的生命周期" class="headerlink" title="四、变量的生命周期"></a>四、变量的生命周期</h2><p>研究变量生命周期，有助于理解变量的行为特征。生命周期和存储类是紧密关联的</p>
-<h3 id="4-1-栈变量的生命周期"><a href="#4-1-栈变量的生命周期" class="headerlink" title="4.1 栈变量的生命周期"></a>4.1 栈变量的生命周期</h3><p>局部变量（栈变量）存储在栈上，生命周期是临时的，代码执行过程中按照需要去创建、使用、消亡该局部变量。比如一个函数内定义的局部变量，在这个函数每一次被调用时都会创建一次，然后使用，最后在函数返回的时候消亡。</p>
-<h3 id="4-2-堆变量的生命周期"><a href="#4-2-堆变量的生命周期" class="headerlink" title="4.2 堆变量的生命周期"></a>4.2 堆变量的生命周期</h3><p>堆内存空间是客观存在的，是由操作系统维护的（由堆管理器管理），程序只是去申请然后使用然后释放。堆内存从<code>malloc</code>申请时诞生，然后使用，直到<code>free</code>时消亡。</p>
-<h3 id="4-3-数据段、bss段变量的生命周期"><a href="#4-3-数据段、bss段变量的生命周期" class="headerlink" title="4.3 数据段、bss段变量的生命周期"></a>4.3 数据段、bss段变量的生命周期</h3><p>全局变量的生命周期是永久的，在程序被执行时诞生，在程序终止时消亡。全局变量所占用的内存是不能被程序自己释放的，所以程序如果申请了过多的全局变量会导致这个程序一直占用大量内存。</p>
-<h3 id="4-4-代码段、只读段的生命周期"><a href="#4-4-代码段、只读段的生命周期" class="headerlink" title="4.4 代码段、只读段的生命周期"></a>4.4 代码段、只读段的生命周期</h3><p>代码段和只读段的生命周期是永久的，有时候放在代码段的不只是代码，还有<code>const</code>类型的常量，字符串常量。（<code>const</code>类型的常量、字符串常量有时候放在<code>rodata</code>段，有时候放在代码段，取决于平台）</p>
-<h2 id="五、链接属性"><a href="#五、链接属性" class="headerlink" title="五、链接属性"></a>五、链接属性</h2><h3 id="5-1-C语言程序的组织架构"><a href="#5-1-C语言程序的组织架构" class="headerlink" title="5.1 C语言程序的组织架构"></a>5.1 C语言程序的组织架构</h3><ul>
-<li>一个庞大、完整的一个C语言程序(linux内核、uboot等)是由多个.c文件和多个.h文件组成的</li>
-<li>程序的生成过程可以简单理解为编译+链接。编译是为了将符号变成.o二进制的机器码格式，链接是为了将各个独立分开的二进制的函数链接起来形成一个整体的二进制可执行程序。</li>
-<li><strong>编译以文件为单位、链接以工程为单位</strong>，编译器工作时是将所有源文件依次读进来，单个为单位进行编译的。链接的时候实际上是把第一步编译生成个单个的.o文件整体的输入，然后处理链接成一个可执行程序。</li>
-</ul>
-<h3 id="5-2-三种链接属性：外连接、内链接、无链接"><a href="#5-2-三种链接属性：外连接、内链接、无链接" class="headerlink" title="5.2 三种链接属性：外连接、内链接、无链接"></a>5.2 三种链接属性：外连接、内链接、无链接</h3><ol>
-<li>外链接属性，表示符号可以在整个程序范围内（可以跨文件）进行链接，如普通的函数和全局变量属于外连接。</li>
-<li>内链接属性，就是说符号只能在当前<code>c</code>文件内部范围内进行链接（就是不能在当前<code>c</code>文件外面的其他<code>c</code>文件中进行访问、链接）。<code>static</code>修饰的函数/全局变量属于内链接。</li>
-<li>无链接属性，就是说符号本身不参与链接，跟链接没关系。所有的局部变量（<code>auto、static</code>）和<code>inline</code>函数是无链接的</li>
-</ol>
-<h3 id="5-3-函数和全局变量的同名冲突"><a href="#5-3-函数和全局变量的同名冲突" class="headerlink" title="5.3 函数和全局变量的同名冲突"></a>5.3 函数和全局变量的同名冲突</h3><p>函数和全局变量是外部链接属性，每一个函数和全局变量将来在整个程序中所有的c文件都能被访问，因此在一个程序中的所有c文件中不能出现同名的函数/同名的全局变量。但是一个很大的工程中函数和全局变量名称不计其数，而且一个大工程是多人协作完成，很难保证不会重名，所以C语言引入了链接属性（在高级语言中的<code>namespace</code>和链接属性有异曲同工之妙）。</p>
-<h3 id="5-4-static修饰全局变量和函数"><a href="#5-4-static修饰全局变量和函数" class="headerlink" title="5.4 static修饰全局变量和函数"></a>5.4 <code>static</code>修饰全局变量和函数</h3><p>普通的（非静态）的函数/全局变量，默认的链接属性是外部的，<code>static</code>修饰的（静态）的函数/全局变量，链接属性是内部链接，如果一个同名的函数/全局变量在多个文件中定义，一定要加上<code>static</code>以限制链接属性。</p>
-<h2 id="六、结"><a href="#六、结" class="headerlink" title="六、结"></a>六、结</h2><p>存储类、作用域、生命周期和链接属性是相互关联的：<strong>存储类决定生命周期，作用域决定链接属性</strong></p>
-<table>
-<thead>
-<tr>
-<th>符号</th>
-<th>存储类</th>
-<th>作用域</th>
-<th>生命周期</th>
-<th>链接属性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>auto局部变量</td>
-<td>stack</td>
-<td>代码块</td>
-<td>临时</td>
-<td>无链接</td>
-</tr>
-<tr>
-<td>static局部变量</td>
-<td>.data/bss</td>
-<td>代码块</td>
-<td>永久</td>
-<td>无链接</td>
-</tr>
-<tr>
-<td>全局变量</td>
-<td>.data/bss</td>
-<td>文件</td>
-<td>永久</td>
-<td>外链接</td>
-</tr>
-<tr>
-<td>函数</td>
-<td>.text</td>
-<td>文件</td>
-<td>永久</td>
-<td>外链接</td>
-</tr>
-<tr>
-<td>inline函数</td>
-<td>.text</td>
-<td>文件</td>
-<td>永久</td>
-<td>无链接</td>
-</tr>
-<tr>
-<td>static全局变量</td>
-<td>.data/bss</td>
-<td>文件</td>
-<td>永久</td>
-<td>内链接</td>
-</tr>
-<tr>
-<td>static函数</td>
-<td>.data/bss</td>
-<td>文件</td>
-<td>永久</td>
-<td>内链接</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li><code>static</code>局部变量的地址由运行时环境在加载程序时确定，整个程序运行过程中唯一不变。</li>
-<li>静态局部变量其实就是作用域为代码块作用域且无连接的全局变量</li>
-<li>写程序尽量避免使用全局变量，尤其是非<code>static</code>类型的全局变量。能确定不会被其他文件引用的全局变量一定要<code>static</code>修饰</li>
-<li>宏和<code>inline</code>函数的链接属性为无链接</li>
-<li>为了避免<code>.h</code>文件被多个<code>.c</code>文件包含时全局变量重复定义的问题，全局变量应该定义在<code>.c</code>文件中并且在<code>.h</code>文件中声明</li>
-<li>在<code>b.c</code>中引用<code>a.c</code>中定义的全局变量/函数有2种方法：<blockquote>
-<ol>
-<li>在<code>a.h</code>中声明该函数/全局变量，然后在<code>b.c</code>中<code>#include &lt;a.h&gt;</code></li>
-<li>在<code>b.c</code>中使用<code>extern</code>显式声明要引用的函数/全局变量</li>
-</ol>
-<ul>
-<li>其中第一种方法比较正式。</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-</blockquote>
-
+<li>链接属性：一个程序从源代码到最终的可执行程序需要经过编译链接，编译生成的.o目标文件中有很多符号(变量、函数等)及内存分段(<code>.data、.bss、.text</code>等)，其链接生成可执行程序的时候，就是把符号和对应的段给链接起来，此时就涉及到C语言符号中的三种链接属性：外链接属性、内链接属性、无链接属性
+        
       
 
       
@@ -942,108 +707,7 @@
 
       
         <h2 id="一、Makefile的引入"><a href="#一、Makefile的引入" class="headerlink" title="一、Makefile的引入"></a>一、Makefile的引入</h2><h3 id="1-1-用途"><a href="#1-1-用途" class="headerlink" title="1.1 用途"></a>1.1 用途</h3><p><code>Makefile</code>是用来管理工程的，一个工程中的源文件不计数，其按类型、功能、模块分别放在若干个目录中，<code>Makefile</code>定义了一系列的规则来指定，哪些文件先编译、后编译、重新编译，甚至于进行更复杂的功能操作。总而言之，<code>Makefile</code>方便编译链接过程，一旦写好，只需要一个<code>make</code>命令，整个工程完全自动编译链接，极大地提高了项目开发的效率。</p>
-<h3 id="1-2-文件名"><a href="#1-2-文件名" class="headerlink" title="1.2 文件名"></a>1.2 文件名</h3><p><code>Makefile</code>常用的合法文件名有两个，一级文件夹里面有且只能有一个<code>Makefile</code></p>
-<blockquote>
-<ol>
-<li><code>Makefile</code></li>
-<li><code>makefile</code></li>
-</ol>
-</blockquote>
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/makefile1.png" alt="makefile1"></p>
-<h3 id="1-3-规则"><a href="#1-3-规则" class="headerlink" title="1.3 规则"></a>1.3 规则</h3><blockquote>
-<ul>
-<li><strong>目标</strong>：目标顶格写，后面是冒号（冒号后面是依赖）</li>
-<li><strong>依赖</strong>：依赖是用来产生目标的原材料（可不写）</li>
-<li><strong>命令</strong>：命令是要生成目标的加工方法，<strong>前面一定是<code>Tab</code>，不能顶格，也不能多个空格</strong>。<br>用空格代替<code>Tab</code>会报如下错误：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/error1.png" alt="error1"></li>
-</ul>
-</blockquote>
-<h4 id="1-3-1-参考片段"><a href="#1-3-1-参考片段" class="headerlink" title="1.3.1 参考片段"></a>1.3.1 参考片段</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">preprocess: a.c b.c</span></span><br><span class="line">		gcc -E a.c -o a.i</span><br><span class="line">		gcc -E b.c -o b.i</span><br><span class="line"></span><br><span class="line"><span class="section">compile: a.i b.i</span></span><br><span class="line">		gcc a.i b.i -o ab.exe</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、Makefile工作命令"><a href="#二、Makefile工作命令" class="headerlink" title="二、Makefile工作命令"></a>二、Makefile工作命令</h2><p><code>Makefile</code>在工作的时候有两种方式:<code>make 目标</code>和直接<code>make</code>，执行时默认先在终端打印将要执行的命令，然后执行。测试文件及内容如下：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211091845.png" alt="clipboard_20200211091845.png"></p>
-<h3 id="2-1-make-目标"><a href="#2-1-make-目标" class="headerlink" title="2.1 make 目标"></a>2.1 <code>make 目标</code></h3><blockquote>
-<ul>
-<li>如果写了依赖，<code>Makefile</code>会先检测依赖是否存在，如果依赖成立就执行下面的命令，不成立就停止执行</li>
-<li>如果没写依赖，直接执行后面的命令，由编译工具链先进行是否合法的判断。</li>
-</ul>
-</blockquote>
-<p>如下所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211085900.png" alt="clipboard_20200211085900.png"></p>
-<h3 id="2-2-直接-make"><a href="#2-2-直接-make" class="headerlink" title="2.2 直接 make"></a>2.2 直接 <code>make</code></h3><p>直接使用<code>make</code>命令的话，其默认目标就是第一个目标，如下所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/3.png" alt="3.png"></p>
-<h3 id="2-3-静默执行"><a href="#2-3-静默执行" class="headerlink" title="2.3 静默执行"></a>2.3 静默执行</h3><p>从前面我们可以看到，<code>Makefile</code>在执行命令的时候会先把命令先打印在终端上，如果不想看到命令本身，只想看到命令的执行结果，可以直接在命令前加<code>@</code>，采用<strong>静默执行</strong></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">compile: a.c b.c</span></span><br><span class="line">		@gcc a.c b.c -o ab.exe</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
-
-<p>如下所示，我们可以看到加了<code>@</code>之后就不会再显示命令了<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211102232.png" alt="clipboard_20200211102232.png"></p>
-<h3 id="2-4-命令的显示与禁止"><a href="#2-4-命令的显示与禁止" class="headerlink" title="2.4 命令的显示与禁止"></a>2.4 命令的显示与禁止</h3><p>在执行<code>make</code>时带参数<code>-n</code>或<code>--just-print</code>，那么只显示命令但不会执行，这个功能有利于调试<code>Makefile</code>;<br>而参数<code>-s</code>或<code>--slient</code>则是全面禁止命令的显示，只执行命令，如下所示：</p>
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211112456.png" alt="clipboard_20200211112456.png"></p>
-<h2 id="三、伪目标（-PHONY）"><a href="#三、伪目标（-PHONY）" class="headerlink" title="三、伪目标（.PHONY）"></a>三、伪目标（.PHONY）</h2><ul>
-<li>伪目标意思是这个目标本身不代表一个文件，执行目标不是为了得到文件，而是单纯为了执行这个目标下面的命令。一般<code>clean</code>用伪目标</li>
-<li>伪目标一般没有依赖，既然是为了执行命令就不必加依赖，因为不加依赖意思就是无条件执行。</li>
-<li>伪目标可以直接写，不影响使用；为了明确声明这个目标是伪目标会在其前面用<code>.PHONY</code>来明确声明它是伪目标</li>
-</ul>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
-
-<h2 id="四、使用变量"><a href="#四、使用变量" class="headerlink" title="四、使用变量"></a>四、使用变量</h2><p>在<code>Makefile</code>中，一个命令如果有很多<code>.c</code>之类的文件，将不便于修改，此时可以采用变量的形式。</p>
-<h3 id="4-1-使用规则"><a href="#4-1-使用规则" class="headerlink" title="4.1 使用规则"></a>4.1 使用规则</h3><p><code>Makefile</code>中的变量都没有变量类型，直接定义使用，引用变量时用<code>$(变量名)</code>。变量在引用时类似于<code>C</code>语言的宏，也是原地展开</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var &#x3D; a.c b.c</span><br><span class="line"></span><br><span class="line">compile: $(var)</span><br><span class="line">		@gcc $(var) -o ab.exe</span><br></pre></td></tr></table></figure>
-
-<p>可以用<code>echo</code>打印变量信息，如下所示:</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">print:</span></span><br><span class="line">		echo <span class="variable">$(var)</span></span><br></pre></td></tr></table></figure>
-
-<p>结果如下<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211105500.png" alt="clipboard_20200211105500.png"></p>
-<h3 id="4-2-几种变量赋值运算符"><a href="#4-2-几种变量赋值运算符" class="headerlink" title="4.2 几种变量赋值运算符"></a>4.2 几种变量赋值运算符</h3><h4 id="4-2-1-与"><a href="#4-2-1-与" class="headerlink" title="4.2.1 =与:="></a>4.2.1 <code>=</code>与<code>:=</code></h4><blockquote>
-<ul>
-<li>使用<code>=</code> 赋值时变量的值可以定义在文件的任何一处，不一定非要是已定义好的值，可以使用后面定义的值，在解析时使用最后定义的值</li>
-<li>使用<code>:=</code>赋值时前面的变量不会使用后面的变量，只能使用前面已定义好了的变量</li>
-</ul>
-</blockquote>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var1 = abcd</span><br><span class="line">var3 := abcd</span><br><span class="line">var2 := <span class="variable">$(var1)</span></span><br><span class="line">var4 = <span class="variable">$(var3)</span></span><br><span class="line"></span><br><span class="line"><span class="section">print:</span></span><br><span class="line">		echo var1 的值为 <span class="variable">$(var1)</span></span><br><span class="line">		echo var2 的值为 <span class="variable">$(var2)</span></span><br><span class="line">		echo var3 的值为 <span class="variable">$(var3)</span></span><br><span class="line">		echo var4 的值为 <span class="variable">$(var4)</span></span><br><span class="line"></span><br><span class="line">var1 = efgh</span><br><span class="line">var3 := efgh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211113950.png" alt="clipboard_20200211113950.png"><br>我们可以看到：</p>
-<blockquote>
-<ul>
-<li>虽然<code>var1</code>是用<code>=</code>赋值的，但是<code>var2</code>是用<code>:=</code>赋值的，<code>var2</code>在对<code>$(var1)</code>进行解析时只会查看<code>var2</code>前面的语句</li>
-<li>而<code>var4</code>解析<code>$(var3)</code>是会查看整个文件，即使<code>var3</code>采用的是<code>:=</code>赋值；</li>
-<li>直接对变量进行解析打印时，不管是<code>=</code>赋值还是<code>:=</code>赋值，最后打印的都是最后的值，也就是说解析最后的值</li>
-</ul>
-</blockquote>
-<h4 id="4-2-2"><a href="#4-2-2" class="headerlink" title="4.2.2 ?="></a>4.2.2 <code>?=</code></h4><p><code>var ?= bar</code>的含义是：如果<code>var</code>没有被定义过，那么变量<code>var</code>的值就是<code>bar</code>，如果<code>var</code>先前被定义过，那么这条语将什么也不做。</p>
-<h4 id="4-2-3"><a href="#4-2-3" class="headerlink" title="4.2.3 +="></a>4.2.3 <code>+=</code></h4><p>用来给一个已经赋值的变量接续赋值，有点类似于<code>C</code>语言中的<code>strcat</code>。需要注意的是<code>+=</code><strong>续接的内容和原来的内容之间会自动加一个空格隔开</strong></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">object := a.c b.c c.c</span><br><span class="line">object += d.c</span><br><span class="line"></span><br><span class="line"><span class="section">printf: <span class="variable">$(object)</span></span></span><br><span class="line">		echo <span class="variable">$(object)</span></span><br></pre></td></tr></table></figure>
-
-<p>结果如图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212121713.png" alt="clipboard_20200212121713.png"></p>
-<h2 id="五、通配符"><a href="#五、通配符" class="headerlink" title="五、通配符"></a>五、通配符</h2><h3 id="5-1-与"><a href="#5-1-与" class="headerlink" title="5.1 *,?与[]"></a>5.1 <code>*</code>,<code>?</code>与<code>[]</code></h3><p>如果要处理一系列比较类似的文件，我们可以使用以下三种通配符：</p>
-<blockquote>
-<ol>
-<li><code>*</code> 若干个任意字符</li>
-<li><code>?</code> 一个任意字符</li>
-<li><code>[]</code>将[]中的字符依次去和外面的结合匹配</li>
-</ol>
-</blockquote>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.PHNOY:clean</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm -f *.c [abcd].h a?cd.c</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212011451.png" alt="clipboard_20200212011451.png"><br>如图所示，我们有一串文件夹，在clean的过程中：</p>
-<blockquote>
-<ul>
-<li><code>a.c b.c c.c d.c</code>均匹配<code>*.c</code>，故被删除</li>
-<li><code>a.h b.h c.h d.h</code>与<code>[abcd].h</code>匹配，由于字符依次匹配，故<code>ab.h</code>扔保留</li>
-</ul>
-</blockquote>
-<h3 id="5-2-规则通配符-和自动推导"><a href="#5-2-规则通配符-和自动推导" class="headerlink" title="5.2 规则通配符%和自动推导"></a>5.2 规则通配符<code>%</code>和自动推导</h3><p>还有一个和<code>*</code>看似很像的通配符%，<code>%</code>代表一个或几个字母，比如<code>%.o</code>就代表所有以<code>.o</code>为结尾的文件。但是<code>%</code>和<code>*</code>作用是不同的，<code>%</code>作为规则通配符常用在<code>Makefile</code>的自动推导上。所谓自动推导其实就是当<code>Makefile</code>需要某一个目标时，他会把这个目标去套规则说明，一旦套上了某个规则说明，<code>Makefile</code>就会去寻找这个规则中的依赖，如果能找到则会执行这个规则用依赖生成目标。</p>
-<h3 id="5-3-自动变量"><a href="#5-3-自动变量" class="headerlink" title="5.3 自动变量"></a>5.3 自动变量</h3><p>在有些情况下文件集合中文件非常多，描述的时候很麻烦，<code>Makefile</code>就用一些特殊的符号来替代符合某种条件的文件集，这就形成了自动变量。自动变量是预定义的特殊意义的符号，就类似于<code>C</code>语言编译器中预制的<code>__FILE__</code>宏，常见自动变量有以下三种：</p>
-<blockquote>
-<ol>
-<li><code>$@</code> :规则的目标文件名</li>
-<li><code>$&lt;</code> :规则的依赖文件名</li>
-<li><code>$^</code> :依赖的文件集合</li>
-</ol>
-</blockquote>
-<h3 id="5-4-测试脚本及结果"><a href="#5-4-测试脚本及结果" class="headerlink" title="5.4 测试脚本及结果"></a>5.4 测试脚本及结果</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">abcd.elf: a.o b.o c.o d.o</span></span><br><span class="line">		gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"><span class="comment">#$^为a.o b.o c.o d.o，$@为abcd.elf</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.i</span></span><br><span class="line">		gcc -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.i: %.c</span></span><br><span class="line">		gcc -E <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212013835.png" alt="clipboard_20200212013835.png"><br>在执行命令<code>make abcd.elf</code>时，需要一系列.o的依赖，这个时候makefile由.o推到.i，再由.i推到.c</p>
-<h2 id="六、Makefile的环境变量"><a href="#六、Makefile的环境变量" class="headerlink" title="六、Makefile的环境变量"></a>六、Makefile的环境变量</h2><ul>
-<li><code>Makefile</code>中用<code>export</code>导出的就是环境变量，一般情况下环境变量名用大写，普通变量名用小写。环境变量类似于整个工程中所有<code>Makefile</code>之间可以共享的全局变量，定义了一个环境变量会影响到工程中别的<code>Makefile</code>文件，因此要小心。</li>
-<li><code>Makefile</code>中有一些环境变量可能是<code>Makefile</code>本身自己定义的内部环境变量或者是当前的执行环境提供的环境变量（如命令<code>make CC=arm-linux-gcc</code>，其实就是给当前<code>Makefile</code>传了一个环境变量<code>CC</code>，值是<code>arm-linux-gcc</code>。在<code>make</code>时给<code>Makefile</code>传的环境变量值优先级最高的，可以覆盖<code>makefile</code>中的赋值）</li>
-</ul>
-
+        
       
 
       
@@ -1150,89 +814,7 @@
 
       
         <h2 id="一、函数库简述"><a href="#一、函数库简述" class="headerlink" title="一、函数库简述"></a>一、函数库简述</h2><p>简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如<code>glibc</code></p>
-<h3 id="1-1-函数库的提供形式：动态链接库与静态链接库"><a href="#1-1-函数库的提供形式：动态链接库与静态链接库" class="headerlink" title="1.1 函数库的提供形式：动态链接库与静态链接库"></a>1.1 函数库的提供形式：动态链接库与静态链接库</h3><p>早期的函数共享都是以源代码的形式进行的，慢慢地，源码共享的方向就形成了我们现在的开源社区，无法以商业化形式来发布函数库。商业公司需要将自己的函数库让他人付费使用，但是又不能给客户源代码，这时候就出现了静态链接库和动态链接库。</p>
-<h4 id="1-1-1-静态链接库"><a href="#1-1-1-静态链接库" class="headerlink" title="1.1.1 静态链接库"></a>1.1.1 静态链接库</h4><p>商业公司将函数库源代码经过只编译不连接形成<code>.o</code>的目标文件，然后用<code>ar</code>工具将<code>.o</code>文件归档成<code>.a</code>的归档文件，这个<code>.a</code>的归档文件就叫做静态链接库文件。通过发布<code>.a</code>库文件和<code>.h</code>头文件来提供静态库给客户使用；</p>
-<p>客户拿到<code>.a</code>和<code>.h</code>文件后，通过<code>.h</code>头文件得知库中的库函数的原型，然后在自己的<code>.c</code>文件中直接调用这些库文件，在链接的时候链接器会去<code>.a</code>文件中拿出被调用的那个函数的编译后的<code>.o</code>二进制代码段链接进去形成最终的可执行程序。</p>
-<h4 id="1-1-2-动态链接库"><a href="#1-1-2-动态链接库" class="headerlink" title="1.1.2 动态链接库"></a>1.1.2 动态链接库</h4><p>动态库比静态链接库出现得晚一些，效率更高一些。<strong>现在一般都是使用动态库</strong>。静态库在用户链接自己的可执行程序时就已经把调用的库中的函数的代码段链接进最终可执行程序中了，这样好处是随处可以执行，坏处是太占地方了。尤其是有多个应用程序都使用了同一个库函数时，最后生成的可执行程序中都各自有一份这个库函数的代码段。当这些应用程序同时在内存中运行时，实际上在内存中有多个这个库函数的代码段，这完全重复了。</p>
-<p>而<strong>动态链接库本身不将库函数的代码段链接入可执行程序，只是做个标记</strong>。然后当应用程序在内存中执行时，运行时环境发现它调用了一个动态库中的库函数时，会去加载这个动态库到内存中，然后以后不管有多少个应用程序去调用这个库中的函数都会跳转到第一次加载的地方去执行（不会重复加载）。</p>
-<h3 id="1-2-函数库中库函数的使用"><a href="#1-2-函数库中库函数的使用" class="headerlink" title="1.2 函数库中库函数的使用"></a>1.2 函数库中库函数的使用</h3><ol>
-<li><code>gcc</code>中编译链接程序默认使用动态库，要静态链接需要显式用<code>-static</code>来强制静态链接。</li>
-<li>库函数的使用需要注意:<blockquote>
-<ol>
-<li>包含相应的头文件</li>
-<li>调用库函数时注意函数原型</li>
-<li>有些库函数链接时需要额外用<code>-lxxx</code>来指定链接</li>
-<li>如果不是系统库，要注意用<code>-L</code>指定库的地址</li>
-</ol>
-</blockquote>
-</li>
-</ol>
-<p>如我们使用数学函数库中的<code>sqrt</code>函数:</p>
-<blockquote>
-<ol>
-<li>真正的数学运算的函数定义在：<code>/usr/include/x86_64-linux-gnu/bits/mathcalls.h</code></li>
-<li>使用数学库函数的时候，只需要包含<code>math.h</code>即可</li>
-</ol>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> x = <span class="number">16.0</span>;</span><br><span class="line">    <span class="keyword">double</span> y = <span class="built_in">sqrt</span>(x);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"y = %lf\n"</span>, y);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>学过C语言的同学都知道答案是<code>4.000000</code>，但是直接编译的结果是什么呢？看下图：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212120431.png" alt="clipboard_20200212120431.png"><br>我们会发现在链接的时候报错了！报的是对<code>&#39;sqrt&#39;</code>未定义的引用，即sqrt函数有声明(在<code>math.h</code>中)有引用(在<code>math.c</code>)，但是没有定义，链接器找不到函数体。为什么会这样呢？因为库函数有很多，链接器去库函数目录搜索的时间比较久。为了提升速度链接器只是默认地寻找几个最常用的库，如果是一些不常用的库中的函数被调用，需要程序员在链接时明确给出要扩展查找的库的名字。<br><strong>链接时可以用-lxxx来指示链接器去到libxxx.a(静)或libxxx.so(动)中去查找函数</strong><br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212010335.png" alt="clipboard_20200212010335.png"><br>我们可以看到加了<code>-lm</code>后就成功链接了，同时，我们也可以看到静态链接比动态链接生成的可执行文件的大小根本不在同一个数量级！！！</p>
-<h2 id="二、制作并使用静态链接库"><a href="#二、制作并使用静态链接库" class="headerlink" title="二、制作并使用静态链接库"></a>二、制作并使用静态链接库</h2><h3 id="2-1-制作"><a href="#2-1-制作" class="headerlink" title="2.1 制作"></a>2.1 制作</h3><p>创建对应的<code>.c源文件</code>和<code>.h头文件</code>以及<code>Makefile</code>：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch mylib1.c mylib1.h Makefile</span><br></pre></td></tr></table></figure>
-
-<p>编辑好头文件和源文件的对应内容，如图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212012726.png" alt="clipboard_20200212012726.png"></p>
-<p>接下来先只编译不连接，生成<code>.o</code>文件；然后使用<code>ar</code>工具进行打包成<code>.a</code>归档文件，打包时注意库名不能随便乱起，一般是<code>lib+库名称</code>，后缀名<code>.a</code>表示是静态链接库文件。对应的<code>Makefile</code>段如下所示：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">lib:</span></span><br><span class="line">	gcc -c mylib1.c -o mylib1.o</span><br><span class="line">	ar -rc libmylib1.a mylib1.o</span><br></pre></td></tr></table></figure>
-
-<p>执行对应的脚本即可完成静态库的制作<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212013750.png" alt="clipboard_20200212013750.png"></p>
-<h3 id="2-2-发布"><a href="#2-2-发布" class="headerlink" title="2.2 发布"></a>2.2 发布</h3><p>所谓发布，就是将<code>.a</code>文件和<code>.h</code>文件放在一个独立的文件夹里面，以便后续使用。如图所示<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212020007.png" alt="clipboard_20200212020007.png"></p>
-<h3 id="3-3-使用"><a href="#3-3-使用" class="headerlink" title="3.3 使用"></a>3.3 使用</h3><p>我们在发布的文件夹里建立自己的<code>.c</code>文件，就可以直接调用库函数了！</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch main.c Makefile</span><br></pre></td></tr></table></figure>
-
-<p>我们在主函数中添加如下内容：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mylib1.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    myprint();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在<code>1.2</code>使用数学函数的时候我们知道链接器只会去器寻找几个最常用的库，我们发布的库肯定不会被寻找的，所以需要加<code>-lxxx</code>去指定</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib1</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212021729.png" alt="clipboard_20200212021729.png"><br>我们会发现，这样还是不能正确链接，会有如下报错信息：<code>/usr/bin/ld: 找不到 -lmylib1</code>，通过报错信息我们知道，链接器默认只在系统指定的目录下寻找链接库。所以需要用-L指定库的地址，我们将Makefile修改如下：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib1 -L.</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>.</code>就表示在当前目录下，我们可以看到程序进行了成功地编译链接<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212024628.png" alt="clipboard_20200212024628.png"></p>
-<h2 id="三、制作并使用动态链接库"><a href="#三、制作并使用动态链接库" class="headerlink" title="三、制作并使用动态链接库"></a>三、制作并使用动态链接库</h2><h3 id="3-1-制作与发布"><a href="#3-1-制作与发布" class="headerlink" title="3.1 制作与发布"></a>3.1 制作与发布</h3><p>动态链接库的制作和静态库思路类似，只是后缀名是<code>.so</code>(<code>windows</code>下是<code>dll</code>)，通过<code>gcc</code>来打包而不是<code>ar</code>，对应的<code>Makefile</code>如下所示：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">lib:</span></span><br><span class="line">	gcc -c mylib2.c -o mylib2.o -fPIC</span><br><span class="line">	gcc mylib2.o -o libmylib2.so -shared</span><br></pre></td></tr></table></figure>
-
-<p>其中：</p>
-<blockquote>
-<ul>
-<li><code>-fPIC</code>是位置无关码，作用于编译阶段，告诉编译器产生与位置无关的代码<code>(Position-Independent Code)</code>。即产生的代码中，没有绝对地址，全部使用相对地址，被加载器加载到内存的任意位置，都可以正确执行。这正是共享库所要求的，共享库被加载时，在内存的位置不是固定的。</li>
-<li><code>-shared</code>是按照共享库的方式来链接</li>
-</ul>
-</blockquote>
-<p>发布的时候发布<code>libxxx.so</code>和<code>xxx.h</code>即可，这里不再赘述</p>
-<h3 id="3-2-使用"><a href="#3-2-使用" class="headerlink" title="3.2 使用"></a>3.2 使用</h3><p>有了静态库的经验我们知道，编译链接时的指令应该是：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib2 -L.</span><br></pre></td></tr></table></figure>
-
-<p>我们可以看到程序被成功编译链接了<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212030923.png" alt="clipboard_20200212030923.png"><br>但是运行出错，报错信息：<code>error while loading shared libraries: libmylib2.so: cannot open shared object file: No such file or directory</code></p>
-<p>这是因为<strong>动态链接库运行时需要被加载</strong>(运行时环境在执行程序的时候发现动态链接了<code>libxxx. so</code>，于是会去<strong>固定目录<code>/usr/lib</code>下加载libxxx. so</strong>，如果加载失败则会打印以上错误信息。）</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ol>
-<li><strong>将libaston.so放到固定目录/usr/lib下</strong></li>
-</ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp libmylib2.so /usr/lib</span><br></pre></td></tr></table></figure>
-
-<p>一般而言固定目录<code>/usr/lib</code>用来存放系统自带的动态链接库，不建议用户自行修改里面的内容</p>
-<ol start="2">
-<li><strong>使用环境变量LD_LIBRARY_PATH</strong></li>
-</ol>
-<p>操作系统在加载固定目录<code>/usr/lib</code>之前，会先去<code>LD_LIBRARY_PATH</code>这个环境变量所指定的目录下去寻找，如果找到则不去<code>/usr/lib</code>目录下，如果没找到再去<code>/usr/lib</code>下。所以可将<code>libaston.so</code>所在的目录导出到环境变量<code>LD_LIBRARY_PATH</code>中。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> LD_LIBRARY_PATH=D_LIBRARY_PATH:\</span><br><span class="line">/mnt/hgfs/VMShare/C/<span class="number">6.</span>PreprocessFunction/funclib/dynamiclib/publib</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033449.png" alt="clipboard_20200212033449.png"><br>我们可以发现，导入环境变量之后程序就可以直接运行了</p>
-<h3 id="3-3-ldd命令"><a href="#3-3-ldd命令" class="headerlink" title="3.3 ldd命令"></a>3.3 ldd命令</h3><p><code>ldd</code>命令可以在一个使用了共享库的程序执行之前解析出这个程序使用了哪些共享库，并且查看这些共享库是否能被找到，如上述示例加入了共享库后，使用了的所有的<code>.so</code>都能被解析到地址<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033923.png" alt="clipboard_20200212033923.png"><br>如果我们将环境变量设置为空：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> LD_LIBRARY_PATH=</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212034333.png" alt="clipboard_20200212034333.png"><br>我们可以看到<code>main.elf</code>链接的<code>libmylib2.so</code>处于<code>not found</code>状态，故无法正确执行</p>
-
+        
       
 
       
@@ -1342,7 +924,8 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <h2 id="一、由源码到可执行程序的过程"><a href="#一、由源码到可执行程序的过程" class="headerlink" title="一、由源码到可执行程序的过程"></a>一、由源码到可执行程序的过程</h2><p><strong>1. 预处理：</strong> 源码经过预处理器的预处理变成预处理过的<code>.i</code>中间文件</p>
+        <a id="more"></a>
+<h2 id="一、由源码到可执行程序的过程"><a href="#一、由源码到可执行程序的过程" class="headerlink" title="一、由源码到可执行程序的过程"></a>一、由源码到可执行程序的过程</h2><p><strong>1. 预处理：</strong> 源码经过预处理器的预处理变成预处理过的<code>.i</code>中间文件</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -E test.c -o test.i</span><br></pre></td></tr></table></figure>
 
 <p><strong>2. 编译：</strong> 中间文件经过编译器编译形成<code>.s</code>的汇编文件</p>
@@ -1594,7 +1177,8 @@
     <div class="article-entry" itemprop="articleBody"> 
 
       
-        <h2 id="一、常用位操作符"><a href="#一、常用位操作符" class="headerlink" title="一、常用位操作符"></a>一、常用位操作符</h2><h3 id="1-1-位与-amp"><a href="#1-1-位与-amp" class="headerlink" title="1.1 位与&amp;"></a>1.1 位与<code>&amp;</code></h3><h4 id="真值表"><a href="#真值表" class="headerlink" title="真值表"></a>真值表</h4><table>
+        <a id="more"></a>
+<h2 id="一、常用位操作符"><a href="#一、常用位操作符" class="headerlink" title="一、常用位操作符"></a>一、常用位操作符</h2><h3 id="1-1-位与-amp"><a href="#1-1-位与-amp" class="headerlink" title="1.1 位与&amp;"></a>1.1 位与<code>&amp;</code></h3><h4 id="真值表"><a href="#真值表" class="headerlink" title="真值表"></a>真值表</h4><table>
 <thead>
 <tr>
 <th align="center"><code>&amp;</code></th>
@@ -2289,6 +1873,18 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">C</a>
               </li>
              
@@ -2298,18 +1894,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">预处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2329,15 +1913,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2357,6 +1941,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">共用体</a>
               </li>
              
@@ -2369,7 +1957,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2389,15 +1985,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2406,10 +1994,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">线性表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
               </li>
             
             <div class="clearfix"></div>
