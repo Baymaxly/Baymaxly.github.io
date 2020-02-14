@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【C语言】宏定义与预处理 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、由源码到可执行程序的过程1. 预处理： 源码经过预处理器的预处理变成预处理过的.i中间文件 1gcc -E test.c -o test.i  2. 编译： 中间文件经过编译器编译形成.s的汇编文件 1gcc -S test.i -o test.s  3. 汇编： 汇编文件经过汇编器生成目标文件.o(机器语言) 1gcc -c test.s -o test.o  4. 链接： 链接器将目标文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C语言】宏定义与预处理">
+<meta property="og:url" content="http://yoursite.com/2020/02/09/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、由源码到可执行程序的过程1. 预处理： 源码经过预处理器的预处理变成预处理过的.i中间文件 1gcc -E test.c -o test.i  2. 编译： 中间文件经过编译器编译形成.s的汇编文件 1gcc -S test.i -o test.s  3. 汇编： 汇编文件经过汇编器生成目标文件.o(机器语言) 1gcc -c test.s -o test.o  4. 链接： 链接器将目标文件">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test1.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test2.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test.3.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test4.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test5.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test6.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test7.png">
+<meta property="article:published_time" content="2020-02-09T12:07:49.000Z">
+<meta property="article:modified_time" content="2020-02-11T11:30:48.797Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="宏定义">
+<meta property="article:tag" content="预处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test1.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 24
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-C语言宏定义与预处理" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【C语言】宏定义与预处理
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/09/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/" class="archive-article-date">
+  	<time datetime="2020-02-09T12:07:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、由源码到可执行程序的过程"><a href="#一、由源码到可执行程序的过程" class="headerlink" title="一、由源码到可执行程序的过程"></a>一、由源码到可执行程序的过程</h2><p><strong>1. 预处理：</strong> 源码经过预处理器的预处理变成预处理过的<code>.i</code>中间文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -E test.c -o test.i</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 编译：</strong> 中间文件经过编译器编译形成<code>.s</code>的汇编文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S test.i -o test.s</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 汇编：</strong> 汇编文件经过汇编器生成目标文件<code>.o</code>(机器语言)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c test.s -o test.o</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 链接：</strong> 链接器将目标文件链接成<code>.exe</code>可执行程序(<code>Linux</code>下是<code>.elf</code>)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.o -o test.exe</span><br></pre></td></tr></table></figure>
+
+<p>在整个过程中，预处理用预处理器，编译用编译器，汇编用汇编器，链接用链接器，这几个工具再加上其他额外的可能会用到的工具，合起来叫<strong>编译工具链</strong>。<code>gcc/g++</code>就是一个编译工具链，在实际工程中并不会去手动生成那么多中间文件，而是直接一步到位：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.c -o test.exe</span><br></pre></td></tr></table></figure>
+
+<p>其中，编译器的主要目的是编译源代码，即将<code>.c</code>的源代码（<code>.i</code>本质上就是预处理过的<code>.c</code>)转化成<code>.s</code>汇编代码。为了让编译器聚焦核心功能，就将一些非核心功能剥离到预处理器去了，也就是所让预处理器帮编译器做一些编译前的准备工作。</p>
+<h2 id="二、编程中常见的预处理"><a href="#二、编程中常见的预处理" class="headerlink" title="二、编程中常见的预处理"></a>二、编程中常见的预处理</h2><blockquote>
+<ol>
+<li>头文件包含：<code>#include</code></li>
+<li>注释</li>
+<li>条件编译：<code>#if #elif #endif...</code></li>
+<li>宏定义</li>
+</ol>
+</blockquote>
+<h3 id="2-1-头文件包含"><a href="#2-1-头文件包含" class="headerlink" title="2.1 头文件包含"></a>2.1 头文件包含</h3><h4 id="2-1-1-include-lt-gt-和-include-quot-quot-的区别"><a href="#2-1-1-include-lt-gt-和-include-quot-quot-的区别" class="headerlink" title="2.1.1 #include &lt;&gt;和 #include &quot;&quot;的区别"></a>2.1.1 <code>#include &lt;&gt;</code>和 <code>#include &quot;&quot;</code>的区别</h4><blockquote>
+<ul>
+<li><code>#include &lt;&gt;</code>专门用来包含系统提供的头文件，如果使用<code>&lt;&gt;</code>，编译器只会到系统指定目录(编译器中配置的或<code>OS</code>配置的目录，如在<code>Ubuntu</code>中是<code>/usr/include</code>，编译器还允许用<code>-I</code>来附加指定其他的包含路径)去寻找这个头文件，如果找不到就会提示这个头文件不存在。</li>
+<li><code>#include &quot;&quot;</code>用来包含程序员写的头文件，编译器默认先在当前目录下寻找相应的头文件，如果没找到再到系统指定目录去寻找，如果还没找到则提示文件不存在。</li>
+</ul>
+</blockquote>
+<h5 id="使用原则"><a href="#使用原则" class="headerlink" title="使用原则"></a>使用原则</h5><blockquote>
+<ul>
+<li>系统自带的用<code>&lt;&gt;</code></li>
+<li>程序员写的放在当前目录下用<code>&quot;&quot;</code></li>
+<li>程序员写的集中放专门存放头文件的目录下，在编译器中用<code>-I</code>参数寻找用<code>&lt;&gt;</code></li>
+</ul>
+</blockquote>
+<h4 id="2-1-2-头文件包含在预处理时的处理方式"><a href="#2-1-2-头文件包含在预处理时的处理方式" class="headerlink" title="2.1.2 头文件包含在预处理时的处理方式"></a>2.1.2 头文件包含在预处理时的处理方式</h4><p>在预处理的时候，预处理器将所包含的头文件的内容原处展开替换这<code>#include</code>语句。<br>如下所示分别是同一目录下的<code>.c</code>文件和<code>.h</code>文件：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test1.png" alt="test1.png"></p>
+<p>对其进行预编译生成<code>.i</code>文件后，<code>.i</code>文件的内容如下所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test2.png" alt="test2.png"></p>
+<h3 id="2-2-注释"><a href="#2-2-注释" class="headerlink" title="2.2 注释"></a>2.2 注释</h3><p>我们在<code>.c</code>源文件中写的注释，预处理器在预处理阶段会将其擦除(在<code>.c</code>文件依然存在，在<code>.i</code>文件中不存在)。其实这也正顺应了注释是写给使用程序的人看的，而不是给编译器看的。如下所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test.3.png" alt="test.3.png"></p>
+<h3 id="2-3-条件编译"><a href="#2-3-条件编译" class="headerlink" title="2.3 条件编译"></a>2.3 条件编译</h3><p>一般情况下，源程序中所有行都参与编译，但有时希望程序有多种配置，对一部分内容指定编译条件(如产品的调试版与正式版)，这就是<strong>条件编译</strong><code>(conditional compile)</code>，条件编译有以下两种判定方法：</p>
+<h4 id="2-3-1-if"><a href="#2-3-1-if" class="headerlink" title="2.3.1 #if"></a>2.3.1 #if</h4><p>这种判定方法类似于<code>if...else...</code>语句，格式为<code>#if (条件表达式)</code>，它的判定标准是()中的表达式是<code>true</code>还是<code>flase</code>，在进行预编译的过程中，只会保留条件表达式为真的那部分内容，如下所示测试代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG 1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span>(DEBUG == 1)</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Version: DEBUG!"</span>);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">elif</span>(DEBUG == 2)</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Version: TEST!"</span>);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Version: LAST!"</span>);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>预编译结果如下所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test4.png" alt="test4.png"></p>
+<p>我们也可以不在源码中对<code>DEBUG</code>进行宏定义，而在编译的时候可以用如下方法对其进行宏定义并指定值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -E -D DEBUG=<span class="number">2</span> test.c -o test.i</span><br></pre></td></tr></table></figure>
+
+<p>结果如下所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test5.png" alt="test5.png"></p>
+<h4 id="2-3-2-ifdef"><a href="#2-3-2-ifdef" class="headerlink" title="2.3.2 #ifdef"></a>2.3.2 #ifdef</h4><p>用<code>#ifdef XXX</code>判定条件成立与否时主要是看<code>XXX</code>这个符号在本语句之前有没有被定义，只要定义了，判断就成立，并不关心<code>XXX</code>的宏值为多少。测试代码及结果参见下文<strong>3.1非带参宏</strong>的内容</p>
+<h2 id="三、宏定义"><a href="#三、宏定义" class="headerlink" title="三、宏定义"></a>三、宏定义</h2><h3 id="3-1-非带参宏"><a href="#3-1-非带参宏" class="headerlink" title="3.1 非带参宏"></a>3.1 非带参宏</h3><p>非带参宏主要结合条件编译使用，比较简单，其定义格式为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> 宏名 替换列表(替换列表可有可无)</span></span><br></pre></td></tr></table></figure>
+
+<p>如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST2 TEST</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="宏定义的预处理"><a href="#宏定义的预处理" class="headerlink" title="宏定义的预处理"></a>宏定义的预处理</h4><blockquote>
+<ol>
+<li>在预处理阶段由预处理器进行<strong>机械替换</strong>，而不做类型检查</li>
+<li>宏定义替换会递归进行，直到替换出来的值本身不再是一个宏为止</li>
+</ol>
+</blockquote>
+<p>如下是在<code>STM32</code>开发过程中常用的打印调试信息的一个调试代码段：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> USER_TIMER_DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> USER_TIMER_DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_printf(format, ...)  printf( format <span class="meta-string">"\r\n"</span>, ##__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_info(format, ...)  printf(<span class="meta-string">"[\ttimer]info:"</span> format <span class="meta-string">"\r\n"</span>, ##__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_debug(format, ...) printf(<span class="meta-string">"[\ttimer]debug:"</span> format <span class="meta-string">"\r\n"</span>, ##__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_error(format, ...) printf(<span class="meta-string">"[\ttimer]error:"</span> format <span class="meta-string">"\r\n"</span>,##__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_printf(format, ...)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_info(format, ...)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_debug(format, ...)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> user_timer_error(format, ...)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>预编译结果如图所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test6.png" alt="test6.png"></p>
+<h3 id="3-2-带参宏"><a href="#3-2-带参宏" class="headerlink" title="3.2 带参宏"></a>3.2 带参宏</h3><p>宏可以带参数，称为带参宏。带参宏的使用和带参函数非常相似，只是在使用上和处理上有一些差异，其定义格式为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> 标识符(参数1,参数2,...,参数n) 替换列表</span></span><br></pre></td></tr></table></figure>
+
+<p>在定义带参宏时，<strong>每一个参数在宏体中引用时都必须加括号，最后整体再加括号，括号缺一不可</strong>。</p>
+<p>不带括号的后果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M(a, b) a * b</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = M(<span class="number">2</span> + <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, result);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上测试代码，我们想得到<code>(2 + 3) * 5</code>的结果，但是由于宏在预处理的时候也是进行机械替换，<code>int result = M(2 + 3, 5)</code>变成了<code>int result = 2 + 3 * 5</code>，这及其容易出现逻辑上的错误</p>
+<h4 id="3-2-1-带参宏示例"><a href="#3-2-1-带参宏示例" class="headerlink" title="3.2.1 带参宏示例"></a>3.2.1 带参宏示例</h4><p><strong>1.MAX宏:</strong> 求2个数中较大的一个</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (((a)&gt;(b)) ? (a) : (b))</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.SEC_PER_YEAR宏</strong> 用宏定义表示一年中有多少秒</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SEC_PER_YEAR (365*24*60*60UL)</span></span><br></pre></td></tr></table></figure>
+
+<p>这个宏需要注意的是</p>
+<blockquote>
+<ol>
+<li>当一个数字直接出现在程序中时，它的是类型默认是<code>int</code></li>
+<li>一年有多少秒，这个数字超过了<code>int</code>类型存储的范围</li>
+<li>加<code>UL</code>将其转为无符长整型</li>
+</ol>
+</blockquote>
+<h4 id="3-2-2-带参宏和带参函数的区别"><a href="#3-2-2-带参宏和带参函数的区别" class="headerlink" title="3.2.2 带参宏和带参函数的区别"></a>3.2.2 带参宏和带参函数的区别</h4><h5 id="1-时间与空间"><a href="#1-时间与空间" class="headerlink" title="1.时间与空间"></a>1.时间与空间</h5><blockquote>
+<ul>
+<li>宏定义在预处理期间处理，进行简单的内容替换，无需额外空间</li>
+<li>函数是在编译期间处理的，调用时需要为形参分配空间并将实参的值赋给形参</li>
+</ul>
+</blockquote>
+<h5 id="2-执行速度"><a href="#2-执行速度" class="headerlink" title="2.执行速度"></a>2.执行速度</h5><blockquote>
+<ul>
+<li>宏只进行文本替换，函数运行阶段参数需要进行出入栈的操作，速度比宏慢</li>
+</ul>
+</blockquote>
+<h5 id="3-类型检查"><a href="#3-类型检查" class="headerlink" title="3.类型检查"></a>3.类型检查</h5><blockquote>
+<ul>
+<li>宏定义不会检查参数的类型，返回值也不会附带类型</li>
+<li>而数有明确的参数类型和返回值类型。当调用函数时编译器参数的静态类型检查，如果编译器发现实际传参和参数声明不同时会报警告或错误。</li>
+</ul>
+</blockquote>
+<h5 id="综合比较"><a href="#综合比较" class="headerlink" title="综合比较"></a>综合比较</h5><p>宏和函数各有千秋，最大的特点是：用函数的时候程序员不太用操心类型不匹配因为编译器会检查，用宏的时候程序员必须注意实际传参和宏所希望的参数类型一致，或者自行加入类型检查，否则可能编译不报错但是运行有误。</p>
+<p>如对MAX宏加入类型检查：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (&#123;\</span></span><br><span class="line">typeof(a) _a = (a); \</span><br><span class="line">typeof(b) _b = (b); \</span><br><span class="line">(<span class="keyword">void</span>) (&amp;_a == &amp;_b);\</span><br><span class="line">_a &gt; _b ? _a : _b;&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>测试代码:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a, b) (&#123;\</span></span><br><span class="line">typeof(a) _a = (a); \</span><br><span class="line">typeof(b) _b = (b); \</span><br><span class="line">(<span class="keyword">void</span>) (&amp;_a == &amp;_b);\</span><br><span class="line">_a &gt; _b ? _a : _b;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX2(a, b) a &gt; b ? a : b</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">3.1</span>;</span><br><span class="line">    <span class="keyword">int</span> result2 = MAX2(a, b);</span><br><span class="line">    typeof(MAX(a, b)) result = MAX(a, b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"result = %f\n"</span>, result);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"result2 = %d\n"</span>, result2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%AE%8F%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/test7.png" alt="test7.png"></p>
+<h2 id="四、内联函数"><a href="#四、内联函数" class="headerlink" title="四、内联函数"></a>四、内联函数</h2><p>内联函数本质上是函数，通过在函数定义前加<code>inline</code>关键字实现，是编译器负责处理的，可以做参数的静态类型检查。同时也有带参宏的展开特性，运行时没有调用开销。</p>
+<h3 id="4-1-与常规函数对比"><a href="#4-1-与常规函数对比" class="headerlink" title="4.1 与常规函数对比"></a>4.1 与常规函数对比</h3><blockquote>
+<ul>
+<li>当函数体很短的时候，使用常规函数会造成很大的调用开销,内联函数采用原地展开的方式，没有调用开销</li>
+<li>当函数体长的时候，由于内联函数展开会降低寻址效率，所以长函数体不会使用内联函数</li>
+<li>内联函数本质上是函数，函数的性质内联函数都有</li>
+</ul>
+</blockquote>
+<h3 id="4-2-与宏的对比"><a href="#4-2-与宏的对比" class="headerlink" title="4.2 与宏的对比"></a>4.2 与宏的对比</h3><blockquote>
+<ul>
+<li>参数类型检查。编译过程中，编译器仍可以对其内联函数进行参数检查</li>
+<li>便于调试。函数支持的调试功内联函数同样支持，而宏不支持</li>
+<li>接口封装。有些内联函数可以用来封装一个接口，而宏不具备这个特性</li>
+</ul>
+</blockquote>
+<h3 id="4-3-noinline和always-inline"><a href="#4-3-noinline和always-inline" class="headerlink" title="4.3 noinline和always_inline"></a>4.3 noinline和always_inline</h3><p>当函数的函数体很小，而且被大量频繁调用，应该做内联展开时，就可以使用内联函数。但编译器会不会作内联展开，编译器也会有自己的权衡（不合理的内联函数会降低<code>CPU</code>寻址效率、函数运行效率、降低代码的可移植性…）。如果想告诉编译器一定要展开，或者不作展开，就可以使用<code>noinline</code>或<code>always_inline</code>对函数作一个属性声明。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *, <span class="keyword">int</span>)</span></span>;<span class="comment">//编译器权衡是否内联展开</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> __attribute__((noinline)) <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *, <span class="keyword">int</span>)</span></span>;<span class="comment">//不内联展开</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> __attribute__((always_inline)) <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *, <span class="keyword">int</span>)</span></span>;<span class="comment">//内联展开</span></span><br></pre></td></tr></table></figure>
+
+<p>用<code>static</code>修饰呢是因为内联函数不一定会内联展开，当多个文件都包含同一个内联函数的定义时，如果没有<code>static</code>将函数的作用域限制在各自本地文件内，编译时就有可能报重定义错误</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">宏定义</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">预处理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/09/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【C语言】静态链接库与动态链接库的制作与使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/09/%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E7%BD%AE%E4%BD%8D%E4%B8%8E%E5%A4%8D%E4%BD%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【C语言】位运算实现置位与复位</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">宏定义</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">预处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Makefile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Cpp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">共用体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">大小端模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">函数库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">存储类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生命周期</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">链接属性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+

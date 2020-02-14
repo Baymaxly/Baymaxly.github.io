@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【C语言】共用体union与大小端模式 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、共用体union1.1 共用体的定义、变量定义和使用共用体union和结构体struct在类型定义、变量定义和使用方法上很相似，如下代码段">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C语言】共用体union与大小端模式">
+<meta property="og:url" content="http://yoursite.com/2020/02/07/%E5%85%B1%E7%94%A8%E4%BD%93union%E4%B8%8E%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、共用体union1.1 共用体的定义、变量定义和使用共用体union和结构体struct在类型定义、变量定义和使用方法上很相似，如下代码段">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/union1.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/UN2.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/UN3.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/endian1.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/01H.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/unionlittle.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/unionbig.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/plittle.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/pbig.jpg">
+<meta property="article:published_time" content="2020-02-07T14:36:49.000Z">
+<meta property="article:modified_time" content="2020-02-09T03:43:18.653Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="共用体">
+<meta property="article:tag" content="大小端模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/union1.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 24
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-共用体union与大小端模式" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【C语言】共用体union与大小端模式
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/07/%E5%85%B1%E7%94%A8%E4%BD%93union%E4%B8%8E%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2020-02-07T14:36:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-07</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、共用体union"><a href="#一、共用体union" class="headerlink" title="一、共用体union"></a>一、共用体union</h2><h3 id="1-1-共用体的定义、变量定义和使用"><a href="#1-1-共用体的定义、变量定义和使用" class="headerlink" title="1.1 共用体的定义、变量定义和使用"></a>1.1 共用体的定义、变量定义和使用</h3><p>共用体<code>union</code>和结构体<code>struct</code>在类型定义、变量定义和使用方法上很相似，如下代码段</p>
+<a id="more"></a>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> myunion1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">&#125;MU1;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MU1 test1;</span><br><span class="line">    test1.a = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"test1.a = %d\n"</span>, test1.a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-共用体和结构体的不同"><a href="#1-2-共用体和结构体的不同" class="headerlink" title="1.2 共用体和结构体的不同"></a>1.2 共用体和结构体的不同</h3><blockquote>
+<ul>
+<li>结构体中的成员彼此是独立存在的，分布在不同的内存单元中</li>
+<li>共用体重的成员是“一体的”，使用同一个内存单元</li>
+</ul>
+</blockquote>
+<h4 id="1-2-1-测试代码"><a href="#1-2-1-测试代码" class="headerlink" title="1.2.1 测试代码"></a>1.2.1 测试代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> myunion1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">&#125;MU1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> myunion2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">    <span class="keyword">char</span> c[<span class="number">9</span>];</span><br><span class="line">&#125;MU2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MU1 union1;</span><br><span class="line">    union1.a = <span class="number">65</span>;</span><br><span class="line">    <span class="comment">//测试大小</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sizeof(MU1) = %lu\n"</span>, <span class="keyword">sizeof</span>(MU1));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sizeof(MU2) = %lu\n"</span>, <span class="keyword">sizeof</span>(MU2));</span><br><span class="line">    <span class="comment">//测试成员变量地址</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"&amp;union1    = %p\n"</span>, &amp;union1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"&amp;union1.a  = %p\n"</span>, &amp;union1.a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"&amp;union1.b  = %p\n"</span>, &amp;union1.b);</span><br><span class="line">    <span class="comment">//测试成员变量的值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"union1.a  = %d\n"</span>, union1.a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"union1.b  = %c\n"</span>, union1.b);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-测试结果"><a href="#1-2-2-测试结果" class="headerlink" title="1.2.2 测试结果"></a>1.2.2 测试结果</h4><p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/union1.png" alt="union1.png"></p>
+<h4 id="1-2-3-结果分析"><a href="#1-2-3-结果分析" class="headerlink" title="1.2.3 结果分析"></a>1.2.3 结果分析</h4><blockquote>
+<ul>
+<li>共用体整体采用的是4字节对齐，里面的成员变量共用一块内存空间，起始地址均为共用体的首地址</li>
+<li>共用体的长度由其最长的成员变量结合整体4字节对齐共同决定，如下图所示</li>
+<li>我们知道，字符<code>&#39;A&#39;</code>的<code>ASCII</code>码为<code>65</code>，这也印证了共用体<code>union</code>就是对同一块内存中存储的二进制的不同解析方式</li>
+</ul>
+</blockquote>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/UN2.png" alt="UN2.png"></p>
+<h3 id="1-3-指针方式访问共用体实现不同解析方式"><a href="#1-3-指针方式访问共用体实现不同解析方式" class="headerlink" title="1.3 指针方式访问共用体实现不同解析方式"></a>1.3 指针方式访问共用体实现不同解析方式</h3><p>我们知道共用体的所有成员变量的首地址都是在一起的，这省去了计算各成员变量地址的麻烦，在指针访问时，我们只需要结合不同解析方式对指针类型进行变换即可</p>
+<h4 id="1-3-1-测试代码"><a href="#1-3-1-测试代码" class="headerlink" title="1.3.1 测试代码"></a>1.3.1 测试代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> myunion1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">&#125;MU1;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MU1 union1;</span><br><span class="line">    union1.a = <span class="number">65</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*((int *) &amp;union1) = %d\n"</span>, *((<span class="keyword">int</span> *) &amp;union1));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*((char *)&amp;union1) = %c\n"</span>, *((<span class="keyword">char</span> *)&amp;union1));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-测试结果"><a href="#1-3-2-测试结果" class="headerlink" title="1.3.2 测试结果"></a>1.3.2 测试结果</h4><p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/UN3.png" alt="UN3.png"></p>
+<p>这个也非常好理解，我们只是将<code>MU1 *</code>类型的指针强制转换成了我们所期待的指针类型然后再进行解引用。</p>
+<h2 id="二、大小端模式"><a href="#二、大小端模式" class="headerlink" title="二、大小端模式"></a>二、大小端模式</h2><h3 id="2-1-大小端模式简述"><a href="#2-1-大小端模式简述" class="headerlink" title="2.1 大小端模式简述"></a>2.1 大小端模式简述</h3><h4 id="2-1-1-大小端问题的由来"><a href="#2-1-1-大小端问题的由来" class="headerlink" title="2.1.1 大小端问题的由来"></a>2.1.1 大小端问题的由来</h4><p>在通信系统中，如果要通过串口发送一个<code>12345678H</code>给接收方，但是串口只能以字节为单位来发送，需要发4次；接收方分4次接收，内容分别是：<code>12H</code>、<code>34H</code>、<code>56H</code>、<code>78H</code>。接收方接收到这4个字节之后需要去重组得到<code>12345678H</code>（而不是得到<code>0x78563412</code>），因而在通信双方需要有一个协议，就是：先发/先接的是高位还是低位？这就是通信中的大小端问题</p>
+<h4 id="2-1-2-计算机中存储系统的大小端"><a href="#2-1-2-计算机中存储系统的大小端" class="headerlink" title="2.1.2 计算机中存储系统的大小端"></a>2.1.2 计算机中存储系统的大小端</h4><p>C语言中除了有<code>8bit</code>的<code>char</code>型，也有<code>16bit</code>的<code>short</code>型，还有<code>32bit</code>的<code>int</code>型(据具体的编译环境而定），但是在计算机存储系统中数据仍然是按照字节为单位的。于是一个<code>16/32/64</code>位的二进制数据在存储时有2种分布方式：</p>
+<blockquote>
+<ul>
+<li><code>大端模式(big endian)</code>   :数据的高字节保存在内存的低地址，低字节保存在高地址</li>
+<li><code>小端模式(little endian)</code>:数据的高字节保存在内存的高地址，低字节保存在低地址</li>
+</ul>
+</blockquote>
+<p>如下图所示，将数据<code>12345678H</code>存入内存中：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/endian1.png" alt="endian1.png"></p>
+<p>大端模式和小端模式没有优劣之别，由于小端模式将地址的高低和数据位权结合起来了(高地址部分权值高，低地址部分权值低)，导致主流用小端(<code>Intel、ARM</code>)，但是也有些CPU公司用大端(如<code>C51</code>)，所以要求必须存储时和读取时按照同样的大小端模式来进行，否则会出错。</p>
+<h3 id="2-2-用函数测试计算机的大小端存储"><a href="#2-2-用函数测试计算机的大小端存储" class="headerlink" title="2.2 用函数测试计算机的大小端存储"></a>2.2 用函数测试计算机的大小端存储</h3><p>我们知道，如果将一个<code>int</code>型(<code>32bit</code>)的数据存入内存中，需要占<code>4B</code>的空间，而<code>char</code>型的数据只占<code>1B</code>。那么，如果我们将<code>int</code>类型的数据存入内存中，而用<code>char</code>去解析他，只会得到其中的一部分数据。如<code>2.1.2</code>中的<code>12345678H</code>，如果用<code>char</code>去解析，在小端模式下得到的是<code>78H</code>，而在大端模式下得到的是<code>12H</code>。</p>
+<p>那么我们将<code>int</code>类型的<code>1</code>存入内存中用<code>char</code>解析会怎么样呢？</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/01H.png" alt="01H.PNG"></p>
+<p>很显然：</p>
+<blockquote>
+<ul>
+<li>在大端模式下得到的是<code>00H</code>，也就是<code>0</code></li>
+<li>在小端模式下得到的是<code>01H</code>，也就是<code>1</code></li>
+</ul>
+</blockquote>
+<h4 id="2-2-1-共用体实现"><a href="#2-2-1-共用体实现" class="headerlink" title="2.2.1 共用体实现"></a>2.2.1 共用体实现</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> MyStatus&#123;BIG = <span class="number">0</span>, LITTLE&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> BIG_OR_LITTLE_ENDIAN</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">&#125;BOLE;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">endian_test</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = endian_test();</span><br><span class="line">    <span class="built_in">printf</span>(result == BIG ? <span class="string">"大端模式\n"</span> : <span class="string">"小端模式\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">endian_test</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    BOLE test;</span><br><span class="line">    test.a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> test.b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在小端模式下的测试结果(<code>Intel i5-8300H</code>)</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/unionlittle.png" alt="unionlittle.png"></p>
+<p>在大端模式下的调试结果(<code>Keil C51，AT89C52</code>)，我们可以看到断点处<code>result</code>的值是<code>0</code>，说明确实处于大端模式下</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/unionbig.png" alt="unionbig.png"></p>
+<h4 id="2-2-2-指针实现"><a href="#2-2-2-指针实现" class="headerlink" title="2.2.2 指针实现"></a>2.2.2 指针实现</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> MyStatus&#123;BIG = <span class="number">0</span>, LITTLE&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">endian_test</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = endian_test();</span><br><span class="line">    <span class="built_in">printf</span>(result == BIG ? <span class="string">"大端模式\n"</span> : <span class="string">"小端模式\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">endian_test</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> test = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> *((<span class="keyword">char</span> *)&amp;test);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在小端模式下的测试结果(<code>Intel i5-8300H</code>)</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/plittle.png" alt="plittle.png"></p>
+<p>在大端模式下的调试结果(<code>Keil C51，AT89C52</code>)(不知道为啥这次一截图result (D:0X08) = 0X0000就会没用，所以用手机拍的图…)</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/%E5%85%B1%E7%94%A8%E4%BD%93%E3%80%81%E5%A4%A7%E5%B0%8F%E7%AB%AF%E3%80%82%E6%9E%9A%E4%B8%BE/pbig.jpg" alt="pbig.png"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">共用体</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">大小端模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/07/%E5%85%B1%E7%94%A8%E4%BD%93union%E4%B8%8E%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/09/%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E7%BD%AE%E4%BD%8D%E4%B8%8E%E5%A4%8D%E4%BD%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【C语言】位运算实现置位与复位
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/06/%E3%80%908086%E6%B1%87%E7%BC%96%E3%80%912.%E8%AE%BF%E9%97%AE%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E5%86%85%E5%AD%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【8086汇编】2.访问寄存器和内存</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">宏定义</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">预处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Makefile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Cpp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">共用体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">大小端模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">函数库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">存储类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生命周期</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">链接属性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+

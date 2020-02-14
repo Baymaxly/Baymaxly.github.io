@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【C语言】静态链接库与动态链接库的制作与使用 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc 1.1 函数库的提供形式：动态链接库与静态链接库早期的函数共享都是以源代码的形式进行的，慢慢地，源码共">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C语言】静态链接库与动态链接库的制作与使用">
+<meta property="og:url" content="http://yoursite.com/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、函数库简述简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如glibc 1.1 函数库的提供形式：动态链接库与静态链接库早期的函数共享都是以源代码的形式进行的，慢慢地，源码共">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212120431.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212010335.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212012726.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212013750.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212020007.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212021729.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212024628.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212030923.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033449.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033923.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212034333.png">
+<meta property="article:published_time" content="2020-02-11T08:51:49.000Z">
+<meta property="article:modified_time" content="2020-02-12T11:30:06.753Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="函数库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212120431.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 24
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-动态链接库与静态链接库" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【C语言】静态链接库与动态链接库的制作与使用
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/" class="archive-article-date">
+  	<time datetime="2020-02-11T08:51:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-11</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、函数库简述"><a href="#一、函数库简述" class="headerlink" title="一、函数库简述"></a>一、函数库简述</h2><p>简单来说，函数库就是一些事先写好的模块化的函数的集合，可以供给其他程序员使用。最开始没有函数库，每个程序员写程序都要从零开始写，时间长了慢慢地就积累下来了一些优质的函数库。后来有组织把各种函数库收拢在一起，经过校准和整理，形成一份标准化的函数库，就是现在的标准的函数库，如<code>glibc</code></p>
+<h3 id="1-1-函数库的提供形式：动态链接库与静态链接库"><a href="#1-1-函数库的提供形式：动态链接库与静态链接库" class="headerlink" title="1.1 函数库的提供形式：动态链接库与静态链接库"></a>1.1 函数库的提供形式：动态链接库与静态链接库</h3><p>早期的函数共享都是以源代码的形式进行的，慢慢地，源码共享的方向就形成了我们现在的开源社区，无法以商业化形式来发布函数库。商业公司需要将自己的函数库让他人付费使用，但是又不能给客户源代码，这时候就出现了静态链接库和动态链接库。</p>
+<h4 id="1-1-1-静态链接库"><a href="#1-1-1-静态链接库" class="headerlink" title="1.1.1 静态链接库"></a>1.1.1 静态链接库</h4><p>商业公司将函数库源代码经过只编译不连接形成<code>.o</code>的目标文件，然后用<code>ar</code>工具将<code>.o</code>文件归档成<code>.a</code>的归档文件，这个<code>.a</code>的归档文件就叫做静态链接库文件。通过发布<code>.a</code>库文件和<code>.h</code>头文件来提供静态库给客户使用；</p>
+<p>客户拿到<code>.a</code>和<code>.h</code>文件后，通过<code>.h</code>头文件得知库中的库函数的原型，然后在自己的<code>.c</code>文件中直接调用这些库文件，在链接的时候链接器会去<code>.a</code>文件中拿出被调用的那个函数的编译后的<code>.o</code>二进制代码段链接进去形成最终的可执行程序。</p>
+<h4 id="1-1-2-动态链接库"><a href="#1-1-2-动态链接库" class="headerlink" title="1.1.2 动态链接库"></a>1.1.2 动态链接库</h4><p>动态库比静态链接库出现得晚一些，效率更高一些。<strong>现在一般都是使用动态库</strong>。静态库在用户链接自己的可执行程序时就已经把调用的库中的函数的代码段链接进最终可执行程序中了，这样好处是随处可以执行，坏处是太占地方了。尤其是有多个应用程序都使用了同一个库函数时，最后生成的可执行程序中都各自有一份这个库函数的代码段。当这些应用程序同时在内存中运行时，实际上在内存中有多个这个库函数的代码段，这完全重复了。</p>
+<p>而<strong>动态链接库本身不将库函数的代码段链接入可执行程序，只是做个标记</strong>。然后当应用程序在内存中执行时，运行时环境发现它调用了一个动态库中的库函数时，会去加载这个动态库到内存中，然后以后不管有多少个应用程序去调用这个库中的函数都会跳转到第一次加载的地方去执行（不会重复加载）。</p>
+<h3 id="1-2-函数库中库函数的使用"><a href="#1-2-函数库中库函数的使用" class="headerlink" title="1.2 函数库中库函数的使用"></a>1.2 函数库中库函数的使用</h3><ol>
+<li><code>gcc</code>中编译链接程序默认使用动态库，要静态链接需要显式用<code>-static</code>来强制静态链接。</li>
+<li>库函数的使用需要注意:<blockquote>
+<ol>
+<li>包含相应的头文件</li>
+<li>调用库函数时注意函数原型</li>
+<li>有些库函数链接时需要额外用<code>-lxxx</code>来指定链接</li>
+<li>如果不是系统库，要注意用<code>-L</code>指定库的地址</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<p>如我们使用数学函数库中的<code>sqrt</code>函数:</p>
+<blockquote>
+<ol>
+<li>真正的数学运算的函数定义在：<code>/usr/include/x86_64-linux-gnu/bits/mathcalls.h</code></li>
+<li>使用数学库函数的时候，只需要包含<code>math.h</code>即可</li>
+</ol>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> x = <span class="number">16.0</span>;</span><br><span class="line">    <span class="keyword">double</span> y = <span class="built_in">sqrt</span>(x);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"y = %lf\n"</span>, y);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>学过C语言的同学都知道答案是<code>4.000000</code>，但是直接编译的结果是什么呢？看下图：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212120431.png" alt="clipboard_20200212120431.png"><br>我们会发现在链接的时候报错了！报的是对<code>&#39;sqrt&#39;</code>未定义的引用，即sqrt函数有声明(在<code>math.h</code>中)有引用(在<code>math.c</code>)，但是没有定义，链接器找不到函数体。为什么会这样呢？因为库函数有很多，链接器去库函数目录搜索的时间比较久。为了提升速度链接器只是默认地寻找几个最常用的库，如果是一些不常用的库中的函数被调用，需要程序员在链接时明确给出要扩展查找的库的名字。<br><strong>链接时可以用-lxxx来指示链接器去到libxxx.a(静)或libxxx.so(动)中去查找函数</strong><br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212010335.png" alt="clipboard_20200212010335.png"><br>我们可以看到加了<code>-lm</code>后就成功链接了，同时，我们也可以看到静态链接比动态链接生成的可执行文件的大小根本不在同一个数量级！！！</p>
+<h2 id="二、制作并使用静态链接库"><a href="#二、制作并使用静态链接库" class="headerlink" title="二、制作并使用静态链接库"></a>二、制作并使用静态链接库</h2><h3 id="2-1-制作"><a href="#2-1-制作" class="headerlink" title="2.1 制作"></a>2.1 制作</h3><p>创建对应的<code>.c源文件</code>和<code>.h头文件</code>以及<code>Makefile</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch mylib1.c mylib1.h Makefile</span><br></pre></td></tr></table></figure>
+
+<p>编辑好头文件和源文件的对应内容，如图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212012726.png" alt="clipboard_20200212012726.png"></p>
+<p>接下来先只编译不连接，生成<code>.o</code>文件；然后使用<code>ar</code>工具进行打包成<code>.a</code>归档文件，打包时注意库名不能随便乱起，一般是<code>lib+库名称</code>，后缀名<code>.a</code>表示是静态链接库文件。对应的<code>Makefile</code>段如下所示：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">lib:</span></span><br><span class="line">	gcc -c mylib1.c -o mylib1.o</span><br><span class="line">	ar -rc libmylib1.a mylib1.o</span><br></pre></td></tr></table></figure>
+
+<p>执行对应的脚本即可完成静态库的制作<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212013750.png" alt="clipboard_20200212013750.png"></p>
+<h3 id="2-2-发布"><a href="#2-2-发布" class="headerlink" title="2.2 发布"></a>2.2 发布</h3><p>所谓发布，就是将<code>.a</code>文件和<code>.h</code>文件放在一个独立的文件夹里面，以便后续使用。如图所示<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212020007.png" alt="clipboard_20200212020007.png"></p>
+<h3 id="3-3-使用"><a href="#3-3-使用" class="headerlink" title="3.3 使用"></a>3.3 使用</h3><p>我们在发布的文件夹里建立自己的<code>.c</code>文件，就可以直接调用库函数了！</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch main.c Makefile</span><br></pre></td></tr></table></figure>
+
+<p>我们在主函数中添加如下内容：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mylib1.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    myprint();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>1.2</code>使用数学函数的时候我们知道链接器只会去器寻找几个最常用的库，我们发布的库肯定不会被寻找的，所以需要加<code>-lxxx</code>去指定</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212021729.png" alt="clipboard_20200212021729.png"><br>我们会发现，这样还是不能正确链接，会有如下报错信息：<code>/usr/bin/ld: 找不到 -lmylib1</code>，通过报错信息我们知道，链接器默认只在系统指定的目录下寻找链接库。所以需要用-L指定库的地址，我们将Makefile修改如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib1 -L.</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>.</code>就表示在当前目录下，我们可以看到程序进行了成功地编译链接<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212024628.png" alt="clipboard_20200212024628.png"></p>
+<h2 id="三、制作并使用动态链接库"><a href="#三、制作并使用动态链接库" class="headerlink" title="三、制作并使用动态链接库"></a>三、制作并使用动态链接库</h2><h3 id="3-1-制作与发布"><a href="#3-1-制作与发布" class="headerlink" title="3.1 制作与发布"></a>3.1 制作与发布</h3><p>动态链接库的制作和静态库思路类似，只是后缀名是<code>.so</code>(<code>windows</code>下是<code>dll</code>)，通过<code>gcc</code>来打包而不是<code>ar</code>，对应的<code>Makefile</code>如下所示：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">lib:</span></span><br><span class="line">	gcc -c mylib2.c -o mylib2.o -fPIC</span><br><span class="line">	gcc mylib2.o -o libmylib2.so -shared</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<blockquote>
+<ul>
+<li><code>-fPIC</code>是位置无关码，作用于编译阶段，告诉编译器产生与位置无关的代码<code>(Position-Independent Code)</code>。即产生的代码中，没有绝对地址，全部使用相对地址，被加载器加载到内存的任意位置，都可以正确执行。这正是共享库所要求的，共享库被加载时，在内存的位置不是固定的。</li>
+<li><code>-shared</code>是按照共享库的方式来链接</li>
+</ul>
+</blockquote>
+<p>发布的时候发布<code>libxxx.so</code>和<code>xxx.h</code>即可，这里不再赘述</p>
+<h3 id="3-2-使用"><a href="#3-2-使用" class="headerlink" title="3.2 使用"></a>3.2 使用</h3><p>有了静态库的经验我们知道，编译链接时的指令应该是：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line">	gcc main.c -o main.elf -lmylib2 -L.</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到程序被成功编译链接了<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212030923.png" alt="clipboard_20200212030923.png"><br>但是运行出错，报错信息：<code>error while loading shared libraries: libmylib2.so: cannot open shared object file: No such file or directory</code></p>
+<p>这是因为<strong>动态链接库运行时需要被加载</strong>(运行时环境在执行程序的时候发现动态链接了<code>libxxx. so</code>，于是会去<strong>固定目录<code>/usr/lib</code>下加载libxxx. so</strong>，如果加载失败则会打印以上错误信息。）</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ol>
+<li><strong>将libaston.so放到固定目录/usr/lib下</strong></li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp libmylib2.so /usr/lib</span><br></pre></td></tr></table></figure>
+
+<p>一般而言固定目录<code>/usr/lib</code>用来存放系统自带的动态链接库，不建议用户自行修改里面的内容</p>
+<ol start="2">
+<li><strong>使用环境变量LD_LIBRARY_PATH</strong></li>
+</ol>
+<p>操作系统在加载固定目录<code>/usr/lib</code>之前，会先去<code>LD_LIBRARY_PATH</code>这个环境变量所指定的目录下去寻找，如果找到则不去<code>/usr/lib</code>目录下，如果没找到再去<code>/usr/lib</code>下。所以可将<code>libaston.so</code>所在的目录导出到环境变量<code>LD_LIBRARY_PATH</code>中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> LD_LIBRARY_PATH=D_LIBRARY_PATH:\</span><br><span class="line">/mnt/hgfs/VMShare/C/<span class="number">6.</span>PreprocessFunction/funclib/dynamiclib/publib</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033449.png" alt="clipboard_20200212033449.png"><br>我们可以发现，导入环境变量之后程序就可以直接运行了</p>
+<h3 id="3-3-ldd命令"><a href="#3-3-ldd命令" class="headerlink" title="3.3 ldd命令"></a>3.3 ldd命令</h3><p><code>ldd</code>命令可以在一个使用了共享库的程序执行之前解析出这个程序使用了哪些共享库，并且查看这些共享库是否能被找到，如上述示例加入了共享库后，使用了的所有的<code>.so</code>都能被解析到地址<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212033923.png" alt="clipboard_20200212033923.png"><br>如果我们将环境变量设置为空：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> LD_LIBRARY_PATH=</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/Func/clipboard_20200212034333.png" alt="clipboard_20200212034333.png"><br>我们可以看到<code>main.elf</code>链接的<code>libmylib2.so</code>处于<code>not found</code>状态，故无法正确执行</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">函数库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/11/Makefile%E5%A4%A7%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【Makefile】Makefile基本使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/09/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【C语言】宏定义与预处理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">宏定义</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">预处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Makefile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Cpp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">共用体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">大小端模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">函数库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">存储类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生命周期</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">链接属性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+

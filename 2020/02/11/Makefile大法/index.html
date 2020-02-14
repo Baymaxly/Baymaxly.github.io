@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【Makefile】Makefile基本使用 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、Makefile的引入1.1 用途Makefile是用来管理工程的，一个工程中的源文件不计数，其按类型、功能、模块分别放在若干个目录中，Makefile定义了一系列的规则来指定，哪些文件先编译、后编译、重新编译，甚至于进行更复杂的功能操作。总而言之，Makefile方便编译链接过程，一旦写好，只需要一个make命令，整个工程完全自动编译链接，极大地提高了项目开发的效率。 1.2 文件名Make">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Makefile】Makefile基本使用">
+<meta property="og:url" content="http://yoursite.com/2020/02/11/Makefile%E5%A4%A7%E6%B3%95/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、Makefile的引入1.1 用途Makefile是用来管理工程的，一个工程中的源文件不计数，其按类型、功能、模块分别放在若干个目录中，Makefile定义了一系列的规则来指定，哪些文件先编译、后编译、重新编译，甚至于进行更复杂的功能操作。总而言之，Makefile方便编译链接过程，一旦写好，只需要一个make命令，整个工程完全自动编译链接，极大地提高了项目开发的效率。 1.2 文件名Make">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/makefile1.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/error1.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211091845.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211085900.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/3.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211102232.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211112456.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211105500.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211113950.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212121713.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212011451.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212013835.png">
+<meta property="article:published_time" content="2020-02-11T11:39:49.000Z">
+<meta property="article:modified_time" content="2020-02-11T18:04:58.967Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="Makefile">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/makefile1.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 24
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-Makefile大法" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【Makefile】Makefile基本使用
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/11/Makefile%E5%A4%A7%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2020-02-11T11:39:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-11</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、Makefile的引入"><a href="#一、Makefile的引入" class="headerlink" title="一、Makefile的引入"></a>一、Makefile的引入</h2><h3 id="1-1-用途"><a href="#1-1-用途" class="headerlink" title="1.1 用途"></a>1.1 用途</h3><p><code>Makefile</code>是用来管理工程的，一个工程中的源文件不计数，其按类型、功能、模块分别放在若干个目录中，<code>Makefile</code>定义了一系列的规则来指定，哪些文件先编译、后编译、重新编译，甚至于进行更复杂的功能操作。总而言之，<code>Makefile</code>方便编译链接过程，一旦写好，只需要一个<code>make</code>命令，整个工程完全自动编译链接，极大地提高了项目开发的效率。</p>
+<h3 id="1-2-文件名"><a href="#1-2-文件名" class="headerlink" title="1.2 文件名"></a>1.2 文件名</h3><p><code>Makefile</code>常用的合法文件名有两个，一级文件夹里面有且只能有一个<code>Makefile</code></p>
+<blockquote>
+<ol>
+<li><code>Makefile</code></li>
+<li><code>makefile</code></li>
+</ol>
+</blockquote>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/makefile1.png" alt="makefile1"></p>
+<h3 id="1-3-规则"><a href="#1-3-规则" class="headerlink" title="1.3 规则"></a>1.3 规则</h3><blockquote>
+<ul>
+<li><strong>目标</strong>：目标顶格写，后面是冒号（冒号后面是依赖）</li>
+<li><strong>依赖</strong>：依赖是用来产生目标的原材料（可不写）</li>
+<li><strong>命令</strong>：命令是要生成目标的加工方法，<strong>前面一定是<code>Tab</code>，不能顶格，也不能多个空格</strong>。<br>用空格代替<code>Tab</code>会报如下错误：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/error1.png" alt="error1"></li>
+</ul>
+</blockquote>
+<h4 id="1-3-1-参考片段"><a href="#1-3-1-参考片段" class="headerlink" title="1.3.1 参考片段"></a>1.3.1 参考片段</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">preprocess: a.c b.c</span></span><br><span class="line">		gcc -E a.c -o a.i</span><br><span class="line">		gcc -E b.c -o b.i</span><br><span class="line"></span><br><span class="line"><span class="section">compile: a.i b.i</span></span><br><span class="line">		gcc a.i b.i -o ab.exe</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、Makefile工作命令"><a href="#二、Makefile工作命令" class="headerlink" title="二、Makefile工作命令"></a>二、Makefile工作命令</h2><p><code>Makefile</code>在工作的时候有两种方式:<code>make 目标</code>和直接<code>make</code>，执行时默认先在终端打印将要执行的命令，然后执行。测试文件及内容如下：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211091845.png" alt="clipboard_20200211091845.png"></p>
+<h3 id="2-1-make-目标"><a href="#2-1-make-目标" class="headerlink" title="2.1 make 目标"></a>2.1 <code>make 目标</code></h3><blockquote>
+<ul>
+<li>如果写了依赖，<code>Makefile</code>会先检测依赖是否存在，如果依赖成立就执行下面的命令，不成立就停止执行</li>
+<li>如果没写依赖，直接执行后面的命令，由编译工具链先进行是否合法的判断。</li>
+</ul>
+</blockquote>
+<p>如下所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211085900.png" alt="clipboard_20200211085900.png"></p>
+<h3 id="2-2-直接-make"><a href="#2-2-直接-make" class="headerlink" title="2.2 直接 make"></a>2.2 直接 <code>make</code></h3><p>直接使用<code>make</code>命令的话，其默认目标就是第一个目标，如下所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/3.png" alt="3.png"></p>
+<h3 id="2-3-静默执行"><a href="#2-3-静默执行" class="headerlink" title="2.3 静默执行"></a>2.3 静默执行</h3><p>从前面我们可以看到，<code>Makefile</code>在执行命令的时候会先把命令先打印在终端上，如果不想看到命令本身，只想看到命令的执行结果，可以直接在命令前加<code>@</code>，采用<strong>静默执行</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">compile: a.c b.c</span></span><br><span class="line">		@gcc a.c b.c -o ab.exe</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
+
+<p>如下所示，我们可以看到加了<code>@</code>之后就不会再显示命令了<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211102232.png" alt="clipboard_20200211102232.png"></p>
+<h3 id="2-4-命令的显示与禁止"><a href="#2-4-命令的显示与禁止" class="headerlink" title="2.4 命令的显示与禁止"></a>2.4 命令的显示与禁止</h3><p>在执行<code>make</code>时带参数<code>-n</code>或<code>--just-print</code>，那么只显示命令但不会执行，这个功能有利于调试<code>Makefile</code>;<br>而参数<code>-s</code>或<code>--slient</code>则是全面禁止命令的显示，只执行命令，如下所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211112456.png" alt="clipboard_20200211112456.png"></p>
+<h2 id="三、伪目标（-PHONY）"><a href="#三、伪目标（-PHONY）" class="headerlink" title="三、伪目标（.PHONY）"></a>三、伪目标（.PHONY）</h2><ul>
+<li>伪目标意思是这个目标本身不代表一个文件，执行目标不是为了得到文件，而是单纯为了执行这个目标下面的命令。一般<code>clean</code>用伪目标</li>
+<li>伪目标一般没有依赖，既然是为了执行命令就不必加依赖，因为不加依赖意思就是无条件执行。</li>
+<li>伪目标可以直接写，不影响使用；为了明确声明这个目标是伪目标会在其前面用<code>.PHONY</code>来明确声明它是伪目标</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm ab.exe</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、使用变量"><a href="#四、使用变量" class="headerlink" title="四、使用变量"></a>四、使用变量</h2><p>在<code>Makefile</code>中，一个命令如果有很多<code>.c</code>之类的文件，将不便于修改，此时可以采用变量的形式。</p>
+<h3 id="4-1-使用规则"><a href="#4-1-使用规则" class="headerlink" title="4.1 使用规则"></a>4.1 使用规则</h3><p><code>Makefile</code>中的变量都没有变量类型，直接定义使用，引用变量时用<code>$(变量名)</code>。变量在引用时类似于<code>C</code>语言的宏，也是原地展开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var &#x3D; a.c b.c</span><br><span class="line"></span><br><span class="line">compile: $(var)</span><br><span class="line">		@gcc $(var) -o ab.exe</span><br></pre></td></tr></table></figure>
+
+<p>可以用<code>echo</code>打印变量信息，如下所示:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">print:</span></span><br><span class="line">		echo <span class="variable">$(var)</span></span><br></pre></td></tr></table></figure>
+
+<p>结果如下<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211105500.png" alt="clipboard_20200211105500.png"></p>
+<h3 id="4-2-几种变量赋值运算符"><a href="#4-2-几种变量赋值运算符" class="headerlink" title="4.2 几种变量赋值运算符"></a>4.2 几种变量赋值运算符</h3><h4 id="4-2-1-与"><a href="#4-2-1-与" class="headerlink" title="4.2.1 =与:="></a>4.2.1 <code>=</code>与<code>:=</code></h4><blockquote>
+<ul>
+<li>使用<code>=</code> 赋值时变量的值可以定义在文件的任何一处，不一定非要是已定义好的值，可以使用后面定义的值，在解析时使用最后定义的值</li>
+<li>使用<code>:=</code>赋值时前面的变量不会使用后面的变量，只能使用前面已定义好了的变量</li>
+</ul>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var1 = abcd</span><br><span class="line">var3 := abcd</span><br><span class="line">var2 := <span class="variable">$(var1)</span></span><br><span class="line">var4 = <span class="variable">$(var3)</span></span><br><span class="line"></span><br><span class="line"><span class="section">print:</span></span><br><span class="line">		echo var1 的值为 <span class="variable">$(var1)</span></span><br><span class="line">		echo var2 的值为 <span class="variable">$(var2)</span></span><br><span class="line">		echo var3 的值为 <span class="variable">$(var3)</span></span><br><span class="line">		echo var4 的值为 <span class="variable">$(var4)</span></span><br><span class="line"></span><br><span class="line">var1 = efgh</span><br><span class="line">var3 := efgh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200211113950.png" alt="clipboard_20200211113950.png"><br>我们可以看到：</p>
+<blockquote>
+<ul>
+<li>虽然<code>var1</code>是用<code>=</code>赋值的，但是<code>var2</code>是用<code>:=</code>赋值的，<code>var2</code>在对<code>$(var1)</code>进行解析时只会查看<code>var2</code>前面的语句</li>
+<li>而<code>var4</code>解析<code>$(var3)</code>是会查看整个文件，即使<code>var3</code>采用的是<code>:=</code>赋值；</li>
+<li>直接对变量进行解析打印时，不管是<code>=</code>赋值还是<code>:=</code>赋值，最后打印的都是最后的值，也就是说解析最后的值</li>
+</ul>
+</blockquote>
+<h4 id="4-2-2"><a href="#4-2-2" class="headerlink" title="4.2.2 ?="></a>4.2.2 <code>?=</code></h4><p><code>var ?= bar</code>的含义是：如果<code>var</code>没有被定义过，那么变量<code>var</code>的值就是<code>bar</code>，如果<code>var</code>先前被定义过，那么这条语将什么也不做。</p>
+<h4 id="4-2-3"><a href="#4-2-3" class="headerlink" title="4.2.3 +="></a>4.2.3 <code>+=</code></h4><p>用来给一个已经赋值的变量接续赋值，有点类似于<code>C</code>语言中的<code>strcat</code>。需要注意的是<code>+=</code><strong>续接的内容和原来的内容之间会自动加一个空格隔开</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">object := a.c b.c c.c</span><br><span class="line">object += d.c</span><br><span class="line"></span><br><span class="line"><span class="section">printf: <span class="variable">$(object)</span></span></span><br><span class="line">		echo <span class="variable">$(object)</span></span><br></pre></td></tr></table></figure>
+
+<p>结果如图所示：<br><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212121713.png" alt="clipboard_20200212121713.png"></p>
+<h2 id="五、通配符"><a href="#五、通配符" class="headerlink" title="五、通配符"></a>五、通配符</h2><h3 id="5-1-与"><a href="#5-1-与" class="headerlink" title="5.1 *,?与[]"></a>5.1 <code>*</code>,<code>?</code>与<code>[]</code></h3><p>如果要处理一系列比较类似的文件，我们可以使用以下三种通配符：</p>
+<blockquote>
+<ol>
+<li><code>*</code> 若干个任意字符</li>
+<li><code>?</code> 一个任意字符</li>
+<li><code>[]</code>将[]中的字符依次去和外面的结合匹配</li>
+</ol>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.PHNOY:clean</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">		rm -f *.c [abcd].h a?cd.c</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212011451.png" alt="clipboard_20200212011451.png"><br>如图所示，我们有一串文件夹，在clean的过程中：</p>
+<blockquote>
+<ul>
+<li><code>a.c b.c c.c d.c</code>均匹配<code>*.c</code>，故被删除</li>
+<li><code>a.h b.h c.h d.h</code>与<code>[abcd].h</code>匹配，由于字符依次匹配，故<code>ab.h</code>扔保留</li>
+</ul>
+</blockquote>
+<h3 id="5-2-规则通配符-和自动推导"><a href="#5-2-规则通配符-和自动推导" class="headerlink" title="5.2 规则通配符%和自动推导"></a>5.2 规则通配符<code>%</code>和自动推导</h3><p>还有一个和<code>*</code>看似很像的通配符%，<code>%</code>代表一个或几个字母，比如<code>%.o</code>就代表所有以<code>.o</code>为结尾的文件。但是<code>%</code>和<code>*</code>作用是不同的，<code>%</code>作为规则通配符常用在<code>Makefile</code>的自动推导上。所谓自动推导其实就是当<code>Makefile</code>需要某一个目标时，他会把这个目标去套规则说明，一旦套上了某个规则说明，<code>Makefile</code>就会去寻找这个规则中的依赖，如果能找到则会执行这个规则用依赖生成目标。</p>
+<h3 id="5-3-自动变量"><a href="#5-3-自动变量" class="headerlink" title="5.3 自动变量"></a>5.3 自动变量</h3><p>在有些情况下文件集合中文件非常多，描述的时候很麻烦，<code>Makefile</code>就用一些特殊的符号来替代符合某种条件的文件集，这就形成了自动变量。自动变量是预定义的特殊意义的符号，就类似于<code>C</code>语言编译器中预制的<code>__FILE__</code>宏，常见自动变量有以下三种：</p>
+<blockquote>
+<ol>
+<li><code>$@</code> :规则的目标文件名</li>
+<li><code>$&lt;</code> :规则的依赖文件名</li>
+<li><code>$^</code> :依赖的文件集合</li>
+</ol>
+</blockquote>
+<h3 id="5-4-测试脚本及结果"><a href="#5-4-测试脚本及结果" class="headerlink" title="5.4 测试脚本及结果"></a>5.4 测试脚本及结果</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">abcd.elf: a.o b.o c.o d.o</span></span><br><span class="line">		gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"><span class="comment">#$^为a.o b.o c.o d.o，$@为abcd.elf</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.i</span></span><br><span class="line">		gcc -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.i: %.c</span></span><br><span class="line">		gcc -E <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/Makefile/clipboard_20200212013835.png" alt="clipboard_20200212013835.png"><br>在执行命令<code>make abcd.elf</code>时，需要一系列.o的依赖，这个时候makefile由.o推到.i，再由.i推到.c</p>
+<h2 id="六、Makefile的环境变量"><a href="#六、Makefile的环境变量" class="headerlink" title="六、Makefile的环境变量"></a>六、Makefile的环境变量</h2><ul>
+<li><code>Makefile</code>中用<code>export</code>导出的就是环境变量，一般情况下环境变量名用大写，普通变量名用小写。环境变量类似于整个工程中所有<code>Makefile</code>之间可以共享的全局变量，定义了一个环境变量会影响到工程中别的<code>Makefile</code>文件，因此要小心。</li>
+<li><code>Makefile</code>中有一些环境变量可能是<code>Makefile</code>本身自己定义的内部环境变量或者是当前的执行环境提供的环境变量（如命令<code>make CC=arm-linux-gcc</code>，其实就是给当前<code>Makefile</code>传了一个环境变量<code>CC</code>，值是<code>arm-linux-gcc</code>。在<code>make</code>时给<code>Makefile</code>传的环境变量值优先级最高的，可以覆盖<code>makefile</code>中的赋值）</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Makefile</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/11/Makefile%E5%A4%A7%E6%B3%95/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/12/%E5%AD%98%E5%82%A8%E7%B1%BB%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【C语言】存储类、作用域、生命周期与链接属性
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/11/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E4%B8%8E%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【C语言】静态链接库与动态链接库的制作与使用</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">宏定义</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">预处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Makefile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Cpp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">共用体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">大小端模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">函数库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">存储类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生命周期</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">链接属性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+

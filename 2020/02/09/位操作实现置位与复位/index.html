@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>【C语言】位运算实现置位与复位 | Baymaxly（卢意个人博客）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、常用位操作符1.1 位与&amp;真值表   &amp; 1 0    1 1 0   0 0 0   特点有0为0，全1为1 1.2 位或|真值表|||1|0||:-:|:-:|:-:||1|1|1||0|1|0| 特点有1为1，全0为0 1.3 位异或^真值表   ^ 1 0    1 0 1   0 1 0   特点相同为0，相异为1 1.4 位取反~位取反是将操作数的二进制为逐个按位取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C语言】位运算实现置位与复位">
+<meta property="og:url" content="http://yoursite.com/2020/02/09/%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E7%BD%AE%E4%BD%8D%E4%B8%8E%E5%A4%8D%E4%BD%8D/index.html">
+<meta property="og:site_name" content="Baymaxly（卢意个人博客）">
+<meta property="og:description" content="一、常用位操作符1.1 位与&amp;真值表   &amp; 1 0    1 1 0   0 0 0   特点有0为0，全1为1 1.2 位或|真值表|||1|0||:-:|:-:|:-:||1|1|1||0|1|0| 特点有1为1，全0为0 1.3 位异或^真值表   ^ 1 0    1 0 1   0 1 0   特点相同为0，相异为1 1.4 位取反~位取反是将操作数的二进制为逐个按位取">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/SETBITNUMBER.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/SETBITSMN.png">
+<meta property="og:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/clipboard_20200209025403.png">
+<meta property="article:published_time" content="2020-02-09T03:48:49.000Z">
+<meta property="article:modified_time" content="2020-02-09T12:00:05.155Z">
+<meta property="article:author" content="Baymaxly">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="位运算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/SETBITNUMBER.png">
+  
+  
+    <link rel="icon" href="/image/avator.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.dabb16.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#4d4d4d,#ccc);
+    }
+  </style>
+  
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+
+<div class="overlay" style="background: #4d4d4d"></div>
+
+
+<!--
+
+<div class="overlay"></div>
+
+	<script >
+	var bglist = [];
+	bglist[0] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[1] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	bglist[2] = "https://s2.ax1x.com/2020/01/19/1CuNVJ.jpg";
+	setInterval('Getbg();', 3000);   //切换时间间隔，单位毫秒
+	function Getbg(){
+				var bgindex = Math.round(Math.random()*2);
+				//输出随机背景
+				var bkg = document.getElementsByClassName("left-col")[0];  
+				//这句话意思是找名字是left-col的class元素，找id可以用getElementById()
+				bkg.style.backgroundImage="url("+ bglist[bgindex] +")";
+}
+</script>
+
+-->
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="" class="profilepic">
+			        <img src="/image/avator.png" class="js-avatar show">
+		</a>
+                          
+		<hgroup>
+		  <h1 class="header-author"><a href="">Baymaxly</a></h1>
+		</hgroup>
+		
+
+
+		<nav>
+		    你只有足够努力
+		</nav>
+		<nav>
+			才能看起来毫不费力
+		</nav>
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
+	        
+			</ul>
+		</nav>
+
+		<nav>
+			总文章数 24
+		</nav>
+
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友情链接</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+		        
+			</div>
+		</nav>
+	
+	</header>		
+</div>
+
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/image/avator.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">Baymaxly</h1>
+			</hgroup>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Baymaxly" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="csdn" target="_blank" href="https://me.csdn.net/weixin_43955214" title="csdn"><i class="icon-csdn"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="jianshu" target="_blank" href="#" title="jianshu"><i class="icon-jianshu"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/categories">分类</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives">归档</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-位操作实现置位与复位" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【C语言】位运算实现置位与复位
+    </h1>
+  
+
+
+        <span class="archive-article-date"></span>
+
+        <!--显示阅读次数
+
+  <br/>
+ 
+  <span class="icon-sort"></span>
+  <span class="archive-article-date"></span>
+  <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数:&nbsp <span id="busuanzi_value_page_pv"></span>&nbsp次 &nbsp;&nbsp;
+  </span>
+
+
+显示阅读次数完毕-->
+
+
+
+  <br/>
+  <span class="icon-sort" style="color:#ef7522;font-size:14px;"></span>
+  <span style="color:#ef7522;font-size:14px;"> 阅读量: </span>
+  <span id="busuanzi_value_page_pv" style="color:#ef7522;font-size:14px;"></span>
+    
+  </span>
+
+
+
+
+
+        
+        <a href="/2020/02/09/%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E7%BD%AE%E4%BD%8D%E4%B8%8E%E5%A4%8D%E4%BD%8D/" class="archive-article-date">
+  	<time datetime="2020-02-09T03:48:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+        </header>
+    
+
+    <div class="article-entry" itemprop="articleBody"> 
+
+      
+        <h2 id="一、常用位操作符"><a href="#一、常用位操作符" class="headerlink" title="一、常用位操作符"></a>一、常用位操作符</h2><h3 id="1-1-位与-amp"><a href="#1-1-位与-amp" class="headerlink" title="1.1 位与&amp;"></a>1.1 位与<code>&amp;</code></h3><h4 id="真值表"><a href="#真值表" class="headerlink" title="真值表"></a>真值表</h4><table>
+<thead>
+<tr>
+<th align="center"><code>&amp;</code></th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p><code>有0为0，全1为1</code></p>
+<h3 id="1-2-位或"><a href="#1-2-位或" class="headerlink" title="1.2 位或|"></a>1.2 位或<code>|</code></h3><h4 id="真值表-1"><a href="#真值表-1" class="headerlink" title="真值表"></a>真值表</h4><p>|<code>|</code>|1|0|<br>|:-:|:-:|:-:|<br>|1|1|1|<br>|0|1|0|</p>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><p><code>有1为1，全0为0</code></p>
+<h3 id="1-3-位异或"><a href="#1-3-位异或" class="headerlink" title="1.3 位异或^"></a>1.3 位异或<code>^</code></h3><h4 id="真值表-2"><a href="#真值表-2" class="headerlink" title="真值表"></a>真值表</h4><table>
+<thead>
+<tr>
+<th align="center"><code>^</code></th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<h4 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h4><p><code>相同为0，相异为1</code></p>
+<h3 id="1-4-位取反"><a href="#1-4-位取反" class="headerlink" title="1.4 位取反~"></a>1.4 位取反<code>~</code></h3><p>位取反是将操作数的二进制为逐个按位取反，注意与逻辑取反区分</p>
+<h3 id="1-5-左位移-lt-lt-与右位移-gt-gt"><a href="#1-5-左位移-lt-lt-与右位移-gt-gt" class="headerlink" title="1.5 左位移&lt;&lt;与右位移&gt;&gt;"></a>1.5 左位移<code>&lt;&lt;</code>与右位移<code>&gt;&gt;</code></h3><p>C语言的位移运算要取决于其数据类型</p>
+<h4 id="无符号数"><a href="#无符号数" class="headerlink" title="无符号数"></a>无符号数</h4><blockquote>
+<ul>
+<li>左移时右侧补零，为逻辑位移</li>
+<li>右移时左侧补零，为逻辑位移</li>
+</ul>
+</blockquote>
+<h4 id="有符号数"><a href="#有符号数" class="headerlink" title="有符号数"></a>有符号数</h4><blockquote>
+<ul>
+<li>左移时右侧补零，为算术位移（相当于逻辑位移）</li>
+<li>右移时左侧补符号位（<code>正数补0负数补1</code>），为算术位移</li>
+</ul>
+</blockquote>
+<h2 id="二、位运算构建特定二进制数"><a href="#二、位运算构建特定二进制数" class="headerlink" title="二、位运算构建特定二进制数"></a>二、位运算构建特定二进制数</h2><h3 id="2-1-理论基础"><a href="#2-1-理论基础" class="headerlink" title="2.1 理论基础"></a>2.1 理论基础</h3><h4 id="2-1-1-位与、位或、位异或的运算特点"><a href="#2-1-1-位与、位或、位异或的运算特点" class="headerlink" title="2.1.1 位与、位或、位异或的运算特点"></a>2.1.1 位与、位或、位异或的运算特点</h4><blockquote>
+<ul>
+<li>任何位与<code>1</code>位与<code>无变化</code>，与<code>0</code>位与变成<code>0</code></li>
+<li>任何位与<code>1</code>位或变成<code>1</code>，与<code>0</code>位或<code>无变化</code></li>
+<li>任何位与<code>1</code>位异或<code>取反</code>，与0位异或<code>无变化</code></li>
+</ul>
+</blockquote>
+<p>所以有：</p>
+<blockquote>
+<ul>
+<li>特定位<code>复位0</code>：与<code>0</code>相<code>&amp;</code></li>
+<li>特定位<code>置位1</code>：与<code>1</code>相<code>|</code></li>
+<li>特定位<code>取反</code> ：与<code>1</code>相<code>^</code></li>
+</ul>
+</blockquote>
+<h4 id="2-1-2-位移结合位取反构建特定二进制数"><a href="#2-1-2-位移结合位取反构建特定二进制数" class="headerlink" title="2.1.2 位移结合位取反构建特定二进制数"></a>2.1.2 位移结合位取反构建特定二进制数</h4><h5 id="构建特定位为1的二进制数"><a href="#构建特定位为1的二进制数" class="headerlink" title="构建特定位为1的二进制数"></a>构建特定位为1的二进制数</h5><p>(1)<code>bit3~bit7</code>为<code>1</code>，其他位为<code>0</code>的二进制数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> ua = <span class="number">0X1F</span> &lt;&lt; <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><code>0X1F</code>说明这部分有<code>5</code>位，分别为<code>bit0~bit4</code></li>
+<li>左移<code>3</code>说明这<code>5</code>位变成了<code>bit3 ~ bit7</code></li>
+</ol>
+</blockquote>
+<p>(2)<code>bit3~bit7</code>为<code>1</code>，<code>bit23~bit25</code>为<code>1</code>，其余位为<code>0</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> ua = <span class="number">0X1F</span> &lt;&lt; <span class="number">3</span> | <span class="number">0X07</span> &lt;&lt; <span class="number">23</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="构建特定位为0的二进制数"><a href="#构建特定位为0的二进制数" class="headerlink" title="构建特定位为0的二进制数"></a>构建特定位为0的二进制数</h5><p>先构建特定位为<code>1</code>的二进制数，再进行位取反即可</p>
+<p>如<code>bit3~bit7</code>为<code>0</code>，<code>bit23~bit25</code>为<code>0</code>，其余位为<code>1</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> ua = ~ (<span class="number">0X1F</span> &lt;&lt; <span class="number">3</span> | <span class="number">0X07</span> &lt;&lt; <span class="number">23</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-经典操作"><a href="#2-2-经典操作" class="headerlink" title="2.2 经典操作"></a>2.2 经典操作</h3><p><strong>先看明白<code>2.1</code>中的理论基础再看这个！！！</strong></p>
+<h4 id="2-2-1-置位特定位"><a href="#2-2-1-置位特定位" class="headerlink" title="2.2.1 置位特定位"></a>2.2.1 置位特定位</h4><p>(1)给定一个无符整型数<code>ua</code>，置位<code>ua</code>的<code>bit3</code>，保证其他位不变</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ua |= (<span class="number">0X01</span> &lt;&lt; <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>(2)给定一个无符整型数<code>ua</code>，置位<code>ua</code>的<code>bit3~bit7</code>，保证其他位不变</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ua |= (<span class="number">0X1F</span> &lt;&lt; <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-2-复位特定位"><a href="#2-2-2-复位特定位" class="headerlink" title="2.2.2 复位特定位"></a>2.2.2 复位特定位</h4><p>(1)给定一个无符整型数<code>ua</code>，复位<code>ua</code>的<code>bit15</code>，保证其他位不变</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ua &amp;= ~(<span class="number">0X01</span> &lt;&lt; <span class="number">15</span>);</span><br></pre></td></tr></table></figure>
+
+<p>(2)给定一个无符整型数<code>ua</code>，复位<code>ua</code>的<code>bit15~bit23</code>，保证其他位不变</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ua |= (<span class="number">0X1FF</span> &lt;&lt; <span class="number">15</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-3-取出特定位"><a href="#2-2-3-取出特定位" class="headerlink" title="2.2.3 取出特定位"></a>2.2.3 取出特定位</h4><p>给定一个无符整型数<code>ua</code>，置位取出<code>ua</code>的<code>bit3~bit7</code>，存放在<code>ub</code>中</p>
+<blockquote>
+<ol>
+<li>先让特定位保持不变，其他位全部复位</li>
+<li>再右移3位得到结果</li>
+</ol>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> ub = ua;</span><br><span class="line">ub &amp;= (<span class="number">0X1F</span> &lt;&lt; <span class="number">3</span>);</span><br><span class="line">ub &gt;&gt;= <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-4-给特定位进行赋值-加减运算"><a href="#2-2-4-给特定位进行赋值-加减运算" class="headerlink" title="2.2.4 给特定位进行赋值/加减运算"></a>2.2.4 给特定位进行赋值/加减运算</h4><p>(1)给寄存器的<code>bit7~bit20</code>赋值<code>845</code>，其余位不受影响</p>
+<blockquote>
+<ol>
+<li>先将特定位全部清零</li>
+<li>再进行赋值</li>
+</ol>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ua &amp;= ~(<span class="number">0X3FFF</span> &lt;&lt; <span class="number">7</span>);</span><br><span class="line">ua |= (<span class="number">845</span> &lt;&lt; <span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+
+<p>(2)给寄存器的<code>bit7~bit20</code>赋值<code>845</code>，同时给<code>bit23~bit28</code>赋值<code>548</code>，其余位不受影响</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ua &amp;= ~ ((<span class="number">0X3FFF</span> &lt;&lt; <span class="number">7</span>) | (<span class="number">0X3F</span> &lt;&lt; <span class="number">23</span>));</span><br><span class="line">ua |= ((<span class="number">845</span> &lt;&lt; <span class="number">7</span>) | (<span class="number">548</span> &lt;&lt; <span class="number">23</span>));</span><br></pre></td></tr></table></figure>
+
+<p>(3)将寄存器<code>bit7~bit20</code>中的值加上<code>20</code>,其余位不受影响</p>
+<blockquote>
+<ol>
+<li>先读出特定位的值</li>
+<li>给读出的值加上特定数</li>
+<li>将特定位清零</li>
+<li>对特定位进行赋值</li>
+</ol>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> ub = ua;</span><br><span class="line">ub &amp;= (<span class="number">0X3FFF</span> &lt;&lt; <span class="number">7</span>);</span><br><span class="line">ub &gt;&gt;= <span class="number">7</span>;</span><br><span class="line">ub += <span class="number">20</span>;</span><br><span class="line">ua &amp;= ~ (<span class="number">0X3FFF</span> &lt;&lt; <span class="number">7</span>);</span><br><span class="line">ua |= (ub &lt;&lt; <span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、宏定义完成位操作"><a href="#三、宏定义完成位操作" class="headerlink" title="三、宏定义完成位操作"></a>三、宏定义完成位操作</h2><h3 id="3-1-单独某一位置位"><a href="#3-1-单独某一位置位" class="headerlink" title="3.1 单独某一位置位"></a>3.1 单独某一位置位</h3><p>将<code>ua</code>的第<code>bit_number + 1</code>位置位(<code>第1位对应bit0，下同</code>)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SET_BIT_NUMBER(UA, BIT_NUMBER)  (\</span></span><br><span class="line">UA | ((typeof (UA))<span class="number">1U</span> &lt;&lt; BIT_NUMBER))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-单独某一位复位"><a href="#3-2-单独某一位复位" class="headerlink" title="3.2 单独某一位复位"></a>3.2 单独某一位复位</h3><p>将<code>ua</code>的第<code>bit_number + 1</code>位复位</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RESET_BIT_NUMBER(UA, BIT_NUMBER)(\</span></span><br><span class="line">UA &amp; ~ ((typeof (UA))<span class="number">1U</span> &lt;&lt; BIT_NUMBER))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-连续位置位"><a href="#3-3-连续位置位" class="headerlink" title="3.3 连续位置位"></a>3.3 连续位置位</h3><h4 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h4><p>将<code>ua</code>的<code>bit_m + 1</code>位到<code>bit_n + 1</code>位置位</p>
+<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><p>首先需要<code>N = bit_n - bit_m + 1个1</code></p>
+<blockquote>
+<ol>
+<li>得到一个全1的数：<br><code>~ (0U)</code></li>
+<li>左移N位得到N个0：<br><code>~ (0U) &lt;&lt; N</code></li>
+<li>再进行取反即得到N个1：<br><code>~ (~ (0U) &lt;&lt; N)</code></li>
+</ol>
+</blockquote>
+<p>再左移<code>bit_m</code>位再与原数位或运算即可</p>
+<h4 id="参考代码段"><a href="#参考代码段" class="headerlink" title="参考代码段"></a>参考代码段</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SET_BITS_M_N(UA, BIT_M, BIT_N)  (\</span></span><br><span class="line">UA | (~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-连续位复位"><a href="#3-4-连续位复位" class="headerlink" title="3.4 连续位复位"></a>3.4 连续位复位</h3><h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h4><p>将<code>ua</code>的<code>bit_m + 1</code>位到<code>bit_n + 1</code>位复位</p>
+<h4 id="思路分析-1"><a href="#思路分析-1" class="headerlink" title="思路分析"></a>思路分析</h4><p>这个和置位差不多，只是最后一步运算不同而已</p>
+<h4 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RESET_BITS_M_N(UA, BIT_M, BIT_N)(\</span></span><br><span class="line">UA &amp; ~ (~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-截取部分连续位"><a href="#3-5-截取部分连续位" class="headerlink" title="3.5 截取部分连续位"></a>3.5 截取部分连续位</h3><h4 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a>要求</h4><p>将<code>ua</code>的<code>bit_m + 1</code>位到<code>bit_n + 1</code>位取出</p>
+<h4 id="思路分析-2"><a href="#思路分析-2" class="headerlink" title="思路分析"></a>思路分析</h4><p>先将其他位复位，再右移即可</p>
+<blockquote>
+<ol>
+<li>和3.3一样先得到N个1：<br><code>~ (~ (0U) &lt;&lt; N)</code></li>
+<li>左移<code>bit_m</code>位并与<code>ua</code>相与<br><code>UA &amp; ~ (~ (0U) &lt;&lt; N) &lt;&lt; BIT_M</code></li>
+<li>再右移即可</li>
+</ol>
+</blockquote>
+<h4 id="参考代码段-1"><a href="#参考代码段-1" class="headerlink" title="参考代码段"></a>参考代码段</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GETBITS_N_M(UA, BIT_M, BIT_N)   (\</span></span><br><span class="line">(UA &amp; ~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M) &gt;&gt; BIT_M)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-测试代码"><a href="#3-5-测试代码" class="headerlink" title="3.5 测试代码"></a>3.5 测试代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SET_BIT_NUMBER(UA, BIT_NUMBER)  (\</span></span><br><span class="line">UA | ((typeof (UA))<span class="number">1U</span> &lt;&lt; BIT_NUMBER))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RESET_BIT_NUMBER(UA, BIT_NUMBER)(\</span></span><br><span class="line">UA &amp; ~ ((typeof (UA))<span class="number">1U</span> &lt;&lt; BIT_NUMBER))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SET_BITS_M_N(UA, BIT_M, BIT_N)  (\</span></span><br><span class="line">UA | (~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RESET_BITS_M_N(UA, BIT_M, BIT_N)(\</span></span><br><span class="line">UA &amp; ~ (~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GETBITS_N_M(UA, BIT_M, BIT_N)   (\</span></span><br><span class="line">(UA &amp; ~ (~ ((typeof (UA))<span class="number">0U</span>) &lt;&lt; (\</span><br><span class="line">BIT_N - BIT_M + <span class="number">1</span>)) &lt;&lt; BIT_M) &gt;&gt; BIT_M)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> UA = <span class="number">0XF000F000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0X%lX\n"</span>, SET_BIT_NUMBER(UA, <span class="number">3</span>) | SET_BIT_NUMBER(UA, <span class="number">4</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0X%lX\n"</span>, RESET_BIT_NUMBER(UA, <span class="number">3</span>) | RESET_BIT_NUMBER(UA, <span class="number">4</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0X%lX\n"</span>, SET_BITS_M_N(UA, <span class="number">0</span>, <span class="number">3</span>) | SET_BITS_M_N(UA, <span class="number">4</span>, <span class="number">7</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0X%lX\n"</span>, RESET_BITS_M_N(UA, <span class="number">12</span>, <span class="number">15</span>) | RESET_BITS_M_N(UA, <span class="number">28</span>, <span class="number">33</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0X%lX\n"</span>, GETBITS_N_M(UA, <span class="number">0</span>, <span class="number">15</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试结果及分析"><a href="#测试结果及分析" class="headerlink" title="测试结果及分析"></a>测试结果及分析</h4><p>对bit3 和 bit4进行置位如图所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/SETBITNUMBER.png" alt="SETBITNUMBER.png"></p>
+<p>对bit0<del>3 和 bit4</del>7 进行置位如图所示：</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/SETBITSMN.png" alt="SETBITSMN.png"></p>
+<p>我们可以看到程序的运行结果和上述分析结果是一致的</p>
+<p><img src="https://graph-1301143676.cos.ap-chengdu.myqcloud.com/C%E9%AB%98%E7%BA%A7/bit/clipboard_20200209025403.png" alt="clipboard_20200209025403.png"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">C</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">位运算</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+    <div class="share-btn share-icons tooltip-left">
+        <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+            <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+        </div>
+    </div>
+
+    <div class="page-modal wx-share js-wx-box">
+        <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+        <p>扫一扫，分享到微信</p>
+        <div class="wx-qrcode">
+            <img src="http://qr.liantu.com/api.php?text=http://yoursite.com/2020/02/09/%E4%BD%8D%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E7%BD%AE%E4%BD%8D%E4%B8%8E%E5%A4%8D%E4%BD%8D/" alt="微信分享二维码">
+        </div>
+    </div>
+
+    <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/09/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          【C语言】宏定义与预处理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/07/%E5%85%B1%E7%94%A8%E4%BD%93union%E4%B8%8E%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【C语言】共用体union与大小端模式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+ 
+
+  
+
+
+  
+
+
+
+
+        <!-- 《添加版权声明 -->
+        
+          <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare" hidden="hidden"></div>
+
+<!-- 添加版权声明》 -->
+
+      
+      <!-- 添加版权声明》 -->
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2020 Baymaxly
+    	</div>
+      	<div class="footer-right">
+			  @版权所有 转载请注明出处
+      	</div>
+    </div>
+  </div>
+</footer>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_uv"> 
+	本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+  
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
+
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		toc_hide_index: true,
+		root: "/",
+		innerArchive: true,
+		showTags: true
+	}
+
+
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script></script><script src="/./main.dabb16.js"></script><script>!function(){var e,t;e="/slider.aea4fb.js",t=document.createElement("script"),document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)}()</script>
+
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友情链接</a></li>
+      
+        
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">C</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">宏定义</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">预处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">yilia</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Makefile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">结构体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">宏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">typedef</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">嵌入式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">8086汇编</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Cpp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">共用体</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">大小端模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">函数库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">指针</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">存储类</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生命周期</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">链接属性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内存管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">C/C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">线性表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UDT</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            3、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://blog.whutech.club/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>武汉理工大学电子科技协会官方博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">初来乍到， 方向为嵌入式，不会前端， 博客多为学习笔记，如有错误，敬请指正</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
